@@ -87,6 +87,7 @@
             this.tb_write_val = new System.Windows.Forms.TextBox();
             this.tb_write_port = new System.Windows.Forms.TextBox();
             this.bwrite_port_list = new System.Windows.Forms.Button();
+            this.bt_LoadJobFile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -624,6 +625,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.bt_LoadJobFile);
             this.groupBox3.Controls.Add(this.tb_del_t4);
             this.groupBox3.Controls.Add(this.tb_del_t3);
             this.groupBox3.Controls.Add(this.bt_set_delt_3t4);
@@ -721,6 +723,16 @@
             this.bwrite_port_list.UseVisualStyleBackColor = true;
             this.bwrite_port_list.Click += new System.EventHandler(this.bwrite_port_list_Click);
             // 
+            // bt_LoadJobFile
+            // 
+            this.bt_LoadJobFile.Location = new System.Drawing.Point(19, 201);
+            this.bt_LoadJobFile.Name = "bt_LoadJobFile";
+            this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
+            this.bt_LoadJobFile.TabIndex = 30;
+            this.bt_LoadJobFile.Text = "LoadJobFile";
+            this.bt_LoadJobFile.UseVisualStyleBackColor = true;
+            this.bt_LoadJobFile.Click += new System.EventHandler(this.bt_LoadJobFile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -804,6 +816,7 @@
         private System.Windows.Forms.TextBox tb_del_t2;
         private System.Windows.Forms.TextBox tb_del_t1;
         private System.Windows.Forms.Button bt_del_t1t2;
+        private System.Windows.Forms.Button bt_LoadJobFile;
     }
 }
 

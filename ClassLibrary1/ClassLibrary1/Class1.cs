@@ -11,6 +11,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
+        static fileLoader fL;
+
         [DllImport("SP-ICE.dll")]
         public static extern UInt16 Init_Scan_Card_Ex(UInt16 N);
         [DllImport("SP-ICE.dll")]
@@ -82,6 +84,25 @@ namespace ClassLibrary1
         [DllImport("SP-ICE.dll")]
         public static extern bool Set_Delays_9_10(UInt16 usT3, UInt16 usT4);
 
+        public static void initialize()
+        {
+            fL = new fileLoader();
+            fL.startFillJobList();
+        }
+
+        public static void deinitialize()
+        {
+            try
+            {
+                fL.stopfillJobList();
+            }
+            catch
+            {
+            }
+
+        
+        }
+
         public static void Init(UInt16 cardNumber, UInt16 mode, string corrFile, ref string  str) {
             UInt16 result = 0;
             result = Init_Scan_Card_Ex(cardNumber);
@@ -115,6 +136,7 @@ namespace ClassLibrary1
         public static Int16 RemoveCard(UInt16 N)
         {
            return  Remove_Scan_Card_Ex(N);
+ 
         }
 
         public static bool SetList1()
@@ -151,5 +173,29 @@ namespace ClassLibrary1
         //    return PtrToStringUtf8(ptr);
 
         //}
+
+        public static void loadJobFile(string path = "")
+        {
+            if (!System.IO.File.Exists(path))
+            {
+                //Stream myStream = null;
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "script (*.script)|*.script|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 1;
+                openFileDialog1.RestoreDirectory = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+
+                      //  if (( openFileDialog1.FileName) != null)
+                        {
+                            fL.openJobfile(openFileDialog1.FileName);
+                        }
+
+                }
+            }
+        }
     }
 }

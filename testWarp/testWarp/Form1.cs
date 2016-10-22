@@ -23,14 +23,19 @@ namespace testWarp
             solveMode();
             this.Closing += Form1_Closing;
             file = new StreamWriter("write.txt",true);
+            Class1.initialize();
             addLog("_______START PROGRAMM______ " ,true, false);
         }
 
         private void Form1_Closing(object sender, EventArgs e)
         {
             UInt16 ndev = UInt16.Parse(tb_devn.Text);
-            Class1.Remove_Scan_Card_Ex(ndev);
+            
             file.Close();
+            Class1.deinitialize();
+            Class1.Remove_Scan_Card_Ex(ndev);
+          
+            
         }
 
         private void b_init_Click(object sender, EventArgs e)
@@ -385,6 +390,11 @@ namespace testWarp
             UInt16 t4 = Convert.ToUInt16(tb_del_t4.Text, 10);
             Class1.Set_Delays_9_10(t3, t4);
             addLog("Set_Delays_9_10, t3 = " + t3.ToString() + ", t4 = " + t4.ToString());
+        }
+
+        private void bt_LoadJobFile_Click(object sender, EventArgs e)
+        {
+            Class1.loadJobFile("sdsd");
         }
        
 

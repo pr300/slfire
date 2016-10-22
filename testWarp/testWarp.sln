@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testWarp", "testWarp\testWarp.csproj", "{40039EBD-FC7A-4597-A11D-891DA4E8144A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3A0087CE-ED9C-4618-B921-9FFFD5E504AA} = {3A0087CE-ED9C-4618-B921-9FFFD5E504AA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "..\ClassLibrary1\ClassLibrary1\ClassLibrary1.csproj", "{3A0087CE-ED9C-4618-B921-9FFFD5E504AA}"
 EndProject
