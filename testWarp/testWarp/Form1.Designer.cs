@@ -98,6 +98,11 @@
             this.cb_stop = new System.Windows.Forms.CheckBox();
             this.bt_sendSignals = new System.Windows.Forms.Button();
             this.cb_reset = new System.Windows.Forms.CheckBox();
+            this.cb_layerFinished = new System.Windows.Forms.CheckBox();
+            this.cb_isBufferFull = new System.Windows.Forms.CheckBox();
+            this.tb_multiplier = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -227,6 +232,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.tb_multiplier);
             this.groupBox1.Controls.Add(this.bt_setActive);
             this.groupBox1.Controls.Add(this.bt_InitCard);
             this.groupBox1.Controls.Add(this.btSetMode);
@@ -300,7 +307,7 @@
             // 
             // bt_close
             // 
-            this.bt_close.Location = new System.Drawing.Point(135, 286);
+            this.bt_close.Location = new System.Drawing.Point(131, 292);
             this.bt_close.Name = "bt_close";
             this.bt_close.Size = new System.Drawing.Size(75, 23);
             this.bt_close.TabIndex = 14;
@@ -635,6 +642,9 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button1);
+            this.groupBox3.Controls.Add(this.cb_isBufferFull);
+            this.groupBox3.Controls.Add(this.cb_layerFinished);
             this.groupBox3.Controls.Add(this.cb_reset);
             this.groupBox3.Controls.Add(this.bt_sendSignals);
             this.groupBox3.Controls.Add(this.cb_stop);
@@ -712,7 +722,7 @@
             // 
             // bt_LoadJobFile
             // 
-            this.bt_LoadJobFile.Location = new System.Drawing.Point(19, 201);
+            this.bt_LoadJobFile.Location = new System.Drawing.Point(10, 230);
             this.bt_LoadJobFile.Name = "bt_LoadJobFile";
             this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
             this.bt_LoadJobFile.TabIndex = 30;
@@ -815,6 +825,7 @@
             this.cb_run.TabIndex = 38;
             this.cb_run.Text = "Run";
             this.cb_run.UseVisualStyleBackColor = true;
+            this.cb_run.CheckedChanged += new System.EventHandler(this.cb_run_CheckedChanged);
             // 
             // cb_stop
             // 
@@ -825,6 +836,7 @@
             this.cb_stop.TabIndex = 39;
             this.cb_stop.Text = "Stop";
             this.cb_stop.UseVisualStyleBackColor = true;
+            this.cb_stop.CheckedChanged += new System.EventHandler(this.cb_stop_CheckedChanged);
             // 
             // bt_sendSignals
             // 
@@ -845,6 +857,54 @@
             this.cb_reset.TabIndex = 41;
             this.cb_reset.Text = "Reset";
             this.cb_reset.UseVisualStyleBackColor = true;
+            this.cb_reset.CheckedChanged += new System.EventHandler(this.cb_reset_CheckedChanged);
+            // 
+            // cb_layerFinished
+            // 
+            this.cb_layerFinished.AutoSize = true;
+            this.cb_layerFinished.Location = new System.Drawing.Point(306, 230);
+            this.cb_layerFinished.Name = "cb_layerFinished";
+            this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
+            this.cb_layerFinished.TabIndex = 42;
+            this.cb_layerFinished.Text = "layerFiniched";
+            this.cb_layerFinished.UseVisualStyleBackColor = true;
+            // 
+            // cb_isBufferFull
+            // 
+            this.cb_isBufferFull.AutoSize = true;
+            this.cb_isBufferFull.Location = new System.Drawing.Point(306, 207);
+            this.cb_isBufferFull.Name = "cb_isBufferFull";
+            this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
+            this.cb_isBufferFull.TabIndex = 43;
+            this.cb_isBufferFull.Text = "isBufferFull";
+            this.cb_isBufferFull.UseVisualStyleBackColor = true;
+            // 
+            // tb_multiplier
+            // 
+            this.tb_multiplier.Location = new System.Drawing.Point(177, 244);
+            this.tb_multiplier.Name = "tb_multiplier";
+            this.tb_multiplier.Size = new System.Drawing.Size(48, 20);
+            this.tb_multiplier.TabIndex = 44;
+            this.tb_multiplier.Text = "100,00";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(131, 248);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 13);
+            this.label7.TabIndex = 45;
+            this.label7.Text = "multiplier";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(195, 224);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(95, 23);
+            this.button1.TabIndex = 44;
+            this.button1.Text = "Stop thread:)";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -940,6 +1000,11 @@
         private System.Windows.Forms.CheckBox cb_stop;
         private System.Windows.Forms.CheckBox cb_run;
         private System.Windows.Forms.CheckBox cb_reset;
+        private System.Windows.Forms.CheckBox cb_layerFinished;
+        private System.Windows.Forms.CheckBox cb_isBufferFull;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tb_multiplier;
+        private System.Windows.Forms.Button button1;
     }
 }
 

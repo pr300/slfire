@@ -28,14 +28,16 @@ namespace ClassLibrary1
         public static long startPosition = 0;
         public static long endPosition = 0;
         public static long runPermission = 0;
+        public static bool m_isBufferFull = false;
 
         const long BUFFER_SIZE =100000;
-        static double gateMmToField = 100;
+        static public double gateMmToField = 100;
         static public  JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
       private  static StreamReader f;
+      static string m_fileName;
       static Int16[] actualArgs = new Int16[4];
 
-      
+      static bool m_resetFile = false;
 
       static StreamWriter file;
      // private Object thisLock = new Object();
@@ -59,14 +61,15 @@ namespace ClassLibrary1
           try
           {
                f = new StreamReader(path);
-              GC.SuppressFinalize(f);
-              string str = f.ReadLine();
+              //GC.SuppressFinalize(f);
+              //string str = f.ReadLine();
               startPosition = 0;
               endPosition = 0;
               addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
               Array.Clear(actualArgs, 0, 3);
               Interlocked.Exchange(ref isValidFile, 1);
-              MessageBox.Show("Ok");
+              m_fileName = path;
+             // MessageBox.Show("Ok");
           }
           catch (Exception ex)
           {
@@ -98,10 +101,23 @@ namespace ClassLibrary1
           while (runPermission == 1)
           {
 
-              if ((Interlocked.CompareExchange(ref isValidFile, 1, 1) == 1) && isNextFree())
+              if (m_resetFile)
+              {
+                  m_resetFile = false;
+
+                  try { f.Close(); }
+                  catch { }
+                      
+                  openJobfile(m_fileName);
+
+
+              }
+              else if ((Interlocked.CompareExchange(ref isValidFile, 1, 1) == 1) && isNextFree())
               {
                   try
                   {
+                      m_isBufferFull = false;
+
                       string str = f.ReadLine();
                       int nop = 0;
                       if (str != null)
@@ -110,7 +126,7 @@ namespace ClassLibrary1
                           Regex comand = new Regex(@"^\w+\.?(\w+)?");
                           Match matchC = comand.Match(str);
                           if (matchC.Success) command = matchC.Value;
-                          switch (command) 
+                          switch (command)
                           {
                               case "Image.Line":
                                   //Match match = regexOperand.Match(str);
@@ -119,7 +135,7 @@ namespace ClassLibrary1
                                   if (matches.Count == 4)
                                   {
                                       //string[] arg = new string[4];
-                                     // matches.CopyTo(arg, 0);
+                                      // matches.CopyTo(arg, 0);
                                       for (int i = 0; i < 4; i++)
                                       {
                                           string str1 = matches[i].Value;
@@ -132,7 +148,7 @@ namespace ClassLibrary1
                                       correctLastPol(x0, y0);
                                       if (isPolA(x0, y0))
                                       {
-                                           addCommandAtEnd(Command.Jamp, x0, y0, 0, 0);
+                                          addCommandAtEnd(Command.Jamp, x0, y0, 0, 0);
                                           addCommandAtEnd(Command.PolA_Abs, x1, y1, 0, 0, str);
                                       }
                                       else if (isPolB(x0, y0))
@@ -140,7 +156,7 @@ namespace ClassLibrary1
                                           addCommandAtEnd(Command.PolB_Abs, x1, y1, 0, 0, str);
                                       }
 
-                                      else 
+                                      else
                                       {
                                           isValidFile = 0;
                                           MessageBox.Show("Can't determinate command type, str = " + str);
@@ -154,12 +170,12 @@ namespace ClassLibrary1
                                   break;
                               case "F_In":
                                   addCommandAtEnd(Command.StarLayer, 0, 0, 0, 0);
-                              break;
+                                  break;
                               case "F_Out":
-                              correctLastPol(Int16.MaxValue, Int16.MaxValue);
-                              addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
-                              break;
-                          
+                                  correctLastPol(Int16.MaxValue, Int16.MaxValue);
+                                  addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
+                                  break;
+
                           }
                       }
                       else
@@ -172,7 +188,11 @@ namespace ClassLibrary1
                       MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message);
                       Interlocked.Exchange(ref isValidFile, 0);
                   }
-              
+
+              }
+              else 
+              {
+                  m_isBufferFull = true;
               }
 
               Thread.Sleep(0);
@@ -276,6 +296,11 @@ namespace ClassLibrary1
           if (m_listJob[pos].x != x || m_listJob[pos].y != y) return false;
 
           return true;
+      }
+
+      static public  void resetFile()
+      {
+          m_resetFile = true;
       }
 
     }

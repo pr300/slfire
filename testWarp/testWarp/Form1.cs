@@ -70,7 +70,7 @@ namespace testWarp
             addLog("Init seqence -> ", true, false);
 
             Class1.m_laserPower = UInt16.Parse(tb_laser_power.Text);
-
+            fileLoader.gateMmToField = Double.Parse(tb_multiplier.Text);
 
         }
 
@@ -432,6 +432,8 @@ namespace testWarp
                       cr_endPos.Text = end.ToString();
                       cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
                       cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
+                      cb_layerFinished.Checked = Class1.m_layersFinishid;
+                      cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
                       
                       //aTimer.AutoReset = true;
                       //aTimer.Enabled = true;
@@ -452,8 +454,40 @@ namespace testWarp
             if (cb_run.Checked) s |= IntSignals.Run;
             if (cb_stop.Checked) s |= IntSignals.Stop;
             if (cb_reset.Checked) s |= IntSignals.Reset;
+            Class1.m_inputSignals = s;
+            Class1.processSignals();
+        }
 
-            Class1.processSignals(s);
+        private void cb_reset_CheckedChanged(object sender, EventArgs e)
+        {
+            IntSignals s = 0;
+            if (cb_run.Checked) s |= IntSignals.Run;
+            if (cb_stop.Checked) s |= IntSignals.Stop;
+            if (cb_reset.Checked) s |= IntSignals.Reset;
+            Class1.m_inputSignals = s;
+        }
+
+        private void cb_run_CheckedChanged(object sender, EventArgs e)
+        {
+            IntSignals s = 0;
+            if (cb_run.Checked) s |= IntSignals.Run;
+            if (cb_stop.Checked) s |= IntSignals.Stop;
+            if (cb_reset.Checked) s |= IntSignals.Reset;
+            Class1.m_inputSignals = s;
+        }
+
+        private void cb_stop_CheckedChanged(object sender, EventArgs e)
+        {
+            IntSignals s = 0;
+            if (cb_run.Checked) s |= IntSignals.Run;
+            if (cb_stop.Checked) s |= IntSignals.Stop;
+            if (cb_reset.Checked) s |= IntSignals.Reset;
+            Class1.m_inputSignals = s;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            crThread = false;
         }
         
 

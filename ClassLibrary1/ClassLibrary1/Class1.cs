@@ -7,22 +7,31 @@ using System.Runtime.InteropServices;     // DLL support
 using System.Windows.Forms;
 using System.Security;
 using System.IO;
+using System.Threading;
 
 namespace ClassLibrary1
 {
     public enum IntState { Wait, Stop, Work};
-    public enum IntSignals {Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
-
+    public enum IntSignals {Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
+    
+   
    
     public class Class1
     {
+
+        public static IntSignals m_inputSignals = IntSignals.Empty;
         static StreamWriter file;
         const long LIST_SISE = 100000;
         public static bool test;
         static public IntState m_state = IntState.Wait;
         static public UInt32 m_layerNumber = 0;
         static public UInt16 m_laserPower = 0;
-       // public static fileLoader fL = new fileLoader();
+
+        static public bool m_layersFinishid = false;
+        static private bool m_isInstance = false;
+        static private bool m_procesThreadAllowed = false;
+        static Thread myThread;
+            // public static fileLoader fL = new fileLoader();
 
         [DllImport("SP-ICE.dll")]
         public static extern UInt16 Init_Scan_Card_Ex(UInt16 N);
@@ -99,8 +108,19 @@ namespace ClassLibrary1
         [DllImport("SP-ICE.dll")]
         public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
 
-        public static void processSignals(IntSignals s)
+        public static void threadProcessSignals() 
         {
+            while (m_procesThreadAllowed)
+            {
+                processSignals();
+                Thread.Sleep(10);
+            }
+        }
+
+
+        public static void processSignals()
+        {
+            IntSignals s = m_inputSignals;
             switch (m_state)
             { 
                 case IntState.Wait:
@@ -110,6 +130,14 @@ namespace ClassLibrary1
                         m_state = IntState.Stop;
                     }
 
+                    if ((s & (IntSignals.Reset)) != 0)
+                    {
+                        Stop_Execution();
+                        m_layersFinishid = false;
+
+                        fileLoader.resetFile();
+                        m_inputSignals &= ~IntSignals.Reset;
+                    }
                     
 
                     break;
@@ -120,6 +148,15 @@ namespace ClassLibrary1
                         m_state = IntState.Work;
                         WorkState();
                     }
+
+                    if ((s & (IntSignals.Reset)) != 0)
+                    {
+                        Stop_Execution();
+                        m_layersFinishid = false;
+
+                        fileLoader.resetFile();
+                        m_inputSignals &= ~IntSignals.Reset;
+                    }
                     break;
 
                 case IntState.Work:
@@ -128,6 +165,10 @@ namespace ClassLibrary1
 
                     if ((s & (IntSignals.Reset) )!= 0)
                     {
+                        Stop_Execution();
+                        fileLoader.resetFile();
+                        m_inputSignals &= ~(IntSignals.Reset);
+
                         m_state = IntState.Wait;
                     }
                     break;
@@ -137,6 +178,7 @@ namespace ClassLibrary1
 
         private static void WorkState()
         {
+            if(fileLoader.m_isBufferFull)
             fillList();
         }
 
@@ -155,16 +197,23 @@ namespace ClassLibrary1
             if (!fileLoader.isAviableNExt())
             {
                 m_state = IntState.Wait;
+                if (fileLoader.isValidFile == 0)
+                    m_layersFinishid = true;
                 return;
             }
 
             file = new StreamWriter("write_layer.txt", false);
 
             Stop_Execution();
+            printDebug("Stop_Execution");
             Set_Start_List_1();
+            printDebug("Set_Start_List_1()");
             Set_Delays(60, 100, 100, 100, 100, 100, 1000, 500, 0);
+            printDebug("Set_Delays");
             Long_Delay(10); //??
+            printDebug("Long_Delay");
             Write_DA_List(m_laserPower);
+            printDebug("Write_DA_List "  + m_laserPower.ToString());
 
             long commandCount = 0;
             long iterator = 0;
@@ -212,9 +261,13 @@ namespace ClassLibrary1
 
 
             Set_End_Of_List();
+            printDebug("et_End_Of_List() " );
             Write_Port_List(0xC, 0x010); //???
+            printDebug("Write_Port_List(0xC, 0x010) " );
             Long_Delay(10); //??
+            printDebug("Long_Delay ");
             Execute_List_1();
+            printDebug("Execute_List_1();");
 
             file.Close();
             if (isEnd) m_state = IntState.Wait;
@@ -223,14 +276,27 @@ namespace ClassLibrary1
 
         private static  void printDebug(string deb)
         {
-            file.WriteLine(deb);
+            file.WriteLine(deb + "  =  " + getLastError());
             file.Flush();
         }
 
         public  static void initialize()
         {
-            //fL = new fileLoader();
-            fileLoader.startFillJobList();
+            if (!m_isInstance)
+            {
+                m_isInstance = true;
+                //fL = new fileLoader();
+                fileLoader.startFillJobList();
+
+                m_procesThreadAllowed = true;
+                myThread = new Thread(threadProcessSignals);
+                myThread.Start();
+
+            }
+            else
+            {
+                MessageBox.Show("Error: SPI - lib already started. once one instance  allow");
+            }
            
         }
 
@@ -238,6 +304,9 @@ namespace ClassLibrary1
         {
             try
             {
+                m_procesThreadAllowed = false;
+                myThread.Join();
+
                 fileLoader.stopfillJobList();
             }
             catch
@@ -344,6 +413,7 @@ namespace ClassLibrary1
                       //  if (( openFileDialog1.FileName) != null)
                         {
                             fileLoader.openJobfile(openFileDialog1.FileName);
+                            m_layersFinishid = false;
                         }
 
                 }
