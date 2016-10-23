@@ -78,6 +78,12 @@
             this.bt_laserOn = new System.Windows.Forms.Button();
             this.bt_getState = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cr_gap = new System.Windows.Forms.Button();
+            this.cr_endPos = new System.Windows.Forms.TextBox();
+            this.cr_startPos = new System.Windows.Forms.TextBox();
+            this.cr_isInstance = new System.Windows.Forms.CheckBox();
+            this.cr_validFileName = new System.Windows.Forms.CheckBox();
+            this.bt_LoadJobFile = new System.Windows.Forms.Button();
             this.tb_del_t4 = new System.Windows.Forms.TextBox();
             this.tb_del_t3 = new System.Windows.Forms.TextBox();
             this.bt_set_delt_3t4 = new System.Windows.Forms.Button();
@@ -87,7 +93,11 @@
             this.tb_write_val = new System.Windows.Forms.TextBox();
             this.tb_write_port = new System.Windows.Forms.TextBox();
             this.bwrite_port_list = new System.Windows.Forms.Button();
-            this.bt_LoadJobFile = new System.Windows.Forms.Button();
+            this.cr_state = new System.Windows.Forms.TextBox();
+            this.cb_run = new System.Windows.Forms.CheckBox();
+            this.cb_stop = new System.Windows.Forms.CheckBox();
+            this.bt_sendSignals = new System.Windows.Forms.Button();
+            this.cb_reset = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -625,6 +635,16 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.cb_reset);
+            this.groupBox3.Controls.Add(this.bt_sendSignals);
+            this.groupBox3.Controls.Add(this.cb_stop);
+            this.groupBox3.Controls.Add(this.cb_run);
+            this.groupBox3.Controls.Add(this.cr_state);
+            this.groupBox3.Controls.Add(this.cr_gap);
+            this.groupBox3.Controls.Add(this.cr_endPos);
+            this.groupBox3.Controls.Add(this.cr_startPos);
+            this.groupBox3.Controls.Add(this.cr_isInstance);
+            this.groupBox3.Controls.Add(this.cr_validFileName);
             this.groupBox3.Controls.Add(this.bt_LoadJobFile);
             this.groupBox3.Controls.Add(this.tb_del_t4);
             this.groupBox3.Controls.Add(this.tb_del_t3);
@@ -644,6 +664,61 @@
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "groupBox3";
+            // 
+            // cr_gap
+            // 
+            this.cr_gap.Location = new System.Drawing.Point(297, 351);
+            this.cr_gap.Name = "cr_gap";
+            this.cr_gap.Size = new System.Drawing.Size(75, 23);
+            this.cr_gap.TabIndex = 35;
+            this.cr_gap.Text = "Gap";
+            this.cr_gap.UseVisualStyleBackColor = true;
+            // 
+            // cr_endPos
+            // 
+            this.cr_endPos.Location = new System.Drawing.Point(306, 325);
+            this.cr_endPos.Name = "cr_endPos";
+            this.cr_endPos.Size = new System.Drawing.Size(48, 20);
+            this.cr_endPos.TabIndex = 34;
+            this.cr_endPos.Text = "0";
+            // 
+            // cr_startPos
+            // 
+            this.cr_startPos.Location = new System.Drawing.Point(306, 299);
+            this.cr_startPos.Name = "cr_startPos";
+            this.cr_startPos.Size = new System.Drawing.Size(48, 20);
+            this.cr_startPos.TabIndex = 33;
+            this.cr_startPos.Text = "0";
+            // 
+            // cr_isInstance
+            // 
+            this.cr_isInstance.AutoSize = true;
+            this.cr_isInstance.Location = new System.Drawing.Point(306, 253);
+            this.cr_isInstance.Name = "cr_isInstance";
+            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
+            this.cr_isInstance.TabIndex = 32;
+            this.cr_isInstance.Text = "isInstance";
+            this.cr_isInstance.UseVisualStyleBackColor = true;
+            // 
+            // cr_validFileName
+            // 
+            this.cr_validFileName.AutoSize = true;
+            this.cr_validFileName.Location = new System.Drawing.Point(306, 276);
+            this.cr_validFileName.Name = "cr_validFileName";
+            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
+            this.cr_validFileName.TabIndex = 31;
+            this.cr_validFileName.Text = "validFileName";
+            this.cr_validFileName.UseVisualStyleBackColor = true;
+            // 
+            // bt_LoadJobFile
+            // 
+            this.bt_LoadJobFile.Location = new System.Drawing.Point(19, 201);
+            this.bt_LoadJobFile.Name = "bt_LoadJobFile";
+            this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
+            this.bt_LoadJobFile.TabIndex = 30;
+            this.bt_LoadJobFile.Text = "LoadJobFile";
+            this.bt_LoadJobFile.UseVisualStyleBackColor = true;
+            this.bt_LoadJobFile.Click += new System.EventHandler(this.bt_LoadJobFile_Click);
             // 
             // tb_del_t4
             // 
@@ -723,15 +798,53 @@
             this.bwrite_port_list.UseVisualStyleBackColor = true;
             this.bwrite_port_list.Click += new System.EventHandler(this.bwrite_port_list_Click);
             // 
-            // bt_LoadJobFile
+            // cr_state
             // 
-            this.bt_LoadJobFile.Location = new System.Drawing.Point(19, 201);
-            this.bt_LoadJobFile.Name = "bt_LoadJobFile";
-            this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
-            this.bt_LoadJobFile.TabIndex = 30;
-            this.bt_LoadJobFile.Text = "LoadJobFile";
-            this.bt_LoadJobFile.UseVisualStyleBackColor = true;
-            this.bt_LoadJobFile.Click += new System.EventHandler(this.bt_LoadJobFile_Click);
+            this.cr_state.Location = new System.Drawing.Point(195, 299);
+            this.cr_state.Name = "cr_state";
+            this.cr_state.Size = new System.Drawing.Size(85, 20);
+            this.cr_state.TabIndex = 36;
+            this.cr_state.Text = "0";
+            // 
+            // cb_run
+            // 
+            this.cb_run.AutoSize = true;
+            this.cb_run.Location = new System.Drawing.Point(22, 299);
+            this.cb_run.Name = "cb_run";
+            this.cb_run.Size = new System.Drawing.Size(46, 17);
+            this.cb_run.TabIndex = 38;
+            this.cb_run.Text = "Run";
+            this.cb_run.UseVisualStyleBackColor = true;
+            // 
+            // cb_stop
+            // 
+            this.cb_stop.AutoSize = true;
+            this.cb_stop.Location = new System.Drawing.Point(22, 322);
+            this.cb_stop.Name = "cb_stop";
+            this.cb_stop.Size = new System.Drawing.Size(48, 17);
+            this.cb_stop.TabIndex = 39;
+            this.cb_stop.Text = "Stop";
+            this.cb_stop.UseVisualStyleBackColor = true;
+            // 
+            // bt_sendSignals
+            // 
+            this.bt_sendSignals.Location = new System.Drawing.Point(19, 346);
+            this.bt_sendSignals.Name = "bt_sendSignals";
+            this.bt_sendSignals.Size = new System.Drawing.Size(75, 23);
+            this.bt_sendSignals.TabIndex = 40;
+            this.bt_sendSignals.Text = "sendSignals";
+            this.bt_sendSignals.UseVisualStyleBackColor = true;
+            this.bt_sendSignals.Click += new System.EventHandler(this.bt_sendSignals_Click);
+            // 
+            // cb_reset
+            // 
+            this.cb_reset.AutoSize = true;
+            this.cb_reset.Location = new System.Drawing.Point(22, 276);
+            this.cb_reset.Name = "cb_reset";
+            this.cb_reset.Size = new System.Drawing.Size(54, 17);
+            this.cb_reset.TabIndex = 41;
+            this.cb_reset.Text = "Reset";
+            this.cb_reset.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -817,6 +930,16 @@
         private System.Windows.Forms.TextBox tb_del_t1;
         private System.Windows.Forms.Button bt_del_t1t2;
         private System.Windows.Forms.Button bt_LoadJobFile;
+        private System.Windows.Forms.CheckBox cr_isInstance;
+        private System.Windows.Forms.CheckBox cr_validFileName;
+        private System.Windows.Forms.Button cr_gap;
+        private System.Windows.Forms.TextBox cr_endPos;
+        private System.Windows.Forms.TextBox cr_startPos;
+        private System.Windows.Forms.TextBox cr_state;
+        private System.Windows.Forms.Button bt_sendSignals;
+        private System.Windows.Forms.CheckBox cb_stop;
+        private System.Windows.Forms.CheckBox cb_run;
+        private System.Windows.Forms.CheckBox cb_reset;
     }
 }
 

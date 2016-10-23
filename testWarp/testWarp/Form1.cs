@@ -5,32 +5,46 @@ using ClassLibrary1;
 using System.Text;
 using System.IO;
 //using RAYLASE.SPICE1;
-
-
+using System.Threading;
 
 namespace testWarp
 {
     public partial class Form1 : Form
     {
         StreamWriter file;
-
+        bool crThread = true;
   //      Controller Class1;
+        Thread myThread;
+        private static System.Timers.Timer aTimer;
 
         public Form1()
         {
             
+
             InitializeComponent();
             solveMode();
             this.Closing += Form1_Closing;
             file = new StreamWriter("write.txt",true);
             Class1.initialize();
+            crThread = true;
+           myThread = new Thread(OnTimedEvent);
+            myThread.IsBackground = true;
+           myThread.Start();
             addLog("_______START PROGRAMM______ " ,true, false);
+   
+            //aTimer = new System.Timers.Timer(200);
+            //aTimer.Elapsed += OnTimedEvent;
+            //aTimer.AutoReset = true;
+            //aTimer.Enabled = true;
+            //aTimer.Start();
+            //GC.KeepAlive(aTimer);
         }
 
         private void Form1_Closing(object sender, EventArgs e)
         {
+            crThread = false;
+            //myThread.Join();
             UInt16 ndev = UInt16.Parse(tb_devn.Text);
-            
             file.Close();
             Class1.deinitialize();
             Class1.Remove_Scan_Card_Ex(ndev);
@@ -54,6 +68,8 @@ namespace testWarp
 
             btSetMode_Click(sender, e);
             addLog("Init seqence -> ", true, false);
+
+            Class1.m_laserPower = UInt16.Parse(tb_laser_power.Text);
 
 
         }
@@ -396,7 +412,50 @@ namespace testWarp
         {
             Class1.loadJobFile("sdsd");
         }
-       
+
+        private  void OnTimedEvent()
+        { 
+
+           //:w
+            //Class1.fL;
+           // Class1.
+            //fileLoader.endPosition;
+            while (crThread)
+            {
+
+                long start = Interlocked.Read(ref fileLoader.startPosition);
+                long end = Interlocked.Read(ref fileLoader.endPosition);
+
+                Invoke(new Action(() =>
+                  {
+                      cr_startPos.Text = start.ToString();
+                      cr_endPos.Text = end.ToString();
+                      cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
+                      cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
+                      
+                      //aTimer.AutoReset = true;
+                      //aTimer.Enabled = true;
+                      //aTimer.Start();
+                     cr_state.Text = Class1.m_state.ToString();
+                      
+
+                  }));
+
+                Thread.Sleep(10);
+            }
+          
+        }
+
+        private void bt_sendSignals_Click(object sender, EventArgs e)
+        {
+            IntSignals s = 0;
+            if (cb_run.Checked) s |= IntSignals.Run;
+            if (cb_stop.Checked) s |= IntSignals.Stop;
+            if (cb_reset.Checked) s |= IntSignals.Reset;
+
+            Class1.processSignals(s);
+        }
+        
 
     }
 }

@@ -6,12 +6,23 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;     // DLL support
 using System.Windows.Forms;
 using System.Security;
+using System.IO;
 
 namespace ClassLibrary1
 {
+    public enum IntState { Wait, Stop, Work};
+    public enum IntSignals {Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
+
+   
     public class Class1
     {
-        static fileLoader fL;
+        static StreamWriter file;
+        const long LIST_SISE = 100000;
+        public static bool test;
+        static public IntState m_state = IntState.Wait;
+        static public UInt32 m_layerNumber = 0;
+        static public UInt16 m_laserPower = 0;
+       // public static fileLoader fL = new fileLoader();
 
         [DllImport("SP-ICE.dll")]
         public static extern UInt16 Init_Scan_Card_Ex(UInt16 N);
@@ -83,24 +94,165 @@ namespace ClassLibrary1
         public static extern bool Set_Delays_7_8(UInt16 usT1, UInt16 usT2);
         [DllImport("SP-ICE.dll")]
         public static extern bool Set_Delays_9_10(UInt16 usT3, UInt16 usT4);
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Long_Delay(UInt16 usDelay);
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
 
-        public static void initialize()
+        public static void processSignals(IntSignals s)
         {
-            fL = new fileLoader();
-            fL.startFillJobList();
+            switch (m_state)
+            { 
+                case IntState.Wait:
+                    WaitState();
+                    if ((s & (IntSignals.Stop)) != 0 && (s & (IntSignals.Run)) == 0)
+                    {
+                        m_state = IntState.Stop;
+                    }
+
+                    
+
+                    break;
+                case IntState.Stop:
+                    StopState();
+                    if ((s & (IntSignals.Stop | IntSignals.Reset)) == 0 && (s & (IntSignals.Run)) != 0)
+                    {
+                        m_state = IntState.Work;
+                        WorkState();
+                    }
+                    break;
+
+                case IntState.Work:
+
+                    WorkState();
+
+                    if ((s & (IntSignals.Reset) )!= 0)
+                    {
+                        m_state = IntState.Wait;
+                    }
+                    break;
+            
+            }
         }
 
-        public static void deinitialize()
+        private static void WorkState()
+        {
+            fillList();
+        }
+
+        private static void StopState()
+        { 
+        
+        }
+
+        private static void WaitState()
+        { 
+        
+        }
+
+        private static void fillList()
+        {
+            if (!fileLoader.isAviableNExt())
+            {
+                m_state = IntState.Wait;
+                return;
+            }
+
+            file = new StreamWriter("write_layer.txt", false);
+
+            Stop_Execution();
+            Set_Start_List_1();
+            Set_Delays(60, 100, 100, 100, 100, 100, 1000, 500, 0);
+            Long_Delay(10); //??
+            Write_DA_List(m_laserPower);
+
+            long commandCount = 0;
+            long iterator = 0;
+            bool isEnd = false;
+            while (commandCount < LIST_SISE && fileLoader.isAviableNExt() && !isEnd)
+            {
+                commandCount++;
+                iterator = fileLoader.getStartPos();
+                switch (fileLoader.m_listJob[iterator].cmd)
+                { 
+                    case Command.StarLayer:
+                        printDebug(iterator.ToString() + ";  " + "---Start command detected");
+                        break;
+                    case  Command.EndLayer:
+                        isEnd = true;
+                        printDebug(iterator.ToString() + ";  " + "---end command detected");
+                        break;
+                    case Command.Jamp:
+                        Jump_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+
+                        printDebug(iterator.ToString() + ";  " + "Jamp_abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        break;
+                    case Command.Mark:
+                        Mark_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                        printDebug(iterator.ToString() + ";  " + "Mark_abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        break;
+                    case Command.PolA_Abs:
+                        PolA_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                        printDebug(iterator.ToString() + ";  " + "PosA_Abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        break;
+                    case Command.PolB_Abs:
+                        PolB_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                        printDebug(iterator.ToString() + ";  " + "PosB_Bbs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        break;
+                    case Command.PolC_Abs:
+                        PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                        printDebug(iterator.ToString() + ";  " + "PosC_Abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        break;
+                
+                }
+                fileLoader.incrementStart();
+
+            }
+
+
+
+            Set_End_Of_List();
+            Write_Port_List(0xC, 0x010); //???
+            Long_Delay(10); //??
+            Execute_List_1();
+
+            file.Close();
+            if (isEnd) m_state = IntState.Wait;
+        }
+
+
+        private static  void printDebug(string deb)
+        {
+            file.WriteLine(deb);
+            file.Flush();
+        }
+
+        public  static void initialize()
+        {
+            //fL = new fileLoader();
+            fileLoader.startFillJobList();
+           
+        }
+
+        public  static void deinitialize()
         {
             try
             {
-                fL.stopfillJobList();
+                fileLoader.stopfillJobList();
             }
             catch
             {
             }
 
         
+        }
+
+        public static void getFileBuffPos1(ref long a, ref long b)
+        {
+            //fL.isInstance = 0;
+           //fL.
+            
+           
         }
 
         public static void Init(UInt16 cardNumber, UInt16 mode, string corrFile, ref string  str) {
@@ -191,7 +343,7 @@ namespace ClassLibrary1
 
                       //  if (( openFileDialog1.FileName) != null)
                         {
-                            fL.openJobfile(openFileDialog1.FileName);
+                            fileLoader.openJobfile(openFileDialog1.FileName);
                         }
 
                 }

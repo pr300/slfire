@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
 using System.Globalization;
-using System.Text;
-using System.IO;
 
 namespace ClassLibrary1
 {
-    enum Command {StarLayer = 0x1, EndLayer = 0x2,  PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80};
-    struct JobCommand
+   public  enum Command {StarLayer = 0x1, EndLayer = 0x2,  PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80};
+    public struct JobCommand
 {
     public Command cmd;
     public Int16 x ;
@@ -24,30 +21,32 @@ namespace ClassLibrary1
 };
 
 
-    class fileLoader 
+    public class fileLoader 
     {
+        public static long isInstance = 0; //0 - false, 1 true
+        public static long isValidFile = 0;
+        public static long startPosition = 0;
+        public static long endPosition = 0;
+        public static long runPermission = 0;
+
         const long BUFFER_SIZE =100000;
-        double gateMmToField = 100;
-        public static JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
+        static double gateMmToField = 100;
+        static public  JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
       private  static StreamReader f;
-      Int16[] nextArgs   = new Int16[4];
-      Int16[] actualArgs = new Int16[4];
+      static Int16[] actualArgs = new Int16[4];
 
+      
 
-      StreamWriter file;
+      static StreamWriter file;
      // private Object thisLock = new Object();
 
-      static long isInstance = 0; //0 - false, 1 true
-      static long isValidFile = 0;
-      static long startPosition = 0;
-      static long endPosition = 0;
-      static long runPermission = 0;
-      Thread myThread;
-      Regex regexOperand = new Regex(@"-?\d+(\.\d+)?");
+
+      static Thread myThread;
+      static Regex regexOperand = new Regex(@"-?\d+(\.\d+)?");
 
 
  
-      public void stopfillJobList()
+      public static void stopfillJobList()
       {
           runPermission = 0;
           myThread.Join();
@@ -55,7 +54,7 @@ namespace ClassLibrary1
 
       }
 
-      public void openJobfile(string path)
+      public static void openJobfile(string path)
       {
           try
           {
@@ -79,7 +78,7 @@ namespace ClassLibrary1
 
 
 
-      public void startFillJobList()
+      public static  void startFillJobList()
       {
           if (Interlocked.Read(ref isInstance) == 0)
           {
@@ -94,7 +93,7 @@ namespace ClassLibrary1
       }
 
 
-      private void fillJobList()
+      private static void fillJobList()
       {
           while (runPermission == 1)
           {
@@ -181,19 +180,37 @@ namespace ClassLibrary1
       
       }
 
-      private bool isNextFree()
-      {
 
-          return (endPosition - startPosition) < BUFFER_SIZE;
+
+      public static bool isAviableNExt()
+      {
+          return (endPosition - startPosition) > 0;
       }
 
-      private long freeSpase() 
+     public static long getStartPos()
+     {
+         return startPosition % BUFFER_SIZE;
+     }
+
+     public static void incrementStart()
+     {
+
+         if (isAviableNExt()) startPosition++;
+     }
+
+      private static  bool isNextFree()
+      {
+
+          return (endPosition - startPosition) < BUFFER_SIZE -1;
+      }
+
+      private static long freeSpase() 
       {
 
           return BUFFER_SIZE - (endPosition - startPosition);
       }
 
-      private void  addCommandAtEnd (Command cmd, Int16 a1, Int16 a2, Int16 a3, Int16 a4, string debug =  "") 
+      private static  void  addCommandAtEnd (Command cmd, Int16 a1, Int16 a2, Int16 a3, Int16 a4, string debug =  "") 
       {
           long pos = endPosition % BUFFER_SIZE;
           m_listJob[pos].cmd = cmd;
@@ -208,14 +225,14 @@ namespace ClassLibrary1
 
       }
 
-      bool isPolA(Int16 x, Int16 y)
+      static bool  isPolA(Int16 x, Int16 y)
       {
           long pos = (endPosition - 1) % BUFFER_SIZE;
           if ((m_listJob[pos].cmd & (Command.StarLayer | Command.EndLayer | Command.Jamp |Command.PolC_Abs| Command.Mark | Command.Nop)) != 0) return true;
           return false;
       }
 
-      bool isPolB(Int16 x, Int16 y)
+     static  bool isPolB(Int16 x, Int16 y)
       {
           if (endPosition == 0) return false;
           long pos = (endPosition - 1) % BUFFER_SIZE;
@@ -227,7 +244,7 @@ namespace ClassLibrary1
           return false;
       }
 
-      void correctLastPol(Int16 x, Int16 y, bool isEnd = false) 
+      static void correctLastPol(Int16 x, Int16 y, bool isEnd = false) 
       {
           long pos = (endPosition - 1) % BUFFER_SIZE;
           if (m_listJob[pos].cmd == Command.PolA_Abs)
@@ -250,7 +267,9 @@ namespace ClassLibrary1
           }
       }
 
-      bool isContinued(Int16 x, Int16 y)
+
+
+      static bool isContinued(Int16 x, Int16 y)
       {
           long pos = (endPosition - 1) % BUFFER_SIZE;
           if (m_listJob[pos].cmd != Command.PolB_Abs) return false;
