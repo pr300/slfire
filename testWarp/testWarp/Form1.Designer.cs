@@ -78,7 +78,6 @@
             this.bt_laserOn = new System.Windows.Forms.Button();
             this.bt_getState = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cr_gap = new System.Windows.Forms.Button();
             this.cr_endPos = new System.Windows.Forms.TextBox();
             this.cr_startPos = new System.Windows.Forms.TextBox();
             this.cr_isInstance = new System.Windows.Forms.CheckBox();
@@ -103,9 +102,11 @@
             this.tb_multiplier = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // b_init
@@ -400,7 +401,7 @@
             this.listBox1.Location = new System.Drawing.Point(489, 12);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(675, 756);
+            this.listBox1.Size = new System.Drawing.Size(675, 740);
             this.listBox1.TabIndex = 13;
             // 
             // groupBox2
@@ -642,20 +643,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button1);
-            this.groupBox3.Controls.Add(this.cb_isBufferFull);
-            this.groupBox3.Controls.Add(this.cb_layerFinished);
-            this.groupBox3.Controls.Add(this.cb_reset);
-            this.groupBox3.Controls.Add(this.bt_sendSignals);
-            this.groupBox3.Controls.Add(this.cb_stop);
-            this.groupBox3.Controls.Add(this.cb_run);
-            this.groupBox3.Controls.Add(this.cr_state);
-            this.groupBox3.Controls.Add(this.cr_gap);
-            this.groupBox3.Controls.Add(this.cr_endPos);
-            this.groupBox3.Controls.Add(this.cr_startPos);
-            this.groupBox3.Controls.Add(this.cr_isInstance);
-            this.groupBox3.Controls.Add(this.cr_validFileName);
-            this.groupBox3.Controls.Add(this.bt_LoadJobFile);
             this.groupBox3.Controls.Add(this.tb_del_t4);
             this.groupBox3.Controls.Add(this.tb_del_t3);
             this.groupBox3.Controls.Add(this.bt_set_delt_3t4);
@@ -670,23 +657,14 @@
             this.groupBox3.Controls.Add(this.bt_getState);
             this.groupBox3.Location = new System.Drawing.Point(8, 355);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(444, 388);
+            this.groupBox3.Size = new System.Drawing.Size(467, 184);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "groupBox3";
             // 
-            // cr_gap
-            // 
-            this.cr_gap.Location = new System.Drawing.Point(297, 351);
-            this.cr_gap.Name = "cr_gap";
-            this.cr_gap.Size = new System.Drawing.Size(75, 23);
-            this.cr_gap.TabIndex = 35;
-            this.cr_gap.Text = "Gap";
-            this.cr_gap.UseVisualStyleBackColor = true;
-            // 
             // cr_endPos
             // 
-            this.cr_endPos.Location = new System.Drawing.Point(306, 325);
+            this.cr_endPos.Location = new System.Drawing.Point(150, 144);
             this.cr_endPos.Name = "cr_endPos";
             this.cr_endPos.Size = new System.Drawing.Size(48, 20);
             this.cr_endPos.TabIndex = 34;
@@ -694,7 +672,7 @@
             // 
             // cr_startPos
             // 
-            this.cr_startPos.Location = new System.Drawing.Point(306, 299);
+            this.cr_startPos.Location = new System.Drawing.Point(150, 118);
             this.cr_startPos.Name = "cr_startPos";
             this.cr_startPos.Size = new System.Drawing.Size(48, 20);
             this.cr_startPos.TabIndex = 33;
@@ -703,7 +681,7 @@
             // cr_isInstance
             // 
             this.cr_isInstance.AutoSize = true;
-            this.cr_isInstance.Location = new System.Drawing.Point(306, 253);
+            this.cr_isInstance.Location = new System.Drawing.Point(150, 72);
             this.cr_isInstance.Name = "cr_isInstance";
             this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
             this.cr_isInstance.TabIndex = 32;
@@ -713,7 +691,7 @@
             // cr_validFileName
             // 
             this.cr_validFileName.AutoSize = true;
-            this.cr_validFileName.Location = new System.Drawing.Point(306, 276);
+            this.cr_validFileName.Location = new System.Drawing.Point(150, 95);
             this.cr_validFileName.Name = "cr_validFileName";
             this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
             this.cr_validFileName.TabIndex = 31;
@@ -722,7 +700,7 @@
             // 
             // bt_LoadJobFile
             // 
-            this.bt_LoadJobFile.Location = new System.Drawing.Point(10, 230);
+            this.bt_LoadJobFile.Location = new System.Drawing.Point(14, 19);
             this.bt_LoadJobFile.Name = "bt_LoadJobFile";
             this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
             this.bt_LoadJobFile.TabIndex = 30;
@@ -810,7 +788,7 @@
             // 
             // cr_state
             // 
-            this.cr_state.Location = new System.Drawing.Point(195, 299);
+            this.cr_state.Location = new System.Drawing.Point(146, 170);
             this.cr_state.Name = "cr_state";
             this.cr_state.Size = new System.Drawing.Size(85, 20);
             this.cr_state.TabIndex = 36;
@@ -819,7 +797,7 @@
             // cb_run
             // 
             this.cb_run.AutoSize = true;
-            this.cb_run.Location = new System.Drawing.Point(22, 299);
+            this.cb_run.Location = new System.Drawing.Point(15, 89);
             this.cb_run.Name = "cb_run";
             this.cb_run.Size = new System.Drawing.Size(46, 17);
             this.cb_run.TabIndex = 38;
@@ -830,7 +808,7 @@
             // cb_stop
             // 
             this.cb_stop.AutoSize = true;
-            this.cb_stop.Location = new System.Drawing.Point(22, 322);
+            this.cb_stop.Location = new System.Drawing.Point(14, 112);
             this.cb_stop.Name = "cb_stop";
             this.cb_stop.Size = new System.Drawing.Size(48, 17);
             this.cb_stop.TabIndex = 39;
@@ -840,7 +818,7 @@
             // 
             // bt_sendSignals
             // 
-            this.bt_sendSignals.Location = new System.Drawing.Point(19, 346);
+            this.bt_sendSignals.Location = new System.Drawing.Point(6, 161);
             this.bt_sendSignals.Name = "bt_sendSignals";
             this.bt_sendSignals.Size = new System.Drawing.Size(75, 23);
             this.bt_sendSignals.TabIndex = 40;
@@ -851,7 +829,7 @@
             // cb_reset
             // 
             this.cb_reset.AutoSize = true;
-            this.cb_reset.Location = new System.Drawing.Point(22, 276);
+            this.cb_reset.Location = new System.Drawing.Point(15, 66);
             this.cb_reset.Name = "cb_reset";
             this.cb_reset.Size = new System.Drawing.Size(54, 17);
             this.cb_reset.TabIndex = 41;
@@ -862,7 +840,7 @@
             // cb_layerFinished
             // 
             this.cb_layerFinished.AutoSize = true;
-            this.cb_layerFinished.Location = new System.Drawing.Point(306, 230);
+            this.cb_layerFinished.Location = new System.Drawing.Point(150, 49);
             this.cb_layerFinished.Name = "cb_layerFinished";
             this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
             this.cb_layerFinished.TabIndex = 42;
@@ -872,7 +850,7 @@
             // cb_isBufferFull
             // 
             this.cb_isBufferFull.AutoSize = true;
-            this.cb_isBufferFull.Location = new System.Drawing.Point(306, 207);
+            this.cb_isBufferFull.Location = new System.Drawing.Point(150, 26);
             this.cb_isBufferFull.Name = "cb_isBufferFull";
             this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
             this.cb_isBufferFull.TabIndex = 43;
@@ -898,7 +876,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(195, 224);
+            this.button1.Location = new System.Drawing.Point(360, 167);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(95, 23);
             this.button1.TabIndex = 44;
@@ -906,11 +884,34 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.cr_validFileName);
+            this.groupBox4.Controls.Add(this.cb_isBufferFull);
+            this.groupBox4.Controls.Add(this.bt_LoadJobFile);
+            this.groupBox4.Controls.Add(this.cb_layerFinished);
+            this.groupBox4.Controls.Add(this.cr_isInstance);
+            this.groupBox4.Controls.Add(this.cb_reset);
+            this.groupBox4.Controls.Add(this.cr_startPos);
+            this.groupBox4.Controls.Add(this.bt_sendSignals);
+            this.groupBox4.Controls.Add(this.cr_endPos);
+            this.groupBox4.Controls.Add(this.cb_stop);
+            this.groupBox4.Controls.Add(this.cb_run);
+            this.groupBox4.Controls.Add(this.cr_state);
+            this.groupBox4.Location = new System.Drawing.Point(12, 549);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(471, 206);
+            this.groupBox4.TabIndex = 16;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Interface";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 767);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.listBox1);
@@ -924,6 +925,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -992,7 +995,6 @@
         private System.Windows.Forms.Button bt_LoadJobFile;
         private System.Windows.Forms.CheckBox cr_isInstance;
         private System.Windows.Forms.CheckBox cr_validFileName;
-        private System.Windows.Forms.Button cr_gap;
         private System.Windows.Forms.TextBox cr_endPos;
         private System.Windows.Forms.TextBox cr_startPos;
         private System.Windows.Forms.TextBox cr_state;
@@ -1005,6 +1007,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tb_multiplier;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
 
