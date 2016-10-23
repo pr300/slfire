@@ -225,35 +225,35 @@ namespace ClassLibrary1
                 switch (fileLoader.m_listJob[iterator].cmd)
                 { 
                     case Command.StarLayer:
-                        printDebug(iterator.ToString() + ";  " + "---Start command detected");
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                     case  Command.EndLayer:
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         isEnd = true;
-                        printDebug(iterator.ToString() + ";  " + "---end command detected");
                         break;
                     case Command.Jamp:
                         Jump_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
-
-                        printDebug(iterator.ToString() + ";  " + "Jamp_abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                     case Command.Mark:
                         Mark_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
-                        printDebug(iterator.ToString() + ";  " + "Mark_abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                     case Command.PolA_Abs:
                         PolA_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
-                        printDebug(iterator.ToString() + ";  " + "PosA_Abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                     case Command.PolB_Abs:
                         PolB_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
-                        printDebug(iterator.ToString() + ";  " + "PosB_Bbs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                     case Command.PolC_Abs:
                         PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
-                        printDebug(iterator.ToString() + ";  " + "PosC_Abs " + fileLoader.m_listJob[iterator].x.ToString() + ", " + fileLoader.m_listJob[iterator].y.ToString());
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
                 
                 }
+
                 fileLoader.incrementStart();
 
             }
@@ -273,10 +273,14 @@ namespace ClassLibrary1
             if (isEnd) m_state = IntState.Wait;
         }
 
-
-        private static  void printDebug(string deb)
+        private static void printDebug(string str)
         {
-            file.WriteLine(deb + "  =  " + getLastError());
+            file.WriteLine(str);
+            file.Flush();
+        }
+        private static  void printDebug(long iterator, Command cmd, Int16 x, Int16 y)
+        {
+            file.WriteLine(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", iterator.ToString(), cmd.ToString(), x.ToString(), y.ToString(), getLastError()));
             file.Flush();
         }
 

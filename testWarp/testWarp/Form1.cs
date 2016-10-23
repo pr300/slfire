@@ -13,25 +13,25 @@ namespace testWarp
     {
         StreamWriter file;
         bool crThread = true;
-  //      Controller Class1;
+        //      Controller Class1;
         Thread myThread;
         private static System.Timers.Timer aTimer;
 
         public Form1()
         {
-            
+
 
             InitializeComponent();
             solveMode();
             this.Closing += Form1_Closing;
-            file = new StreamWriter("write.txt",true);
+            file = new StreamWriter("write.txt", true);
             Class1.initialize();
             crThread = true;
-           myThread = new Thread(OnTimedEvent);
+            myThread = new Thread(OnTimedEvent);
             myThread.IsBackground = true;
-           myThread.Start();
-            addLog("_______START PROGRAMM______ " ,true, false);
-   
+            myThread.Start();
+            addLog("_______START PROGRAMM______ ", true, false);
+
             //aTimer = new System.Timers.Timer(200);
             //aTimer.Elapsed += OnTimedEvent;
             //aTimer.AutoReset = true;
@@ -48,8 +48,8 @@ namespace testWarp
             file.Close();
             Class1.deinitialize();
             Class1.Remove_Scan_Card_Ex(ndev);
-          
-            
+
+
         }
 
         private void b_init_Click(object sender, EventArgs e)
@@ -84,16 +84,16 @@ namespace testWarp
             UInt16 mode = 0;
 
             if (cb_mode_b0.Checked) mode += 1;
-            if(cb_mode_b2.Checked) mode += 4;
-            mode += (UInt16)(cb_mode_b3.Checked ? Math.Pow(2,3) : 0);
-            mode += (UInt16)(cb_mode_b7.Checked ? Math.Pow(2,7) : 0);
+            if (cb_mode_b2.Checked) mode += 4;
+            mode += (UInt16)(cb_mode_b3.Checked ? Math.Pow(2, 3) : 0);
+            mode += (UInt16)(cb_mode_b7.Checked ? Math.Pow(2, 7) : 0);
             mode += (UInt16)(cb_mode_b8.Checked ? Math.Pow(2, 8) : 0);
             mode += (UInt16)(cb_mode_b10.Checked ? Math.Pow(2, 10) : 0);
-            mode += (UInt16)(cb_mode_b11.Checked ? Math.Pow(2,11) : 0);
-            mode += (UInt16)(cb_mode_b13.Checked ? Math.Pow(2,13) : 0);
+            mode += (UInt16)(cb_mode_b11.Checked ? Math.Pow(2, 11) : 0);
+            mode += (UInt16)(cb_mode_b13.Checked ? Math.Pow(2, 13) : 0);
 
             mode += (UInt16)(cb_mode_co.Checked ? 0 : 0);
-            mode += (UInt16)(cb_mode_yag2.Checked? 32 : 0);
+            mode += (UInt16)(cb_mode_yag2.Checked ? 32 : 0);
             mode += (UInt16)(cb_mode_yag1.Checked ? 16 : 0);
             mode += (UInt16)(cb_mode_dlaser.Checked ? 48 : 0);
             tb_initMode.Text = mode.ToString("X5");
@@ -176,7 +176,7 @@ namespace testWarp
             button2_Click(s, e); //jamp
             for (int i = 0; i < 100; i++)
             {
-               bt_pol_abc_Click(s, e); 
+                bt_pol_abc_Click(s, e);
             }
             bt_pol_abc_Click(s, e);
             bt_end_list1_Click(s, e);
@@ -184,7 +184,7 @@ namespace testWarp
             bt_exeList1_Click(s, e);
             //bt_laserOff_Click(s, e);
             addLog("Fill list 1 -> ", true, false);
-             }
+        }
 
         private void label4_Click(object sender, EventArgs e)
         {
@@ -201,7 +201,7 @@ namespace testWarp
         {
             UInt16 st = Class1.Read_Status();
             string logStr = " val = 0x" + st.ToString("X5");
- 
+
 
             if ((st & (0x1 << 0)) != 0) listBox1.Items.Insert(0, "____Load 1");
             if ((st & (0x1 << 1)) != 0) listBox1.Items.Insert(0, "____Load 2");
@@ -218,27 +218,28 @@ namespace testWarp
             if ((st & (0x1 << 15)) != 0) listBox1.Items.Insert(0, "____Stop MArking");
 
             addLog("Read_Status -> " + logStr, true);
-            
 
-            
+
+
 
         }
 
         private void addLog(string str, bool final = false, bool lastErr = true)
         {
-            string s1="";
+            string s1 = "";
             string s2 = "";
 
 
-            if(lastErr){
-             s1 = str + " > " + Class1.getLastError() + "\n";
+            if (lastErr)
+            {
+                s1 = str + " > " + Class1.getLastError() + "\n";
                 file.WriteLine(s1);
                 listBox1.Items.Insert(0, s1);
             }
-            
-            if(final)
+
+            if (final)
             {
-                s2 =str +  "======================================\n" ;
+                s2 = str + "======================================\n";
                 file.WriteLine(s2);
                 listBox1.Items.Insert(0, s2);
 
@@ -315,7 +316,7 @@ namespace testWarp
 
 
             Class1.Jump_Abs(X0, Y0);
-           // addLog("Jump_Abs, X0 = " + X0.ToString() + ", Y0 = " + Y0.ToString());
+            // addLog("Jump_Abs, X0 = " + X0.ToString() + ", Y0 = " + Y0.ToString());
 
 
             Int16 X = X0;
@@ -326,7 +327,7 @@ namespace testWarp
             X = (Int16)(X0 + D);
             Y = (Int16)(Y0 + D);
             Class1.PolB_Abs((Int16)(X), (Int16)(Y));
-           // addLog("PolB_Abs, X = " + X.ToString() + ", Y = " + Y.ToString());
+            // addLog("PolB_Abs, X = " + X.ToString() + ", Y = " + Y.ToString());
 
             X = (Int16)(X0 + D);
             Y = (Int16)(Y0);
@@ -336,7 +337,7 @@ namespace testWarp
             X = (Int16)(X0);
             Y = (Int16)(Y0);
             Class1.PolC_Abs((Int16)(X), (Int16)(Y));
-           // addLog("PolC_Abs, X = " + X.ToString() + ", Y = " + Y.ToString());
+            // addLog("PolC_Abs, X = " + X.ToString() + ", Y = " + Y.ToString());
         }
 
         private void bt_osclOn_Click(object sender, EventArgs e)
@@ -388,7 +389,7 @@ namespace testWarp
         {
             UInt16 port = Convert.ToUInt16(tb_write_port.Text, 16);
             UInt16 val = Convert.ToUInt16(tb_write_val.Text, 10);
-            Class1.Write_Port_List(port,val);
+            Class1.Write_Port_List(port, val);
             addLog("Write_Port_List, port = " + port.ToString("X5") + ", val = " + val.ToString());
         }
 
@@ -413,39 +414,40 @@ namespace testWarp
             Class1.loadJobFile("sdsd");
         }
 
-        private  void OnTimedEvent()
-        { 
+        private void OnTimedEvent()
+        {
 
-           //:w
+            //:w
             //Class1.fL;
-           // Class1.
+            // Class1.
             //fileLoader.endPosition;
             while (crThread)
             {
 
                 long start = Interlocked.Read(ref fileLoader.startPosition);
                 long end = Interlocked.Read(ref fileLoader.endPosition);
+                if (IsHandleCreated)
+                {
+                    Invoke(new Action(() =>
+                      {
+                          cr_startPos.Text = start.ToString();
+                          cr_endPos.Text = end.ToString();
+                          cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
+                          cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
+                          cb_layerFinished.Checked = Class1.m_layersFinishid;
+                          cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
 
-                Invoke(new Action(() =>
-                  {
-                      cr_startPos.Text = start.ToString();
-                      cr_endPos.Text = end.ToString();
-                      cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
-                      cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
-                      cb_layerFinished.Checked = Class1.m_layersFinishid;
-                      cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
-                      
-                      //aTimer.AutoReset = true;
-                      //aTimer.Enabled = true;
-                      //aTimer.Start();
-                     cr_state.Text = Class1.m_state.ToString();
-                      
+                          //aTimer.AutoReset = true;
+                          //aTimer.Enabled = true;
+                          //aTimer.Start();
+                          cr_state.Text = Class1.m_state.ToString();
 
-                  }));
 
+                      }));
+                }
                 Thread.Sleep(10);
             }
-          
+
         }
 
         private void bt_sendSignals_Click(object sender, EventArgs e)
@@ -489,7 +491,7 @@ namespace testWarp
         {
             crThread = false;
         }
-        
+
 
     }
 }
