@@ -13,8 +13,21 @@ namespace ClassLibrary1
 {
     public enum IntState { Wait, Stop, Work};
     public enum IntSignals {Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
-    
-   
+
+    public struct cardSetting
+    {
+        public UInt16 mode;
+        public UInt16 power;
+        public string corrFilePatch;
+        public double scale;
+        public UInt16 t1;
+        public UInt16 t2;
+        public UInt16 t3;
+        public Int16 num;
+        public bool doInit;
+
+    };
+
    
     public class Class1
     {
@@ -31,6 +44,7 @@ namespace ClassLibrary1
         static private bool m_isInstance = false;
         static private bool m_procesThreadAllowed = false;
         static Thread myThread;
+        static private cardSetting m_cardSetting;
             // public static fileLoader fL = new fileLoader();
 
         [DllImport("SP-ICE.dll")]
@@ -107,6 +121,32 @@ namespace ClassLibrary1
         public static extern bool Long_Delay(UInt16 usDelay);
         [DllImport("SP-ICE.dll")]
         public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
+
+        private void OnCallBack(object sender, EventArgs args)
+        {
+            // put your process here
+        }
+        private static void initFromForm(cardSetting cs)
+        {
+            m_cardSetting = cs;
+            fileLoader.gateMmToField = cs.scale;
+
+            Init_Scan_Card_Ex((UInt16)cs.num);
+            Load_Corr_N(cs.corrFilePatch, cs.num);
+            Set_Active_Card((UInt16)cs.num);
+            Set_Mode(cs.mode);
+            Write_Port_List(0xC, 0x010);
+
+
+        }
+        public static void initForm()
+        {
+            Form1 form = new Form1();
+            form.initCmd +=initFromForm;
+            //Form1.CallBack += this.OnCallBack;
+
+        form.Show();
+        }
 
         public static void threadProcessSignals() 
         {
@@ -286,6 +326,7 @@ namespace ClassLibrary1
 
         public  static void initialize()
         {
+            initForm();
             if (!m_isInstance)
             {
                 m_isInstance = true;
