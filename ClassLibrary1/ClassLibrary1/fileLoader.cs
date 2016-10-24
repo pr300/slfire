@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80 };
+    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80 , EndF =0x100};
     public struct JobCommand
     {
         public Command cmd;
@@ -44,8 +44,8 @@ namespace ClassLibrary1
 
 
         static Thread myThread;
-        static Regex regexOperand = new Regex(@"-?\d+(\.\d+)?");
-
+        //static Regex regexOperand = new Regex(@"-?\d+(\.\d+)?");
+        static Regex regexOperand = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
 
 
         public static void stopfillJobList()
@@ -139,7 +139,8 @@ namespace ClassLibrary1
                                         for (int i = 0; i < 4; i++)
                                         {
                                             string str1 = matches[i].Value;
-                                            actualArgs[i] = (Int16)(double.Parse(matches[i].Value, CultureInfo.InvariantCulture) * gateMmToField);
+                                            float f1 = float.Parse(matches[i].Value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture) * (float)(gateMmToField);
+                                            actualArgs[i] = (Int16)(f1);
                                         }
                                         Int16 x0 = actualArgs[0];
                                         Int16 y0 = actualArgs[1];
@@ -172,14 +173,50 @@ namespace ClassLibrary1
                                     addCommandAtEnd(Command.StarLayer, 0, 0, 0, 0);
                                     break;
                                 case "F_Out":
-                                    correctLastPol(Int16.MaxValue, Int16.MaxValue);
+                                    correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
                                     addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
                                     break;
+                                case "Image.Polyline3D":
+                                    MatchCollection pol3D = regexOperand.Matches(str.Substring(16));
+
+                                    correctLastPol(0, 0, true);
+                                    int endPol = (int)(pol3D.Count / 3);
+
+                                    for (int i = 0; i < endPol; i++)
+                                    {
+                                        int itX = i * 3;
+                                        int itY = i * 3 + 1;
+                                        Int16 x = (Int16)(float.Parse(pol3D[itX].Value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture) * (float)(gateMmToField));
+                                        Int16 y = (Int16)(float.Parse(pol3D[itY].Value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture) * (float)(gateMmToField));
+                                        
+                                        if (i == 0) 
+                                        {
+                                            addCommandAtEnd(Command.Jamp, x, y, 0, 0, string.Format("Image.Polyline3D #{0, 5}  ( {1, 5}, {2, 5} )", i, pol3D[itX].Value, pol3D[itY].Value));
+                                        }
+                                        else if (i == 1)
+                                        {
+                                            addCommandAtEnd(Command.PolA_Abs, x, y, 0, 0, string.Format("Image.Polyline3D #{0, 5}  ( {1, 5}, {2, 5} )", i, pol3D[itX].Value, pol3D[itY].Value));
+                                        }
+                                        else if (i == endPol - 1)
+                                        {
+                                            addCommandAtEnd(Command.PolC_Abs, x, y, 0, 0, string.Format("Image.Polyline3D #{0, 5}  ( {1, 5}, {2, 5} )", i, pol3D[itX].Value, pol3D[itY].Value));
+                                        }
+                                        else
+                                        {
+                                            addCommandAtEnd(Command.PolB_Abs, x, y, 0, 0, string.Format("Image.Polyline3D #{0, 5}  ( {1, 5}, {2, 5} )", i, pol3D[itX].Value, pol3D[itY].Value));
+                                        }
+                                    }
+
+                                        break;
+
 
                             }
                         }
                         else
                         {
+                            correctLastPol(0, 0, true);
+                            addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
+                            addCommandAtEnd(Command.EndF, 0, 0, 0, 0);
                             Interlocked.Exchange(ref isValidFile, 0);
                         }
                     }
@@ -204,7 +241,7 @@ namespace ClassLibrary1
 
         public static bool isAviableNExt()
         {
-            return (endPosition - startPosition) > 0;
+            return (endPosition - startPosition) > 1;
         }
 
         public static long getStartPos()
@@ -221,7 +258,7 @@ namespace ClassLibrary1
         private static bool isNextFree()
         {
 
-            return (endPosition - startPosition) < BUFFER_SIZE - 1;
+            return (endPosition - startPosition) < BUFFER_SIZE - 1000;
         }
 
         private static long freeSpase()
