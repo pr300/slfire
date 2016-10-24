@@ -71,7 +71,8 @@ namespace testWarp
 
             Class1.m_laserPower = UInt16.Parse(tb_laser_power.Text);
             fileLoader.gateMmToField = Double.Parse(tb_multiplier.Text);
-
+            bt_osclOn_Click(sender, e);
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -286,7 +287,7 @@ namespace testWarp
             Class1.Set_Delays(60, 100,
                                100, 100,
                                100, 100,
-                               1000, 500, 0);
+                               1000, 800, 0);
             addLog("Set_Delays");
         }
 

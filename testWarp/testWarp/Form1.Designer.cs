@@ -40,6 +40,8 @@
             this.cb_mode_yag1 = new System.Windows.Forms.RadioButton();
             this.cb_mode_dlaser = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tb_multiplier = new System.Windows.Forms.TextBox();
             this.bt_setActive = new System.Windows.Forms.Button();
             this.bt_InitCard = new System.Windows.Forms.Button();
             this.btSetMode = new System.Windows.Forms.Button();
@@ -78,11 +80,6 @@
             this.bt_laserOn = new System.Windows.Forms.Button();
             this.bt_getState = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cr_endPos = new System.Windows.Forms.TextBox();
-            this.cr_startPos = new System.Windows.Forms.TextBox();
-            this.cr_isInstance = new System.Windows.Forms.CheckBox();
-            this.cr_validFileName = new System.Windows.Forms.CheckBox();
-            this.bt_LoadJobFile = new System.Windows.Forms.Button();
             this.tb_del_t4 = new System.Windows.Forms.TextBox();
             this.tb_del_t3 = new System.Windows.Forms.TextBox();
             this.bt_set_delt_3t4 = new System.Windows.Forms.Button();
@@ -92,6 +89,11 @@
             this.tb_write_val = new System.Windows.Forms.TextBox();
             this.tb_write_port = new System.Windows.Forms.TextBox();
             this.bwrite_port_list = new System.Windows.Forms.Button();
+            this.cr_endPos = new System.Windows.Forms.TextBox();
+            this.cr_startPos = new System.Windows.Forms.TextBox();
+            this.cr_isInstance = new System.Windows.Forms.CheckBox();
+            this.cr_validFileName = new System.Windows.Forms.CheckBox();
+            this.bt_LoadJobFile = new System.Windows.Forms.Button();
             this.cr_state = new System.Windows.Forms.TextBox();
             this.cb_run = new System.Windows.Forms.CheckBox();
             this.cb_stop = new System.Windows.Forms.CheckBox();
@@ -99,8 +101,6 @@
             this.cb_reset = new System.Windows.Forms.CheckBox();
             this.cb_layerFinished = new System.Windows.Forms.CheckBox();
             this.cb_isBufferFull = new System.Windows.Forms.CheckBox();
-            this.tb_multiplier = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
@@ -265,6 +265,23 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Initialisation";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(131, 248);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 13);
+            this.label7.TabIndex = 45;
+            this.label7.Text = "multiplier";
+            // 
+            // tb_multiplier
+            // 
+            this.tb_multiplier.Location = new System.Drawing.Point(177, 244);
+            this.tb_multiplier.Name = "tb_multiplier";
+            this.tb_multiplier.Size = new System.Drawing.Size(48, 20);
+            this.tb_multiplier.TabIndex = 44;
+            this.tb_multiplier.Text = "100,00";
             // 
             // bt_setActive
             // 
@@ -507,7 +524,7 @@
             this.tb_laser_power.Name = "tb_laser_power";
             this.tb_laser_power.Size = new System.Drawing.Size(34, 20);
             this.tb_laser_power.TabIndex = 12;
-            this.tb_laser_power.Text = "50";
+            this.tb_laser_power.Text = "150";
             // 
             // bt_set_laser_power
             // 
@@ -662,52 +679,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "groupBox3";
             // 
-            // cr_endPos
-            // 
-            this.cr_endPos.Location = new System.Drawing.Point(150, 144);
-            this.cr_endPos.Name = "cr_endPos";
-            this.cr_endPos.Size = new System.Drawing.Size(48, 20);
-            this.cr_endPos.TabIndex = 34;
-            this.cr_endPos.Text = "0";
-            // 
-            // cr_startPos
-            // 
-            this.cr_startPos.Location = new System.Drawing.Point(150, 118);
-            this.cr_startPos.Name = "cr_startPos";
-            this.cr_startPos.Size = new System.Drawing.Size(48, 20);
-            this.cr_startPos.TabIndex = 33;
-            this.cr_startPos.Text = "0";
-            // 
-            // cr_isInstance
-            // 
-            this.cr_isInstance.AutoSize = true;
-            this.cr_isInstance.Location = new System.Drawing.Point(150, 72);
-            this.cr_isInstance.Name = "cr_isInstance";
-            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
-            this.cr_isInstance.TabIndex = 32;
-            this.cr_isInstance.Text = "isInstance";
-            this.cr_isInstance.UseVisualStyleBackColor = true;
-            // 
-            // cr_validFileName
-            // 
-            this.cr_validFileName.AutoSize = true;
-            this.cr_validFileName.Location = new System.Drawing.Point(150, 95);
-            this.cr_validFileName.Name = "cr_validFileName";
-            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
-            this.cr_validFileName.TabIndex = 31;
-            this.cr_validFileName.Text = "validFileName";
-            this.cr_validFileName.UseVisualStyleBackColor = true;
-            // 
-            // bt_LoadJobFile
-            // 
-            this.bt_LoadJobFile.Location = new System.Drawing.Point(14, 19);
-            this.bt_LoadJobFile.Name = "bt_LoadJobFile";
-            this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
-            this.bt_LoadJobFile.TabIndex = 30;
-            this.bt_LoadJobFile.Text = "LoadJobFile";
-            this.bt_LoadJobFile.UseVisualStyleBackColor = true;
-            this.bt_LoadJobFile.Click += new System.EventHandler(this.bt_LoadJobFile_Click);
-            // 
             // tb_del_t4
             // 
             this.tb_del_t4.Location = new System.Drawing.Point(195, 152);
@@ -786,6 +757,52 @@
             this.bwrite_port_list.UseVisualStyleBackColor = true;
             this.bwrite_port_list.Click += new System.EventHandler(this.bwrite_port_list_Click);
             // 
+            // cr_endPos
+            // 
+            this.cr_endPos.Location = new System.Drawing.Point(150, 144);
+            this.cr_endPos.Name = "cr_endPos";
+            this.cr_endPos.Size = new System.Drawing.Size(48, 20);
+            this.cr_endPos.TabIndex = 34;
+            this.cr_endPos.Text = "0";
+            // 
+            // cr_startPos
+            // 
+            this.cr_startPos.Location = new System.Drawing.Point(150, 118);
+            this.cr_startPos.Name = "cr_startPos";
+            this.cr_startPos.Size = new System.Drawing.Size(48, 20);
+            this.cr_startPos.TabIndex = 33;
+            this.cr_startPos.Text = "0";
+            // 
+            // cr_isInstance
+            // 
+            this.cr_isInstance.AutoSize = true;
+            this.cr_isInstance.Location = new System.Drawing.Point(150, 72);
+            this.cr_isInstance.Name = "cr_isInstance";
+            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
+            this.cr_isInstance.TabIndex = 32;
+            this.cr_isInstance.Text = "isInstance";
+            this.cr_isInstance.UseVisualStyleBackColor = true;
+            // 
+            // cr_validFileName
+            // 
+            this.cr_validFileName.AutoSize = true;
+            this.cr_validFileName.Location = new System.Drawing.Point(150, 95);
+            this.cr_validFileName.Name = "cr_validFileName";
+            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
+            this.cr_validFileName.TabIndex = 31;
+            this.cr_validFileName.Text = "validFileName";
+            this.cr_validFileName.UseVisualStyleBackColor = true;
+            // 
+            // bt_LoadJobFile
+            // 
+            this.bt_LoadJobFile.Location = new System.Drawing.Point(14, 19);
+            this.bt_LoadJobFile.Name = "bt_LoadJobFile";
+            this.bt_LoadJobFile.Size = new System.Drawing.Size(112, 23);
+            this.bt_LoadJobFile.TabIndex = 30;
+            this.bt_LoadJobFile.Text = "LoadJobFile";
+            this.bt_LoadJobFile.UseVisualStyleBackColor = true;
+            this.bt_LoadJobFile.Click += new System.EventHandler(this.bt_LoadJobFile_Click);
+            // 
             // cr_state
             // 
             this.cr_state.Location = new System.Drawing.Point(146, 170);
@@ -856,23 +873,6 @@
             this.cb_isBufferFull.TabIndex = 43;
             this.cb_isBufferFull.Text = "isBufferFull";
             this.cb_isBufferFull.UseVisualStyleBackColor = true;
-            // 
-            // tb_multiplier
-            // 
-            this.tb_multiplier.Location = new System.Drawing.Point(177, 244);
-            this.tb_multiplier.Name = "tb_multiplier";
-            this.tb_multiplier.Size = new System.Drawing.Size(48, 20);
-            this.tb_multiplier.TabIndex = 44;
-            this.tb_multiplier.Text = "100,00";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(131, 248);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 13);
-            this.label7.TabIndex = 45;
-            this.label7.Text = "multiplier";
             // 
             // button1
             // 
