@@ -29,6 +29,24 @@ namespace ClassLibrary1
 
     };
 
+    public struct cardStatus
+    {
+        public bool l1load;
+        public bool l2load;
+        public bool l1redy;
+        public bool l2redy;
+        public bool l1busy;
+        public bool l2busy;
+        public bool busy;
+        public bool laserOn;
+        public bool scanComlete;
+        public bool b9;
+        public bool b10;
+
+
+
+    }
+
 
     public static class Class1
     {
@@ -42,8 +60,10 @@ namespace ClassLibrary1
         }
 
         public static IntSignals m_inputSignals = IntSignals.Empty;
+        public static cardStatus m_cardStatus;
+
         static StreamWriter file;
-        const long LIST_SISE = 100000;
+        const long LIST_SISE = 140000;
         public static bool test;
         static public IntState m_state = IntState.Wait;
         static public UInt32 m_layerNumber = 0;
@@ -183,6 +203,18 @@ namespace ClassLibrary1
 
         public static void processSignals()
         {
+            UInt16 status = Read_Status();
+            m_cardStatus.l1load = (status & 0x01) != 0;
+            m_cardStatus.l2load = (status & 0x02) != 0;
+            m_cardStatus.l1redy = (status & 0x04) != 0;
+            m_cardStatus.l2redy = (status & 0x08) != 0;
+            m_cardStatus.l1busy = (status & 0x010) != 0;
+            m_cardStatus.l2busy = (status & 0x020) != 0;
+            m_cardStatus.busy = (status & 0x040) != 0;
+            m_cardStatus.laserOn= (status & 0x080) != 0;
+            m_cardStatus.scanComlete = (status & 0x0100) != 0;
+
+
             IntSignals s = m_inputSignals;
             switch (m_state)
             {
@@ -216,7 +248,7 @@ namespace ClassLibrary1
 
         private static void WorkState()
         {
-            if (fileLoader.m_isBufferFull)
+            if (fileLoader.m_isBufferFull && !m_cardStatus.l1busy)
                 fillList();
         }
 
@@ -262,6 +294,9 @@ namespace ClassLibrary1
                 iterator = fileLoader.getStartPos();
                 switch (fileLoader.m_listJob[iterator].cmd)
                 {
+                    case Command.EndF:
+                        printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                        break;
                     case Command.StarLayer:
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;

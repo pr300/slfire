@@ -30,7 +30,7 @@ namespace ClassLibrary1
         public static long runPermission = 0;
         public static bool m_isBufferFull = false;
 
-        const long BUFFER_SIZE = 100000;
+        const long BUFFER_SIZE = 150000;
         static public double gateMmToField = 100;
         static public JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
         private static StreamReader f;

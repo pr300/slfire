@@ -27,7 +27,10 @@ namespace ClassLibrary1
         {
             solveMode();
 
-
+            Timer timer = new Timer();
+            timer.Interval = ( 300);
+            timer.Tick += new EventHandler(updateSignals);
+            timer.Start();
         }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
@@ -141,10 +144,46 @@ namespace ClassLibrary1
             initCmd(cs);
         }
 
+        private void updateSignals(object sender, EventArgs e)
+        {
+            tb_bufferCount.Text = fileLoader.endPosition.ToString();
+            tb_startPosition.Text = fileLoader.startPosition.ToString();
+            tb_state.Text = Class1.m_state.ToString();
+
+            cr_isInstance.Checked = fileLoader.isInstance == 1;
+            cr_validFileName.Checked = fileLoader.isValidFile == 1;
+            cb_layerFinished.Checked = Class1.m_layersFinishid;
+            cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
+
+            cb_l1load.Checked = Class1.m_cardStatus.l1load;
+            cb_l1redy.Checked = Class1.m_cardStatus.l1redy;
+            cb_l1busy.Checked = Class1.m_cardStatus.l1busy;
+
+            cb_busy.Checked = Class1.m_cardStatus.busy;
+            cb_LaserOn.Checked = Class1.m_cardStatus.laserOn;
+            cb_scanComplete.Checked = Class1.m_cardStatus.scanComlete;
+        }
+
         private void bt_LoadCorrFile_Click(object sender, EventArgs e)
         {
-           tb_bufferCount.Text =  fileLoader.endPosition.ToString();
-           tb_startPosition.Text = fileLoader.startPosition.ToString();
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            //openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "gcd (*.gcd)|*.gcd|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+
+                //  if (( openFileDialog1.FileName) != null)
+                {
+                    tb_corrFile.Text = openFileDialog1.FileName;
+                    //fileLoader.openJobfile(openFileDialog1.FileName);
+                    // m_layersFinishid = false;
+                }
+
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -62,11 +62,39 @@
             this.tb_script = new System.Windows.Forms.TextBox();
             this.tb_bufferCount = new System.Windows.Forms.TextBox();
             this.tb_startPosition = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cr_validFileName = new System.Windows.Forms.CheckBox();
+            this.cb_isBufferFull = new System.Windows.Forms.CheckBox();
+            this.cb_layerFinished = new System.Windows.Forms.CheckBox();
+            this.cr_isInstance = new System.Windows.Forms.CheckBox();
+            this.tb_state = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cb_l1load = new System.Windows.Forms.CheckBox();
+            this.cb_l1redy = new System.Windows.Forms.CheckBox();
+            this.cb_l1busy = new System.Windows.Forms.CheckBox();
+            this.cb_scanComplete = new System.Windows.Forms.CheckBox();
+            this.cb_LaserOn = new System.Windows.Forms.CheckBox();
+            this.cb_busy = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_scanComplete);
+            this.groupBox1.Controls.Add(this.cb_LaserOn);
+            this.groupBox1.Controls.Add(this.cb_busy);
+            this.groupBox1.Controls.Add(this.cb_l1busy);
+            this.groupBox1.Controls.Add(this.cb_l1redy);
+            this.groupBox1.Controls.Add(this.cb_l1load);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.cr_validFileName);
+            this.groupBox1.Controls.Add(this.cb_isBufferFull);
+            this.groupBox1.Controls.Add(this.cb_layerFinished);
+            this.groupBox1.Controls.Add(this.cr_isInstance);
+            this.groupBox1.Controls.Add(this.tb_state);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.tb_startPosition);
             this.groupBox1.Controls.Add(this.tb_bufferCount);
             this.groupBox1.Controls.Add(this.tb_script);
@@ -103,7 +131,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(642, 282);
+            this.groupBox1.Size = new System.Drawing.Size(642, 449);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
@@ -413,25 +441,158 @@
             // 
             // tb_bufferCount
             // 
-            this.tb_bufferCount.Location = new System.Drawing.Point(530, 231);
+            this.tb_bufferCount.Location = new System.Drawing.Point(85, 382);
             this.tb_bufferCount.Name = "tb_bufferCount";
             this.tb_bufferCount.Size = new System.Drawing.Size(100, 20);
             this.tb_bufferCount.TabIndex = 42;
-            this.tb_bufferCount.Text = "C200_15.gcd";
             // 
             // tb_startPosition
             // 
-            this.tb_startPosition.Location = new System.Drawing.Point(530, 257);
+            this.tb_startPosition.Location = new System.Drawing.Point(85, 408);
             this.tb_startPosition.Name = "tb_startPosition";
             this.tb_startPosition.Size = new System.Drawing.Size(100, 20);
             this.tb_startPosition.TabIndex = 43;
-            this.tb_startPosition.Text = "C200_15.gcd";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 385);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(68, 13);
+            this.label4.TabIndex = 44;
+            this.label4.Text = "Start position";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 411);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 45;
+            this.label5.Text = "End position";
+            // 
+            // cr_validFileName
+            // 
+            this.cr_validFileName.AutoSize = true;
+            this.cr_validFileName.Location = new System.Drawing.Point(210, 419);
+            this.cr_validFileName.Name = "cr_validFileName";
+            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
+            this.cr_validFileName.TabIndex = 46;
+            this.cr_validFileName.Text = "validFileName";
+            this.cr_validFileName.UseVisualStyleBackColor = true;
+            // 
+            // cb_isBufferFull
+            // 
+            this.cb_isBufferFull.AutoSize = true;
+            this.cb_isBufferFull.Location = new System.Drawing.Point(210, 350);
+            this.cb_isBufferFull.Name = "cb_isBufferFull";
+            this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
+            this.cb_isBufferFull.TabIndex = 50;
+            this.cb_isBufferFull.Text = "isBufferFull";
+            this.cb_isBufferFull.UseVisualStyleBackColor = true;
+            // 
+            // cb_layerFinished
+            // 
+            this.cb_layerFinished.AutoSize = true;
+            this.cb_layerFinished.Location = new System.Drawing.Point(210, 373);
+            this.cb_layerFinished.Name = "cb_layerFinished";
+            this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
+            this.cb_layerFinished.TabIndex = 49;
+            this.cb_layerFinished.Text = "layerFiniched";
+            this.cb_layerFinished.UseVisualStyleBackColor = true;
+            // 
+            // cr_isInstance
+            // 
+            this.cr_isInstance.AutoSize = true;
+            this.cr_isInstance.Location = new System.Drawing.Point(210, 396);
+            this.cr_isInstance.Name = "cr_isInstance";
+            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
+            this.cr_isInstance.TabIndex = 47;
+            this.cr_isInstance.Text = "isInstance";
+            this.cr_isInstance.UseVisualStyleBackColor = true;
+            // 
+            // tb_state
+            // 
+            this.tb_state.Location = new System.Drawing.Point(85, 356);
+            this.tb_state.Name = "tb_state";
+            this.tb_state.Size = new System.Drawing.Size(100, 20);
+            this.tb_state.TabIndex = 48;
+            this.tb_state.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 360);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 51;
+            this.label10.Text = "Mode";
+            // 
+            // cb_l1load
+            // 
+            this.cb_l1load.AutoSize = true;
+            this.cb_l1load.Location = new System.Drawing.Point(443, 312);
+            this.cb_l1load.Name = "cb_l1load";
+            this.cb_l1load.Size = new System.Drawing.Size(54, 17);
+            this.cb_l1load.TabIndex = 52;
+            this.cb_l1load.Text = "l1load";
+            this.cb_l1load.UseVisualStyleBackColor = true;
+            // 
+            // cb_l1redy
+            // 
+            this.cb_l1redy.AutoSize = true;
+            this.cb_l1redy.Location = new System.Drawing.Point(443, 335);
+            this.cb_l1redy.Name = "cb_l1redy";
+            this.cb_l1redy.Size = new System.Drawing.Size(54, 17);
+            this.cb_l1redy.TabIndex = 53;
+            this.cb_l1redy.Text = "l1redy";
+            this.cb_l1redy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l1busy
+            // 
+            this.cb_l1busy.AutoSize = true;
+            this.cb_l1busy.Location = new System.Drawing.Point(443, 358);
+            this.cb_l1busy.Name = "cb_l1busy";
+            this.cb_l1busy.Size = new System.Drawing.Size(56, 17);
+            this.cb_l1busy.TabIndex = 54;
+            this.cb_l1busy.Text = "l1busy";
+            this.cb_l1busy.UseVisualStyleBackColor = true;
+            // 
+            // cb_scanComplete
+            // 
+            this.cb_scanComplete.AutoSize = true;
+            this.cb_scanComplete.Location = new System.Drawing.Point(443, 430);
+            this.cb_scanComplete.Name = "cb_scanComplete";
+            this.cb_scanComplete.Size = new System.Drawing.Size(97, 17);
+            this.cb_scanComplete.TabIndex = 57;
+            this.cb_scanComplete.Text = "Scan complete";
+            this.cb_scanComplete.UseVisualStyleBackColor = true;
+            // 
+            // cb_LaserOn
+            // 
+            this.cb_LaserOn.AutoSize = true;
+            this.cb_LaserOn.Location = new System.Drawing.Point(443, 407);
+            this.cb_LaserOn.Name = "cb_LaserOn";
+            this.cb_LaserOn.Size = new System.Drawing.Size(66, 17);
+            this.cb_LaserOn.TabIndex = 56;
+            this.cb_LaserOn.Text = "LaserOn";
+            this.cb_LaserOn.UseVisualStyleBackColor = true;
+            // 
+            // cb_busy
+            // 
+            this.cb_busy.AutoSize = true;
+            this.cb_busy.Location = new System.Drawing.Point(443, 384);
+            this.cb_busy.Name = "cb_busy";
+            this.cb_busy.Size = new System.Drawing.Size(48, 17);
+            this.cb_busy.TabIndex = 55;
+            this.cb_busy.Text = "busy";
+            this.cb_busy.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 282);
+            this.ClientSize = new System.Drawing.Size(642, 449);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
@@ -478,6 +639,20 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tb_bufferCount;
         private System.Windows.Forms.TextBox tb_startPosition;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox cr_validFileName;
+        private System.Windows.Forms.CheckBox cb_isBufferFull;
+        private System.Windows.Forms.CheckBox cb_layerFinished;
+        private System.Windows.Forms.CheckBox cr_isInstance;
+        private System.Windows.Forms.TextBox tb_state;
+        private System.Windows.Forms.CheckBox cb_scanComplete;
+        private System.Windows.Forms.CheckBox cb_LaserOn;
+        private System.Windows.Forms.CheckBox cb_busy;
+        private System.Windows.Forms.CheckBox cb_l1busy;
+        private System.Windows.Forms.CheckBox cb_l1redy;
+        private System.Windows.Forms.CheckBox cb_l1load;
 
 
     }
