@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.bt_LoadCorrFile = new System.Windows.Forms.Button();
             this.tb_corrFile = new System.Windows.Forms.TextBox();
             this.tb_initMode = new System.Windows.Forms.TextBox();
@@ -56,13 +58,19 @@
             this.tb_t3 = new System.Windows.Forms.TextBox();
             this.tb_t2 = new System.Windows.Forms.TextBox();
             this.tb_t1 = new System.Windows.Forms.TextBox();
-            this.tb_devn = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tb_script = new System.Windows.Forms.TextBox();
+            this.tb_bufferCount = new System.Windows.Forms.TextBox();
+            this.tb_startPosition = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tb_startPosition);
+            this.groupBox1.Controls.Add(this.tb_bufferCount);
+            this.groupBox1.Controls.Add(this.tb_script);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.tb_devn);
             this.groupBox1.Controls.Add(this.bt_initialise);
             this.groupBox1.Controls.Add(this.label3);
@@ -101,6 +109,14 @@
             this.groupBox1.Text = "Параметры инициализации";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // tb_devn
+            // 
+            this.tb_devn.Location = new System.Drawing.Point(127, 250);
+            this.tb_devn.Name = "tb_devn";
+            this.tb_devn.Size = new System.Drawing.Size(85, 20);
+            this.tb_devn.TabIndex = 15;
+            this.tb_devn.Text = "1";
+            // 
             // bt_initialise
             // 
             this.bt_initialise.Location = new System.Drawing.Point(484, 101);
@@ -111,6 +127,15 @@
             this.bt_initialise.UseVisualStyleBackColor = true;
             this.bt_initialise.Click += new System.EventHandler(this.bt_initialise_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 253);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 13);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "device number";
+            // 
             // bt_LoadCorrFile
             // 
             this.bt_LoadCorrFile.Location = new System.Drawing.Point(253, 16);
@@ -119,6 +144,7 @@
             this.bt_LoadCorrFile.TabIndex = 38;
             this.bt_LoadCorrFile.Text = "CorrFile";
             this.bt_LoadCorrFile.UseVisualStyleBackColor = true;
+            this.bt_LoadCorrFile.Click += new System.EventHandler(this.bt_LoadCorrFile_Click);
             // 
             // tb_corrFile
             // 
@@ -367,22 +393,39 @@
             this.tb_t1.TabIndex = 6;
             this.tb_t1.Text = "1000";
             // 
-            // tb_devn
+            // button1
             // 
-            this.tb_devn.Location = new System.Drawing.Point(127, 250);
-            this.tb_devn.Name = "tb_devn";
-            this.tb_devn.Size = new System.Drawing.Size(85, 20);
-            this.tb_devn.TabIndex = 15;
-            this.tb_devn.Text = "1";
+            this.button1.Location = new System.Drawing.Point(248, 214);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(65, 23);
+            this.button1.TabIndex = 40;
+            this.button1.Text = "Script";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label3
+            // tb_script
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 253);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "device number";
+            this.tb_script.Location = new System.Drawing.Point(320, 217);
+            this.tb_script.Name = "tb_script";
+            this.tb_script.Size = new System.Drawing.Size(100, 20);
+            this.tb_script.TabIndex = 41;
+            this.tb_script.Text = "g.script";
+            // 
+            // tb_bufferCount
+            // 
+            this.tb_bufferCount.Location = new System.Drawing.Point(530, 231);
+            this.tb_bufferCount.Name = "tb_bufferCount";
+            this.tb_bufferCount.Size = new System.Drawing.Size(100, 20);
+            this.tb_bufferCount.TabIndex = 42;
+            this.tb_bufferCount.Text = "C200_15.gcd";
+            // 
+            // tb_startPosition
+            // 
+            this.tb_startPosition.Location = new System.Drawing.Point(530, 257);
+            this.tb_startPosition.Name = "tb_startPosition";
+            this.tb_startPosition.Size = new System.Drawing.Size(100, 20);
+            this.tb_startPosition.TabIndex = 43;
+            this.tb_startPosition.Text = "C200_15.gcd";
             // 
             // Form1
             // 
@@ -431,6 +474,10 @@
         private System.Windows.Forms.Button bt_initialise;
         private System.Windows.Forms.TextBox tb_devn;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tb_script;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tb_bufferCount;
+        private System.Windows.Forms.TextBox tb_startPosition;
 
 
     }

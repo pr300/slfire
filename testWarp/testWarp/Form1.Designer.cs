@@ -558,7 +558,7 @@
             // 
             // bt_stop
             // 
-            this.bt_stop.Location = new System.Drawing.Point(137, 297);
+            this.bt_stop.Location = new System.Drawing.Point(123, 297);
             this.bt_stop.Name = "bt_stop";
             this.bt_stop.Size = new System.Drawing.Size(89, 23);
             this.bt_stop.TabIndex = 8;

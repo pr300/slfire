@@ -11,8 +11,8 @@ using System.Threading;
 
 namespace ClassLibrary1
 {
-    public enum IntState { Wait, Stop, Work};
-    public enum IntSignals {Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
+    public enum IntState { Wait, Stop, Work };
+    public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
     public struct cardSetting
     {
@@ -24,13 +24,22 @@ namespace ClassLibrary1
         public UInt16 t2;
         public UInt16 t3;
         public Int16 num;
+        public string scriptPath;
         public bool doInit;
 
     };
 
-   
-    public class Class1
+
+    public static class Class1
     {
+
+        static Class1()
+        {
+            m_isInstance = true;
+            m_procesThreadAllowed = true;
+            myThread = new Thread(threadProcessSignals);
+            myThread.Start();
+        }
 
         public static IntSignals m_inputSignals = IntSignals.Empty;
         static StreamWriter file;
@@ -45,8 +54,8 @@ namespace ClassLibrary1
         static private bool m_procesThreadAllowed = false;
         static Thread myThread;
         static private cardSetting m_cardSetting;
-            // public static fileLoader fL = new fileLoader();
-
+        // public static fileLoader fL = new fileLoader();
+        static private bool m_dirtyRunSignal = false;
         [DllImport("SP-ICE.dll")]
         public static extern UInt16 Init_Scan_Card_Ex(UInt16 N);
         [DllImport("SP-ICE.dll")]
@@ -87,7 +96,7 @@ namespace ClassLibrary1
         public static extern bool PolC_Abs(Int16 ssXVal, Int16 ssYVal);
         [DllImport("SP-ICE.dll")]
         public static extern bool Set_End_Of_List();
-         [DllImport("SP-ICE.dll")]
+        [DllImport("SP-ICE.dll")]
         public static extern bool Execute_List_1();
         [DllImport("SP-ICE.dll")]
         public static extern bool Stop_Execution();
@@ -122,10 +131,6 @@ namespace ClassLibrary1
         [DllImport("SP-ICE.dll")]
         public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
 
-        private void OnCallBack(object sender, EventArgs args)
-        {
-            // put your process here
-        }
         private static void initFromForm(cardSetting cs)
         {
             m_cardSetting = cs;
@@ -137,18 +142,36 @@ namespace ClassLibrary1
             Set_Mode(cs.mode);
             Write_Port_List(0xC, 0x010);
 
+            fileLoader.openJobfile(cs.scriptPath);
+            m_layersFinishid = false;
 
         }
+
+        public static void ThreadProc()
+        {
+            var frm = new Form1();
+
+            frm.initCmd += initFromForm;
+
+            frm.ShowDialog();
+        }
+
+
         public static void initForm()
         {
-            Form1 form = new Form1();
-            form.initCmd +=initFromForm;
+            //  Form1 form = new Form1();
+            //  form.initCmd +=initFromForm;
+
+            Thread ATM2 = new Thread(new ThreadStart(ThreadProc));
+            ATM2.SetApartmentState(ApartmentState.STA);
+            ATM2.Start();
+
             //Form1.CallBack += this.OnCallBack;
 
-        form.Show();
+            //form.Show();
         }
 
-        public static void threadProcessSignals() 
+        public static void threadProcessSignals()
         {
             while (m_procesThreadAllowed)
             {
@@ -162,48 +185,23 @@ namespace ClassLibrary1
         {
             IntSignals s = m_inputSignals;
             switch (m_state)
-            { 
+            {
                 case IntState.Wait:
                     WaitState();
-                    if ((s & (IntSignals.Stop)) != 0 && (s & (IntSignals.Run)) == 0)
+                    if ((s & IntSignals.Run) != 0)
                     {
-                        m_state = IntState.Stop;
-                    }
-
-                    if ((s & (IntSignals.Reset)) != 0)
-                    {
-                        Stop_Execution();
-                        m_layersFinishid = false;
-
-                        fileLoader.resetFile();
-                        m_inputSignals &= ~IntSignals.Reset;
-                    }
-                    
-
-                    break;
-                case IntState.Stop:
-                    StopState();
-                    if ((s & (IntSignals.Stop | IntSignals.Reset)) == 0 && (s & (IntSignals.Run)) != 0)
-                    {
+                        m_inputSignals &= ~IntSignals.Run;
                         m_state = IntState.Work;
-                        WorkState();
                     }
 
-                    if ((s & (IntSignals.Reset)) != 0)
-                    {
-                        Stop_Execution();
-                        m_layersFinishid = false;
 
-                        fileLoader.resetFile();
-                        m_inputSignals &= ~IntSignals.Reset;
-                    }
                     break;
 
                 case IntState.Work:
 
                     WorkState();
 
-                    if ((s & (IntSignals.Reset) )!= 0)
+                    if ((s & (IntSignals.Reset)) != 0)
                     {
                         Stop_Execution();
                         fileLoader.resetFile();
@@ -212,24 +210,24 @@ namespace ClassLibrary1
                         m_state = IntState.Wait;
                     }
                     break;
-            
+
             }
         }
 
         private static void WorkState()
         {
-            if(fileLoader.m_isBufferFull)
-            fillList();
+            if (fileLoader.m_isBufferFull)
+                fillList();
         }
 
         private static void StopState()
-        { 
-        
+        {
+
         }
 
         private static void WaitState()
-        { 
-        
+        {
+
         }
 
         private static void fillList()
@@ -253,7 +251,7 @@ namespace ClassLibrary1
             Long_Delay(10); //??
             printDebug("Long_Delay");
             Write_DA_List(m_laserPower);
-            printDebug("Write_DA_List "  + m_laserPower.ToString());
+            printDebug("Write_DA_List " + m_laserPower.ToString());
 
             long commandCount = 0;
             long iterator = 0;
@@ -263,11 +261,11 @@ namespace ClassLibrary1
                 commandCount++;
                 iterator = fileLoader.getStartPos();
                 switch (fileLoader.m_listJob[iterator].cmd)
-                { 
+                {
                     case Command.StarLayer:
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
-                    case  Command.EndLayer:
+                    case Command.EndLayer:
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         isEnd = true;
                         break;
@@ -291,7 +289,7 @@ namespace ClassLibrary1
                         PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
-                
+
                 }
 
                 fileLoader.incrementStart();
@@ -301,9 +299,9 @@ namespace ClassLibrary1
 
 
             Set_End_Of_List();
-            printDebug("et_End_Of_List() " );
+            printDebug("et_End_Of_List() ");
             Write_Port_List(0xC, 0x010); //???
-            printDebug("Write_Port_List(0xC, 0x010) " );
+            printDebug("Write_Port_List(0xC, 0x010) ");
             Long_Delay(10); //??
             printDebug("Long_Delay ");
             Execute_List_1();
@@ -318,34 +316,14 @@ namespace ClassLibrary1
             file.WriteLine(str);
             file.Flush();
         }
-        private static  void printDebug(long iterator, Command cmd, Int16 x, Int16 y)
+        private static void printDebug(long iterator, Command cmd, Int16 x, Int16 y)
         {
             file.WriteLine(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", iterator.ToString(), cmd.ToString(), x.ToString(), y.ToString(), getLastError()));
             file.Flush();
         }
 
-        public  static void initialize()
-        {
-            initForm();
-            if (!m_isInstance)
-            {
-                m_isInstance = true;
-                //fL = new fileLoader();
-                fileLoader.startFillJobList();
 
-                m_procesThreadAllowed = true;
-                myThread = new Thread(threadProcessSignals);
-                myThread.Start();
-
-            }
-            else
-            {
-                MessageBox.Show("Error: SPI - lib already started. once one instance  allow");
-            }
-           
-        }
-
-        public  static void deinitialize()
+        public static void deinitialize()
         {
             try
             {
@@ -358,40 +336,41 @@ namespace ClassLibrary1
             {
             }
 
-        
+
         }
 
         public static void getFileBuffPos1(ref long a, ref long b)
         {
             //fL.isInstance = 0;
-           //fL.
-            
-           
+            //fL.
+
+
         }
 
-        public static void Init(UInt16 cardNumber, UInt16 mode, string corrFile, ref string  str) {
+        public static void Init(UInt16 cardNumber, UInt16 mode, string corrFile, ref string str)
+        {
             UInt16 result = 0;
             result = Init_Scan_Card_Ex(cardNumber);
-           // string formattedString = string.Format("Init ...{1}, code = {2}", result == 0 ? "Ок" : "Fail", result);
-           // MessageBox.Show(formattedString);
-        //    MessageBox.Show("Init... code = " +  result.ToString(), "Init");
+            // string formattedString = string.Format("Init ...{1}, code = {2}", result == 0 ? "Ок" : "Fail", result);
+            // MessageBox.Show(formattedString);
+            //    MessageBox.Show("Init... code = " +  result.ToString(), "Init");
 
-        UInt16 Ver_RTB = Get_Version();
-		UInt16 Ver_DLL = Get_DLL_Version();
-		
-		//char buf[100];
-		//sprintf(buf, "DLL Ver = %d, RTB Ver = %d", Ver_DLL, Ver_RTB);
-		//::MessageBox(0, buf, "Version Info", MB_OK);
-            string res = result ==0 ? "Ok": "Fail";
+            UInt16 Ver_RTB = Get_Version();
+            UInt16 Ver_DLL = Get_DLL_Version();
+
+            //char buf[100];
+            //sprintf(buf, "DLL Ver = %d, RTB Ver = %d", Ver_DLL, Ver_RTB);
+            //::MessageBox(0, buf, "Version Info", MB_OK);
+            string res = result == 0 ? "Ok" : "Fail";
             str = "Init(" + cardNumber.ToString() + ") - " + res + "; code " + result.ToString() + "; DLL " + Ver_DLL.ToString();
-          //  MessageBox.Show("Init... " + res + "; code = " + result.ToString() + "; RTB_ver " + Ver_RTB.ToString() + "; DLL_ver " + Ver_DLL.ToString(), "Init", MessageBoxButtons.OK, MessageBoxIcon.None,
-        // MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
- bool isOk = Set_Mode(mode);
- str += "\n; Set_Mode " + mode.ToString("X5") +" " + (isOk ? "Ok" : "Fail");
+            //  MessageBox.Show("Init... " + res + "; code = " + result.ToString() + "; RTB_ver " + Ver_RTB.ToString() + "; DLL_ver " + Ver_DLL.ToString(), "Init", MessageBoxButtons.OK, MessageBoxIcon.None,
+            // MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+            bool isOk = Set_Mode(mode);
+            str += "\n; Set_Mode " + mode.ToString("X5") + " " + (isOk ? "Ok" : "Fail");
 
-// isOk = Load_Cor(corrFile);
+            // isOk = Load_Cor(corrFile);
 
- str += "\n; Load_Cor " + corrFile + " - " + (isOk ? "Ok" : "Fail");
+            str += "\n; Load_Cor " + corrFile + " - " + (isOk ? "Ok" : "Fail");
 
             isOk = Set_Gain(1, 0, 0, 0);
             str += "\n; Gain -" + (isOk ? "Ok" : "Fail");
@@ -401,8 +380,8 @@ namespace ClassLibrary1
 
         public static Int16 RemoveCard(UInt16 N)
         {
-           return  Remove_Scan_Card_Ex(N);
- 
+            return Remove_Scan_Card_Ex(N);
+
         }
 
         public static bool SetList1()
@@ -416,7 +395,7 @@ namespace ClassLibrary1
                 return "Ok";
             IntPtr ptr = Get_Last_Error_Message();
             Int16 code = Get_Last_Error_Code();
-            return  ("Fail; code = " + code.ToString()  + "; "+ PtrToStringUtf8(ptr));
+            return ("Fail; code = " + code.ToString() + "; " + PtrToStringUtf8(ptr));
         }
 
         private static string PtrToStringUtf8(IntPtr ptr) // aPtr is nul-terminated
@@ -455,14 +434,25 @@ namespace ClassLibrary1
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
 
-                      //  if (( openFileDialog1.FileName) != null)
-                        {
-                            fileLoader.openJobfile(openFileDialog1.FileName);
-                            m_layersFinishid = false;
-                        }
+                    //  if (( openFileDialog1.FileName) != null)
+                    {
+                        fileLoader.openJobfile(openFileDialog1.FileName);
+                        m_layersFinishid = false;
+                    }
 
                 }
             }
+        }
+
+        public static void StartLayer(bool val)
+        {
+
+            if (m_dirtyRunSignal == false)
+            {
+                m_inputSignals |= IntSignals.Run;
+            }
+
+            m_dirtyRunSignal = val;
         }
     }
 }

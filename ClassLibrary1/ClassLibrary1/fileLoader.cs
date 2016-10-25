@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80 , EndF =0x100};
+    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80, EndF = 0x100 };
     public struct JobCommand
     {
         public Command cmd;
@@ -21,7 +21,7 @@ namespace ClassLibrary1
     };
 
 
-    public class fileLoader
+    public static class fileLoader
     {
         public static long isInstance = 0; //0 - false, 1 true
         public static long isValidFile = 0;
@@ -39,42 +39,54 @@ namespace ClassLibrary1
 
         static bool m_resetFile = false;
 
-        static StreamWriter file;
+        static StreamWriter file;//= new StreamWriter("F:\\write_code.txt", false);
         // private Object thisLock = new Object();
 
 
-        static Thread myThread;
+        //static Thread myThread;
         //static Regex regexOperand = new Regex(@"-?\d+(\.\d+)?");
         static Regex regexOperand = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
 
+        static fileLoader()
+        {
+            runPermission = 1;
+            isValidFile = 0;
+            file = new StreamWriter("write_code.txt", false);
+            Interlocked.Exchange(ref isInstance, 1);
+            Thread myThread = new Thread(fillJobList);
+            myThread.Start();
+        }
 
         public static void stopfillJobList()
         {
             runPermission = 0;
-            myThread.Join();
+            // myThread.Join();
             f.Close();
 
         }
 
         public static void openJobfile(string path)
         {
+            string deb = " p1";
             try
             {
                 f = new StreamReader(path);
-                //GC.SuppressFinalize(f);
+                deb += " p2";
+                GC.SuppressFinalize(f);
                 //string str = f.ReadLine();
                 startPosition = 0;
                 endPosition = 0;
+                deb += " p2.3";
                 addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
+                deb += " p3";
                 Array.Clear(actualArgs, 0, 3);
                 Interlocked.Exchange(ref isValidFile, 1);
                 m_fileName = path;
-                // MessageBox.Show("Ok");
             }
             catch (Exception ex)
             {
 
-                MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message);
+                MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message + "  " + path + deb);
             }
 
         }
@@ -85,19 +97,26 @@ namespace ClassLibrary1
         {
             if (Interlocked.Read(ref isInstance) == 0)
             {
-                runPermission = 1;
-                file = new StreamWriter("write_code.txt", false);
-                Interlocked.Exchange(ref isInstance, 1);
-                myThread = new Thread(fillJobList);
-                myThread.Start();
+                //MessageBox.Show("startFillJobList", "str", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+                //  runPermission = 1;
+                //  file = new StreamWriter("write_code.txt", false);
+                //  Interlocked.Exchange(ref isInstance, 1);
+                //Thread myThread  = new Thread(fillJobList);
+                //  myThread.Start();
+
+                // ThreadStart threadDelegate = new ThreadStart(fillJobList);
+                // Thread newThread = new Thread(threadDelegate);
+                //  newThread.Start();
 
             }
 
         }
 
 
-        private static void fillJobList()
+        public static void fillJobList()
         {
+            // endPosition++;
+            // MessageBox.Show("fillJobList p1", "str", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
             while (runPermission == 1)
             {
 
@@ -117,6 +136,8 @@ namespace ClassLibrary1
                     try
                     {
                         m_isBufferFull = false;
+                        // file.WriteLine(m_isBufferFull.ToString());
+                        //  file.Flush();
 
                         string str = f.ReadLine();
                         int nop = 0;
@@ -188,8 +209,8 @@ namespace ClassLibrary1
                                         int itY = i * 3 + 1;
                                         Int16 x = (Int16)(float.Parse(pol3D[itX].Value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture) * (float)(gateMmToField));
                                         Int16 y = (Int16)(float.Parse(pol3D[itY].Value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture) * (float)(gateMmToField));
-                                        
-                                        if (i == 0) 
+
+                                        if (i == 0)
                                         {
                                             addCommandAtEnd(Command.Jamp, x, y, 0, 0, string.Format("Image.Polyline3D #{0, 5}  ( {1, 5}, {2, 5} )", i, pol3D[itX].Value, pol3D[itY].Value));
                                         }
@@ -207,7 +228,7 @@ namespace ClassLibrary1
                                         }
                                     }
 
-                                        break;
+                                    break;
 
 
                             }
@@ -275,7 +296,7 @@ namespace ClassLibrary1
             m_listJob[pos].y = a2;
             endPosition++;
 
-            string deb = string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", pos.ToString(), cmd.ToString(), a1.ToString(), a2.ToString() , debug);
+            string deb = string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", pos.ToString(), cmd.ToString(), a1.ToString(), a2.ToString(), debug);
             file.WriteLine(deb);
             file.Flush();
 

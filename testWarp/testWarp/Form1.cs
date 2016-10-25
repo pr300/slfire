@@ -19,18 +19,18 @@ namespace testWarp
 
         public Form1()
         {
-
+            Directory.SetCurrentDirectory("F:\\");
 
             InitializeComponent();
             solveMode();
             this.Closing += Form1_Closing;
             file = new StreamWriter("write.txt", true);
-            Class1.initialize();
             crThread = true;
             myThread = new Thread(OnTimedEvent);
             myThread.IsBackground = true;
             myThread.Start();
             addLog("_______START PROGRAMM______ ", true, false);
+            Class1.initForm();
 
             //aTimer = new System.Timers.Timer(200);
             //aTimer.Elapsed += OnTimedEvent;
@@ -472,11 +472,13 @@ namespace testWarp
 
         private void cb_run_CheckedChanged(object sender, EventArgs e)
         {
-            IntSignals s = 0;
-            if (cb_run.Checked) s |= IntSignals.Run;
-            if (cb_stop.Checked) s |= IntSignals.Stop;
-            if (cb_reset.Checked) s |= IntSignals.Reset;
-            Class1.m_inputSignals = s;
+            //IntSignals s = 0;
+            //if (cb_run.Checked) s |= IntSignals.Run;
+            //if (cb_stop.Checked) s |= IntSignals.Stop;
+            //if (cb_reset.Checked) s |= IntSignals.Reset;
+            //Class1.m_inputSignals = s;
+
+            Class1.StartLayer(cb_run.Checked);
         }
 
         private void cb_stop_CheckedChanged(object sender, EventArgs e)

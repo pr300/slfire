@@ -136,8 +136,41 @@ namespace ClassLibrary1
             cs.t3 = UInt16.Parse(tb_t3.Text);
             cs.scale =  UInt16.Parse(tb_scale.Text);
             cs.num = Int16.Parse(tb_devn.Text);
+            cs.scriptPath = tb_script.Text;
             
             initCmd(cs);
+        }
+
+        private void bt_LoadCorrFile_Click(object sender, EventArgs e)
+        {
+           tb_bufferCount.Text =  fileLoader.endPosition.ToString();
+           tb_startPosition.Text = fileLoader.startPosition.ToString();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //if (!System.IO.File.Exists(path))
+            {
+                //Stream myStream = null;
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "script (*.script)|*.script|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 1;
+                openFileDialog1.RestoreDirectory = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+
+                    //  if (( openFileDialog1.FileName) != null)
+                    {
+                        tb_script.Text = openFileDialog1.FileName;
+                        //fileLoader.openJobfile(openFileDialog1.FileName);
+                        // m_layersFinishid = false;
+                    }
+
+                }
+            }
         }
     }
 }
