@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace ClassLibrary1
 {
-    public enum IntState { Wait, Stop, Work };
+    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04 };
     public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
     public struct cardSetting
@@ -155,7 +155,7 @@ namespace ClassLibrary1
         {
             m_cardSetting = cs;
             fileLoader.gateMmToField = cs.scale;
-
+            m_laserPower = cs.power;
             Init_Scan_Card_Ex((UInt16)cs.num);
             Load_Corr_N(cs.corrFilePatch, cs.num);
             Set_Active_Card((UInt16)cs.num);
@@ -284,7 +284,8 @@ namespace ClassLibrary1
             printDebug("Long_Delay");
             Write_DA_List(m_laserPower);
             printDebug("Write_DA_List " + m_laserPower.ToString());
-
+            Write_Port_List(0xC, 0x010);
+            Long_Delay(1000); //?
             long commandCount = 0;
             long iterator = 0;
             bool isEnd = false;
@@ -332,11 +333,11 @@ namespace ClassLibrary1
             }
 
 
-
+            Write_Port_List(0xC, 0x000);
             Set_End_Of_List();
             printDebug("et_End_Of_List() ");
-            Write_Port_List(0xC, 0x010); //???
-            printDebug("Write_Port_List(0xC, 0x010) ");
+            //Write_Port_List(0xC, 0x010); //???
+            //printDebug("Write_Port_List(0xC, 0x010) ");
             Long_Delay(10); //??
             printDebug("Long_Delay ");
             Execute_List_1();
