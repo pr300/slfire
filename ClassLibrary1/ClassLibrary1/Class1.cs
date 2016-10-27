@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace ClassLibrary1
 {
-    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04 };
+    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, FillList = 0x08 };
     public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
     public struct cardSetting
@@ -53,7 +53,6 @@ namespace ClassLibrary1
 
         static Class1()
         {
-            m_isInstance = true;
             m_procesThreadAllowed = true;
             myThread = new Thread(threadProcessSignals);
             myThread.Start();
@@ -70,12 +69,13 @@ namespace ClassLibrary1
         static public UInt16 m_laserPower = 0;
 
         static public bool m_layersFinishid = false;
-        static private bool m_isInstance = false;
         static private bool m_procesThreadAllowed = false;
         static Thread myThread;
         static private cardSetting m_cardSetting;
+
         // public static fileLoader fL = new fileLoader();
         static private bool m_dirtyRunSignal = false;
+        static private bool m_dirtyResetSignal = false;
         [DllImport("SP-ICE.dll")]
         public static extern UInt16 Init_Scan_Card_Ex(UInt16 N);
         [DllImport("SP-ICE.dll")]
@@ -156,11 +156,21 @@ namespace ClassLibrary1
             m_cardSetting = cs;
             fileLoader.gateMmToField = cs.scale;
             m_laserPower = cs.power;
-            Init_Scan_Card_Ex((UInt16)cs.num);
-            Load_Corr_N(cs.corrFilePatch, cs.num);
-            Set_Active_Card((UInt16)cs.num);
-            Set_Mode(cs.mode);
-            Write_Port_List(0xC, 0x010);
+            UInt16 rInit = Init_Scan_Card_Ex((UInt16)cs.num);
+            bool rLoad = Load_Corr_N(cs.corrFilePatch, cs.num);
+            bool rSetAct = Set_Active_Card((UInt16)cs.num);
+            bool rSetMode = Set_Mode(cs.mode);
+            bool rOsc = Write_Port_List(0xC, 0x010);
+
+            bool initOk = (rInit ==0 )&& rSetAct && rSetMode && rOsc;
+
+            MessageBox.Show(string.Format(" {0, -25} -- {1, -10} \n {2,-25} -- {4, -10}   ({3}) \n {5,-25} -- {6, -10} \n {7, -25} -- {8, -10} \n {9,-25} -- {10, -10}",
+                 "Init", (rInit == 0).ToString(),
+                 "Load correction", cs.corrFilePatch, rLoad.ToString(),
+                 "Set mode", rSetMode.ToString(),
+                 "Set active card", rSetAct.ToString(),
+                 "Oscillator on", rOsc.ToString()) , "Initialize is " + (initOk ? "Success": "Fail"), MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+//             MessageBox.Show(new Form() { TopMost = true }, "I'm on top!");
 
             fileLoader.openJobfile(cs.scriptPath);
             m_layersFinishid = false;
@@ -203,17 +213,10 @@ namespace ClassLibrary1
 
         public static void processSignals()
         {
-            UInt16 status = Read_Status();
-            m_cardStatus.l1load = (status & 0x01) != 0;
-            m_cardStatus.l2load = (status & 0x02) != 0;
-            m_cardStatus.l1redy = (status & 0x04) != 0;
-            m_cardStatus.l2redy = (status & 0x08) != 0;
-            m_cardStatus.l1busy = (status & 0x010) != 0;
-            m_cardStatus.l2busy = (status & 0x020) != 0;
-            m_cardStatus.busy = (status & 0x040) != 0;
-            m_cardStatus.laserOn= (status & 0x080) != 0;
-            m_cardStatus.scanComlete = (status & 0x0100) != 0;
-
+            if ((m_state & (IntState.Work | IntState.FillList)) !=0)
+            {
+                readStatus();
+            }
 
             IntSignals s = m_inputSignals;
             switch (m_state)
@@ -223,11 +226,29 @@ namespace ClassLibrary1
                     if ((s & IntSignals.Run) != 0)
                     {
                         m_inputSignals &= ~IntSignals.Run;
-                        m_state = IntState.Work;
+                        m_state = IntState.FillList;
                     }
 
 
                     break;
+
+                case IntState.FillList:
+
+                    fillList();
+
+                    if ((s & (IntSignals.Reset)) != 0)
+                    {
+                        Stop_Execution();
+                        fileLoader.resetFile();
+                        m_inputSignals &= ~(IntSignals.Reset);
+
+                        m_state = IntState.Wait;
+
+
+                    }
+
+                    break;
+
 
                 case IntState.Work:
 
@@ -240,16 +261,27 @@ namespace ClassLibrary1
                         m_inputSignals &= ~(IntSignals.Reset);
 
                         m_state = IntState.Wait;
+
+
                     }
                     break;
 
             }
         }
 
+        private static void fillList()
+        {
+            if (fileLoader.m_isBufferFull) //wait until buffre fill
+                fillList1();
+
+        }
+
         private static void WorkState()
         {
-            if (fileLoader.m_isBufferFull && !m_cardStatus.l1busy)
-                fillList();
+            if (m_cardStatus.scanComlete) //wait until escan comlete
+            {
+                m_state = IntState.Wait;
+            }
         }
 
         private static void StopState()
@@ -262,7 +294,7 @@ namespace ClassLibrary1
 
         }
 
-        private static void fillList()
+        private static void fillList1()
         {
             if (!fileLoader.isAviableNExt())
             {
@@ -344,7 +376,22 @@ namespace ClassLibrary1
             printDebug("Execute_List_1();");
 
             file.Close();
-            if (isEnd) m_state = IntState.Wait;
+            if (isEnd) m_state = IntState.Work;
+        }
+
+
+        public static void readStatus()
+        {
+            UInt16 status = Read_Status();
+            m_cardStatus.l1load = (status & 0x01) != 0;
+            m_cardStatus.l2load = (status & 0x02) != 0;
+            m_cardStatus.l1redy = (status & 0x04) != 0;
+            m_cardStatus.l2redy = (status & 0x08) != 0;
+            m_cardStatus.l1busy = (status & 0x010) != 0;
+            m_cardStatus.l2busy = (status & 0x020) != 0;
+            m_cardStatus.busy = (status & 0x040) != 0;
+            m_cardStatus.laserOn = (status & 0x080) != 0;
+            m_cardStatus.scanComlete = (status & 0x0100) != 0;
         }
 
         private static void printDebug(string str)
@@ -482,13 +529,48 @@ namespace ClassLibrary1
 
         public static void StartLayer(bool val)
         {
-
-            if (m_dirtyRunSignal == false)
+            if (m_state == IntState.Wait)
             {
-                m_inputSignals |= IntSignals.Run;
-            }
 
+
+                if (val && !m_dirtyRunSignal)
+                {
+                    m_inputSignals |= IntSignals.Run;
+                }
+
+            }
             m_dirtyRunSignal = val;
+        }
+
+        public static void ResetSignal(bool val)
+        {
+            if (m_state != IntState.Wait)
+            {
+
+
+                if (val && !m_dirtyResetSignal)
+                {
+                    m_inputSignals |= IntSignals.Reset;
+                }
+
+            }
+            m_dirtyResetSignal = val;
+        }
+
+
+        public static bool isBusy()
+        {
+            return (m_state & (IntState.FillList | IntState.Work)) != 0;
+        }
+
+        public static bool isWait()
+        {
+            return (m_state == IntState.Wait);
+        }
+
+        public static bool isFinish()
+        {
+            return m_layersFinishid;
         }
     }
 }

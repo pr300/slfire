@@ -19,7 +19,7 @@ namespace testWarp
 
         public Form1()
         {
-            Directory.SetCurrentDirectory("E:\\");
+            //Directory.SetCurrentDirectory("E:\\");
 
             InitializeComponent();
             solveMode();
@@ -479,6 +479,7 @@ namespace testWarp
             //Class1.m_inputSignals = s;
 
             Class1.StartLayer(cb_run.Checked);
+            addLog("StartLayer " + cb_run.Checked.ToString(), true, false);
         }
 
         private void cb_stop_CheckedChanged(object sender, EventArgs e)

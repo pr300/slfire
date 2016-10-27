@@ -67,18 +67,17 @@ namespace ClassLibrary1
 
         public static void openJobfile(string path)
         {
-            string deb = " p1";
+            
+
             try
             {
+                if (f != null) f.Close();
                 f = new StreamReader(path);
-                deb += " p2";
-                GC.SuppressFinalize(f);
+                //GC.SuppressFinalize(f);
                 //string str = f.ReadLine();
                 startPosition = 0;
                 endPosition = 0;
-                deb += " p2.3";
                 addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
-                deb += " p3";
                 Array.Clear(actualArgs, 0, 3);
                 Interlocked.Exchange(ref isValidFile, 1);
                 m_fileName = path;
@@ -86,7 +85,7 @@ namespace ClassLibrary1
             catch (Exception ex)
             {
 
-                MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message + "  " + path + deb);
+                MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message + "  " + path);
             }
 
         }
