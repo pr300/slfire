@@ -65,9 +65,9 @@ namespace ClassLibrary1
 
         }
 
-        public static void openJobfile(string path)
+        public static bool openJobfile(string path)
         {
-            
+            bool result = false;
 
             try
             {
@@ -81,12 +81,14 @@ namespace ClassLibrary1
                 Array.Clear(actualArgs, 0, 3);
                 Interlocked.Exchange(ref isValidFile, 1);
                 m_fileName = path;
+                result = true;
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show("Error: Could not read file from disk. Error: " + ex.Message + "  " + path);
             }
+            return result;
 
         }
 

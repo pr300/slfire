@@ -151,7 +151,7 @@ namespace ClassLibrary1
         [DllImport("SP-ICE.dll")]
         public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
 
-        private static void initFromForm(cardSetting cs)
+        private static bool initFromForm(cardSetting cs)
         {
             m_cardSetting = cs;
             fileLoader.gateMmToField = cs.scale;
@@ -162,18 +162,26 @@ namespace ClassLibrary1
             bool rSetMode = Set_Mode(cs.mode);
             bool rOsc = Write_Port_List(0xC, 0x010);
 
-            bool initOk = (rInit ==0 )&& rSetAct && rSetMode && rOsc;
 
-            MessageBox.Show(string.Format(" {0, -25} -- {1, -10} \n {2,-25} -- {4, -10}   ({3}) \n {5,-25} -- {6, -10} \n {7, -25} -- {8, -10} \n {9,-25} -- {10, -10}",
+
+            bool openScript = fileLoader.openJobfile(cs.scriptPath);
+
+            bool initOk = (rInit == 0) && rSetAct && rSetMode && rOsc && openScript;
+
+            MessageBox.Show(string.Format(" {0, -25} -- {1, -10} \n {2,-25} -- {4, -10}   ({3}) \n {5,-25} -- {6, -10} \n {7, -25} -- {8, -10} \n {9,-25} -- {10, -10}  \n {11,-25} -- {12, -10} ({13})",
                  "Init", (rInit == 0).ToString(),
                  "Load correction", cs.corrFilePatch, rLoad.ToString(),
                  "Set mode", rSetMode.ToString(),
                  "Set active card", rSetAct.ToString(),
-                 "Oscillator on", rOsc.ToString()) , "Initialize is " + (initOk ? "Success": "Fail"), MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+                 "Oscillator on", rOsc.ToString() ,
+                 "Open script", openScript.ToString(), cs.scriptPath),
+                 "Initialize is " + (initOk ? "Success" : "Fail"), MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
 //             MessageBox.Show(new Form() { TopMost = true }, "I'm on top!");
 
-            fileLoader.openJobfile(cs.scriptPath);
+
             m_layersFinishid = false;
+
+            return initOk;
 
         }
 

@@ -15,12 +15,21 @@ namespace ClassLibrary1
     public partial class Form1 : Form
     {
 
-        public delegate void initialise(cardSetting cs);
+        public delegate bool initialise(cardSetting cs);
         public event initialise initCmd;
 
         public Form1()
         {
+            this.Closing += Form1_Closing;
+
             InitializeComponent();
+            tb_corrFile.Text = Properties.Settings.Default.correctionFile;
+            tb_script.Text = Properties.Settings.Default.scriptFile;
+        }
+
+        private void Form1_Closing(object sender, EventArgs e)
+        {
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -141,7 +150,13 @@ namespace ClassLibrary1
             cs.num = Int16.Parse(tb_devn.Text);
             cs.scriptPath = tb_script.Text;
             
-            initCmd(cs);
+            bool result = initCmd(cs);
+            if (result)
+            {
+                Properties.Settings.Default.correctionFile = tb_corrFile.Text;
+                Properties.Settings.Default.scriptFile = tb_script.Text;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void updateSignals(object sender, EventArgs e)
