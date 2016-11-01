@@ -19,7 +19,7 @@ namespace ClassLibrary1
         public UInt16 mode;
         public UInt16 power;
         public string corrFilePatch;
-        public double scale;
+        public float scale;
         public UInt16 t1;
         public UInt16 t2;
         public UInt16 t3;

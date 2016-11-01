@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Globalization;
 namespace ClassLibrary1
 {
 
@@ -25,6 +27,8 @@ namespace ClassLibrary1
             InitializeComponent();
             tb_corrFile.Text = Properties.Settings.Default.correctionFile;
             tb_script.Text = Properties.Settings.Default.scriptFile;
+
+            readCorrectionTextFile(tb_corrFile.Text);
         }
 
         private void Form1_Closing(object sender, EventArgs e)
@@ -146,7 +150,7 @@ namespace ClassLibrary1
             cs.t1 = UInt16.Parse(tb_t1.Text);
             cs.t2 = UInt16.Parse(tb_t2.Text);
             cs.t3 = UInt16.Parse(tb_t3.Text);
-            cs.scale =  UInt16.Parse(tb_scale.Text);
+            cs.scale = float.Parse(tb_scale.Text, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture);//UInt16.Parse(tb_scale.Text);
             cs.num = Int16.Parse(tb_devn.Text);
             cs.scriptPath = tb_script.Text;
             
@@ -194,11 +198,15 @@ namespace ClassLibrary1
                 //  if (( openFileDialog1.FileName) != null)
                 {
                     tb_corrFile.Text = openFileDialog1.FileName;
+                   // getCorrespondingCorrectionFilePath(openFileDialog1.FileName);
+                    readCorrectionTextFile(openFileDialog1.FileName);
                     //fileLoader.openJobfile(openFileDialog1.FileName);
                     // m_layersFinishid = false;
                 }
 
             }
+
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -224,6 +232,50 @@ namespace ClassLibrary1
                     }
 
                 }
+            }
+        }
+
+
+        private string getCorrespondingCorrectionFilePath(string path)
+        {
+            string res =Path.ChangeExtension(path,"txt");
+          //  MessageBox.Show(res);
+            return res ;
+        }
+
+        private void readCorrectionTextFile(string path)
+        {
+            path = getCorrespondingCorrectionFilePath(path);
+            //Exception e;
+            try
+            {
+
+                string value = "";
+  //              var settings =
+                     foreach(string line in File.ReadAllLines(path)){
+                  //   string parameters = line.Split('=')
+                       string[] param =  line.Split('=');
+                       if (param[0] == "calfactor")
+                       {
+                           value = param[1];
+                           float f;
+                           if (!float.TryParse(value, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture, out f))
+                               throw new  Exception("Can't read correction scale value");
+                           tb_scale.Text = value;
+                          
+                       }
+
+                     }
+                     //select new KeyValuePair<string, string>(parameters[0], parameters[1]);
+//
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
     }
