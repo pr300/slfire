@@ -141,7 +141,6 @@ namespace ClassLibrary1
                         //  file.Flush();
 
                         string str = f.ReadLine();
-                        int nop = 0;
                         if (str != null)
                         {
                             string command = "";

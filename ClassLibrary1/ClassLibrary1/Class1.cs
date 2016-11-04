@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Security;
 using System.IO;
 using System.Threading;
+using System.Reflection;
+
 
 namespace ClassLibrary1
 {
@@ -42,8 +44,6 @@ namespace ClassLibrary1
         public bool scanComlete;
         public bool b9;
         public bool b10;
-
-
 
     }
 

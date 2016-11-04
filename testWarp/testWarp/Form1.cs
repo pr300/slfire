@@ -15,7 +15,6 @@ namespace testWarp
         bool crThread = true;
         //      Controller Class1;
         Thread myThread;
-        private static System.Timers.Timer aTimer;
 
         public Form1()
         {
@@ -54,7 +53,6 @@ namespace testWarp
 
         private void b_init_Click(object sender, EventArgs e)
         {
-            string logStr = "";
             UInt16 usmode = solveMode();
             string corrFile = tb_corrFile.Text;
             UInt16 ndev = UInt16.Parse(tb_devn.Text);

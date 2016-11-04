@@ -211,9 +211,6 @@ namespace ClassLibrary1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //if (!System.IO.File.Exists(path))
-            {
-                //Stream myStream = null;
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
                 openFileDialog1.InitialDirectory = "c:\\";
@@ -223,19 +220,14 @@ namespace ClassLibrary1
 
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-
-                    //  if (( openFileDialog1.FileName) != null)
+                      if (( openFileDialog1.FileName) != null)
                     {
                         tb_script.Text = openFileDialog1.FileName;
-                        //fileLoader.openJobfile(openFileDialog1.FileName);
-                        // m_layersFinishid = false;
+
                     }
 
                 }
-            }
         }
-
-
 
         private void readCorrectionTextFile(string path)
         {
