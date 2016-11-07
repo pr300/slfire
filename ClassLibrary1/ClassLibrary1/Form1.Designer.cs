@@ -29,6 +29,26 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.bt_default = new System.Windows.Forms.Button();
+            this.dg = new System.Windows.Forms.DataGridView();
+            this.cb_scanComplete = new System.Windows.Forms.CheckBox();
+            this.cb_LaserOn = new System.Windows.Forms.CheckBox();
+            this.cb_busy = new System.Windows.Forms.CheckBox();
+            this.cb_l1busy = new System.Windows.Forms.CheckBox();
+            this.cb_l1redy = new System.Windows.Forms.CheckBox();
+            this.cb_l1load = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cr_validFileName = new System.Windows.Forms.CheckBox();
+            this.cb_isBufferFull = new System.Windows.Forms.CheckBox();
+            this.cb_layerFinished = new System.Windows.Forms.CheckBox();
+            this.cr_isInstance = new System.Windows.Forms.CheckBox();
+            this.tb_state = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tb_startPosition = new System.Windows.Forms.TextBox();
+            this.tb_bufferCount = new System.Windows.Forms.TextBox();
+            this.tb_script = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -52,35 +72,14 @@
             this.tb_scale = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tb_Power = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tb_t3 = new System.Windows.Forms.TextBox();
-            this.tb_t2 = new System.Windows.Forms.TextBox();
-            this.tb_t1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.tb_script = new System.Windows.Forms.TextBox();
-            this.tb_bufferCount = new System.Windows.Forms.TextBox();
-            this.tb_startPosition = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cr_validFileName = new System.Windows.Forms.CheckBox();
-            this.cb_isBufferFull = new System.Windows.Forms.CheckBox();
-            this.cb_layerFinished = new System.Windows.Forms.CheckBox();
-            this.cr_isInstance = new System.Windows.Forms.CheckBox();
-            this.tb_state = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.cb_l1load = new System.Windows.Forms.CheckBox();
-            this.cb_l1redy = new System.Windows.Forms.CheckBox();
-            this.cb_l1busy = new System.Windows.Forms.CheckBox();
-            this.cb_scanComplete = new System.Windows.Forms.CheckBox();
-            this.cb_LaserOn = new System.Windows.Forms.CheckBox();
-            this.cb_busy = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.bt_default);
+            this.groupBox1.Controls.Add(this.dg);
             this.groupBox1.Controls.Add(this.cb_scanComplete);
             this.groupBox1.Controls.Add(this.cb_LaserOn);
             this.groupBox1.Controls.Add(this.cb_busy);
@@ -122,24 +121,204 @@
             this.groupBox1.Controls.Add(this.tb_scale);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.tb_Power);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.tb_t3);
-            this.groupBox1.Controls.Add(this.tb_t2);
-            this.groupBox1.Controls.Add(this.tb_t1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(642, 449);
+            this.groupBox1.Size = new System.Drawing.Size(811, 623);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // bt_default
+            // 
+            this.bt_default.Location = new System.Drawing.Point(704, 370);
+            this.bt_default.Name = "bt_default";
+            this.bt_default.Size = new System.Drawing.Size(75, 23);
+            this.bt_default.TabIndex = 59;
+            this.bt_default.Text = "Default";
+            this.bt_default.UseVisualStyleBackColor = true;
+            this.bt_default.Click += new System.EventHandler(this.bt_default_Click);
+            // 
+            // dg
+            // 
+            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg.Location = new System.Drawing.Point(238, 12);
+            this.dg.Name = "dg";
+            this.dg.Size = new System.Drawing.Size(541, 340);
+            this.dg.TabIndex = 58;
+            // 
+            // cb_scanComplete
+            // 
+            this.cb_scanComplete.AutoSize = true;
+            this.cb_scanComplete.Location = new System.Drawing.Point(458, 594);
+            this.cb_scanComplete.Name = "cb_scanComplete";
+            this.cb_scanComplete.Size = new System.Drawing.Size(97, 17);
+            this.cb_scanComplete.TabIndex = 57;
+            this.cb_scanComplete.Text = "Scan complete";
+            this.cb_scanComplete.UseVisualStyleBackColor = true;
+            // 
+            // cb_LaserOn
+            // 
+            this.cb_LaserOn.AutoSize = true;
+            this.cb_LaserOn.Location = new System.Drawing.Point(458, 571);
+            this.cb_LaserOn.Name = "cb_LaserOn";
+            this.cb_LaserOn.Size = new System.Drawing.Size(66, 17);
+            this.cb_LaserOn.TabIndex = 56;
+            this.cb_LaserOn.Text = "LaserOn";
+            this.cb_LaserOn.UseVisualStyleBackColor = true;
+            // 
+            // cb_busy
+            // 
+            this.cb_busy.AutoSize = true;
+            this.cb_busy.Location = new System.Drawing.Point(458, 548);
+            this.cb_busy.Name = "cb_busy";
+            this.cb_busy.Size = new System.Drawing.Size(48, 17);
+            this.cb_busy.TabIndex = 55;
+            this.cb_busy.Text = "busy";
+            this.cb_busy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l1busy
+            // 
+            this.cb_l1busy.AutoSize = true;
+            this.cb_l1busy.Location = new System.Drawing.Point(458, 522);
+            this.cb_l1busy.Name = "cb_l1busy";
+            this.cb_l1busy.Size = new System.Drawing.Size(56, 17);
+            this.cb_l1busy.TabIndex = 54;
+            this.cb_l1busy.Text = "l1busy";
+            this.cb_l1busy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l1redy
+            // 
+            this.cb_l1redy.AutoSize = true;
+            this.cb_l1redy.Location = new System.Drawing.Point(458, 499);
+            this.cb_l1redy.Name = "cb_l1redy";
+            this.cb_l1redy.Size = new System.Drawing.Size(54, 17);
+            this.cb_l1redy.TabIndex = 53;
+            this.cb_l1redy.Text = "l1redy";
+            this.cb_l1redy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l1load
+            // 
+            this.cb_l1load.AutoSize = true;
+            this.cb_l1load.Location = new System.Drawing.Point(458, 476);
+            this.cb_l1load.Name = "cb_l1load";
+            this.cb_l1load.Size = new System.Drawing.Size(54, 17);
+            this.cb_l1load.TabIndex = 52;
+            this.cb_l1load.Text = "l1load";
+            this.cb_l1load.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(29, 524);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 51;
+            this.label10.Text = "Mode";
+            // 
+            // cr_validFileName
+            // 
+            this.cr_validFileName.AutoSize = true;
+            this.cr_validFileName.Location = new System.Drawing.Point(225, 583);
+            this.cr_validFileName.Name = "cr_validFileName";
+            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
+            this.cr_validFileName.TabIndex = 46;
+            this.cr_validFileName.Text = "validFileName";
+            this.cr_validFileName.UseVisualStyleBackColor = true;
+            // 
+            // cb_isBufferFull
+            // 
+            this.cb_isBufferFull.AutoSize = true;
+            this.cb_isBufferFull.Location = new System.Drawing.Point(225, 514);
+            this.cb_isBufferFull.Name = "cb_isBufferFull";
+            this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
+            this.cb_isBufferFull.TabIndex = 50;
+            this.cb_isBufferFull.Text = "isBufferFull";
+            this.cb_isBufferFull.UseVisualStyleBackColor = true;
+            // 
+            // cb_layerFinished
+            // 
+            this.cb_layerFinished.AutoSize = true;
+            this.cb_layerFinished.Location = new System.Drawing.Point(225, 537);
+            this.cb_layerFinished.Name = "cb_layerFinished";
+            this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
+            this.cb_layerFinished.TabIndex = 49;
+            this.cb_layerFinished.Text = "layerFiniched";
+            this.cb_layerFinished.UseVisualStyleBackColor = true;
+            // 
+            // cr_isInstance
+            // 
+            this.cr_isInstance.AutoSize = true;
+            this.cr_isInstance.Location = new System.Drawing.Point(225, 560);
+            this.cr_isInstance.Name = "cr_isInstance";
+            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
+            this.cr_isInstance.TabIndex = 47;
+            this.cr_isInstance.Text = "isInstance";
+            this.cr_isInstance.UseVisualStyleBackColor = true;
+            // 
+            // tb_state
+            // 
+            this.tb_state.Location = new System.Drawing.Point(100, 520);
+            this.tb_state.Name = "tb_state";
+            this.tb_state.Size = new System.Drawing.Size(100, 20);
+            this.tb_state.TabIndex = 48;
+            this.tb_state.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(29, 575);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 45;
+            this.label5.Text = "End position";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(27, 549);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(68, 13);
+            this.label4.TabIndex = 44;
+            this.label4.Text = "Start position";
+            // 
+            // tb_startPosition
+            // 
+            this.tb_startPosition.Location = new System.Drawing.Point(100, 572);
+            this.tb_startPosition.Name = "tb_startPosition";
+            this.tb_startPosition.Size = new System.Drawing.Size(100, 20);
+            this.tb_startPosition.TabIndex = 43;
+            // 
+            // tb_bufferCount
+            // 
+            this.tb_bufferCount.Location = new System.Drawing.Point(100, 546);
+            this.tb_bufferCount.Name = "tb_bufferCount";
+            this.tb_bufferCount.Size = new System.Drawing.Size(100, 20);
+            this.tb_bufferCount.TabIndex = 42;
+            // 
+            // tb_script
+            // 
+            this.tb_script.Location = new System.Drawing.Point(127, 304);
+            this.tb_script.Name = "tb_script";
+            this.tb_script.Size = new System.Drawing.Size(100, 20);
+            this.tb_script.TabIndex = 41;
+            this.tb_script.Text = "g.script";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 304);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(65, 23);
+            this.button1.TabIndex = 40;
+            this.button1.Text = "Script";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // tb_devn
             // 
-            this.tb_devn.Location = new System.Drawing.Point(127, 250);
+            this.tb_devn.Location = new System.Drawing.Point(127, 239);
             this.tb_devn.Name = "tb_devn";
             this.tb_devn.Size = new System.Drawing.Size(85, 20);
             this.tb_devn.TabIndex = 15;
@@ -147,9 +326,9 @@
             // 
             // bt_initialise
             // 
-            this.bt_initialise.Location = new System.Drawing.Point(484, 101);
+            this.bt_initialise.Location = new System.Drawing.Point(238, 371);
             this.bt_initialise.Name = "bt_initialise";
-            this.bt_initialise.Size = new System.Drawing.Size(149, 48);
+            this.bt_initialise.Size = new System.Drawing.Size(120, 20);
             this.bt_initialise.TabIndex = 39;
             this.bt_initialise.Text = "Initialise";
             this.bt_initialise.UseVisualStyleBackColor = true;
@@ -158,7 +337,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 253);
+            this.label3.Location = new System.Drawing.Point(12, 239);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 16;
@@ -166,9 +345,9 @@
             // 
             // bt_LoadCorrFile
             // 
-            this.bt_LoadCorrFile.Location = new System.Drawing.Point(253, 16);
+            this.bt_LoadCorrFile.Location = new System.Drawing.Point(7, 346);
             this.bt_LoadCorrFile.Name = "bt_LoadCorrFile";
-            this.bt_LoadCorrFile.Size = new System.Drawing.Size(61, 23);
+            this.bt_LoadCorrFile.Size = new System.Drawing.Size(65, 23);
             this.bt_LoadCorrFile.TabIndex = 38;
             this.bt_LoadCorrFile.Text = "CorrFile";
             this.bt_LoadCorrFile.UseVisualStyleBackColor = true;
@@ -176,7 +355,7 @@
             // 
             // tb_corrFile
             // 
-            this.tb_corrFile.Location = new System.Drawing.Point(320, 19);
+            this.tb_corrFile.Location = new System.Drawing.Point(127, 346);
             this.tb_corrFile.Name = "tb_corrFile";
             this.tb_corrFile.Size = new System.Drawing.Size(100, 20);
             this.tb_corrFile.TabIndex = 37;
@@ -339,7 +518,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(283, 92);
+            this.label8.Location = new System.Drawing.Point(38, 393);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 21;
@@ -347,7 +526,7 @@
             // 
             // tb_scale
             // 
-            this.tb_scale.Location = new System.Drawing.Point(320, 88);
+            this.tb_scale.Location = new System.Drawing.Point(127, 386);
             this.tb_scale.Name = "tb_scale";
             this.tb_scale.Size = new System.Drawing.Size(100, 20);
             this.tb_scale.TabIndex = 20;
@@ -356,7 +535,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(280, 51);
+            this.label7.Location = new System.Drawing.Point(639, 450);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 19;
@@ -364,241 +543,24 @@
             // 
             // tb_Power
             // 
-            this.tb_Power.Location = new System.Drawing.Point(320, 51);
+            this.tb_Power.Location = new System.Drawing.Point(679, 450);
             this.tb_Power.Name = "tb_Power";
             this.tb_Power.Size = new System.Drawing.Size(100, 20);
             this.tb_Power.TabIndex = 18;
             this.tb_Power.Text = "100";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(279, 160);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(16, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "t2";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(279, 186);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(16, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "t3";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(279, 135);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(16, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "t1";
-            // 
-            // tb_t3
-            // 
-            this.tb_t3.Location = new System.Drawing.Point(320, 183);
-            this.tb_t3.Name = "tb_t3";
-            this.tb_t3.Size = new System.Drawing.Size(100, 20);
-            this.tb_t3.TabIndex = 8;
-            this.tb_t3.Text = "0";
-            // 
-            // tb_t2
-            // 
-            this.tb_t2.Location = new System.Drawing.Point(320, 158);
-            this.tb_t2.Name = "tb_t2";
-            this.tb_t2.Size = new System.Drawing.Size(100, 20);
-            this.tb_t2.TabIndex = 7;
-            this.tb_t2.Text = "800";
-            // 
-            // tb_t1
-            // 
-            this.tb_t1.Location = new System.Drawing.Point(320, 129);
-            this.tb_t1.Name = "tb_t1";
-            this.tb_t1.Size = new System.Drawing.Size(100, 20);
-            this.tb_t1.TabIndex = 6;
-            this.tb_t1.Text = "1000";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(248, 214);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(65, 23);
-            this.button1.TabIndex = 40;
-            this.button1.Text = "Script";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // tb_script
-            // 
-            this.tb_script.Location = new System.Drawing.Point(320, 217);
-            this.tb_script.Name = "tb_script";
-            this.tb_script.Size = new System.Drawing.Size(100, 20);
-            this.tb_script.TabIndex = 41;
-            this.tb_script.Text = "g.script";
-            // 
-            // tb_bufferCount
-            // 
-            this.tb_bufferCount.Location = new System.Drawing.Point(85, 382);
-            this.tb_bufferCount.Name = "tb_bufferCount";
-            this.tb_bufferCount.Size = new System.Drawing.Size(100, 20);
-            this.tb_bufferCount.TabIndex = 42;
-            // 
-            // tb_startPosition
-            // 
-            this.tb_startPosition.Location = new System.Drawing.Point(85, 408);
-            this.tb_startPosition.Name = "tb_startPosition";
-            this.tb_startPosition.Size = new System.Drawing.Size(100, 20);
-            this.tb_startPosition.TabIndex = 43;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 385);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 13);
-            this.label4.TabIndex = 44;
-            this.label4.Text = "Start position";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 411);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
-            this.label5.TabIndex = 45;
-            this.label5.Text = "End position";
-            // 
-            // cr_validFileName
-            // 
-            this.cr_validFileName.AutoSize = true;
-            this.cr_validFileName.Location = new System.Drawing.Point(210, 419);
-            this.cr_validFileName.Name = "cr_validFileName";
-            this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
-            this.cr_validFileName.TabIndex = 46;
-            this.cr_validFileName.Text = "validFileName";
-            this.cr_validFileName.UseVisualStyleBackColor = true;
-            // 
-            // cb_isBufferFull
-            // 
-            this.cb_isBufferFull.AutoSize = true;
-            this.cb_isBufferFull.Location = new System.Drawing.Point(210, 350);
-            this.cb_isBufferFull.Name = "cb_isBufferFull";
-            this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
-            this.cb_isBufferFull.TabIndex = 50;
-            this.cb_isBufferFull.Text = "isBufferFull";
-            this.cb_isBufferFull.UseVisualStyleBackColor = true;
-            // 
-            // cb_layerFinished
-            // 
-            this.cb_layerFinished.AutoSize = true;
-            this.cb_layerFinished.Location = new System.Drawing.Point(210, 373);
-            this.cb_layerFinished.Name = "cb_layerFinished";
-            this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
-            this.cb_layerFinished.TabIndex = 49;
-            this.cb_layerFinished.Text = "layerFiniched";
-            this.cb_layerFinished.UseVisualStyleBackColor = true;
-            // 
-            // cr_isInstance
-            // 
-            this.cr_isInstance.AutoSize = true;
-            this.cr_isInstance.Location = new System.Drawing.Point(210, 396);
-            this.cr_isInstance.Name = "cr_isInstance";
-            this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
-            this.cr_isInstance.TabIndex = 47;
-            this.cr_isInstance.Text = "isInstance";
-            this.cr_isInstance.UseVisualStyleBackColor = true;
-            // 
-            // tb_state
-            // 
-            this.tb_state.Location = new System.Drawing.Point(85, 356);
-            this.tb_state.Name = "tb_state";
-            this.tb_state.Size = new System.Drawing.Size(100, 20);
-            this.tb_state.TabIndex = 48;
-            this.tb_state.Text = "0";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 360);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 13);
-            this.label10.TabIndex = 51;
-            this.label10.Text = "Mode";
-            // 
-            // cb_l1load
-            // 
-            this.cb_l1load.AutoSize = true;
-            this.cb_l1load.Location = new System.Drawing.Point(443, 312);
-            this.cb_l1load.Name = "cb_l1load";
-            this.cb_l1load.Size = new System.Drawing.Size(54, 17);
-            this.cb_l1load.TabIndex = 52;
-            this.cb_l1load.Text = "l1load";
-            this.cb_l1load.UseVisualStyleBackColor = true;
-            // 
-            // cb_l1redy
-            // 
-            this.cb_l1redy.AutoSize = true;
-            this.cb_l1redy.Location = new System.Drawing.Point(443, 335);
-            this.cb_l1redy.Name = "cb_l1redy";
-            this.cb_l1redy.Size = new System.Drawing.Size(54, 17);
-            this.cb_l1redy.TabIndex = 53;
-            this.cb_l1redy.Text = "l1redy";
-            this.cb_l1redy.UseVisualStyleBackColor = true;
-            // 
-            // cb_l1busy
-            // 
-            this.cb_l1busy.AutoSize = true;
-            this.cb_l1busy.Location = new System.Drawing.Point(443, 358);
-            this.cb_l1busy.Name = "cb_l1busy";
-            this.cb_l1busy.Size = new System.Drawing.Size(56, 17);
-            this.cb_l1busy.TabIndex = 54;
-            this.cb_l1busy.Text = "l1busy";
-            this.cb_l1busy.UseVisualStyleBackColor = true;
-            // 
-            // cb_scanComplete
-            // 
-            this.cb_scanComplete.AutoSize = true;
-            this.cb_scanComplete.Location = new System.Drawing.Point(443, 430);
-            this.cb_scanComplete.Name = "cb_scanComplete";
-            this.cb_scanComplete.Size = new System.Drawing.Size(97, 17);
-            this.cb_scanComplete.TabIndex = 57;
-            this.cb_scanComplete.Text = "Scan complete";
-            this.cb_scanComplete.UseVisualStyleBackColor = true;
-            // 
-            // cb_LaserOn
-            // 
-            this.cb_LaserOn.AutoSize = true;
-            this.cb_LaserOn.Location = new System.Drawing.Point(443, 407);
-            this.cb_LaserOn.Name = "cb_LaserOn";
-            this.cb_LaserOn.Size = new System.Drawing.Size(66, 17);
-            this.cb_LaserOn.TabIndex = 56;
-            this.cb_LaserOn.Text = "LaserOn";
-            this.cb_LaserOn.UseVisualStyleBackColor = true;
-            // 
-            // cb_busy
-            // 
-            this.cb_busy.AutoSize = true;
-            this.cb_busy.Location = new System.Drawing.Point(443, 384);
-            this.cb_busy.Name = "cb_busy";
-            this.cb_busy.Size = new System.Drawing.Size(48, 17);
-            this.cb_busy.TabIndex = 55;
-            this.cb_busy.Text = "busy";
-            this.cb_busy.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 449);
+            this.ClientSize = new System.Drawing.Size(811, 623);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -606,16 +568,10 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tb_t3;
-        private System.Windows.Forms.TextBox tb_t2;
-        private System.Windows.Forms.TextBox tb_t1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tb_scale;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tb_Power;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox cb_mode_b10;
         private System.Windows.Forms.CheckBox cb_mode_b8;
         private System.Windows.Forms.CheckBox cb_mode_b13;
@@ -653,6 +609,8 @@
         private System.Windows.Forms.CheckBox cb_l1busy;
         private System.Windows.Forms.CheckBox cb_l1redy;
         private System.Windows.Forms.CheckBox cb_l1load;
+        private System.Windows.Forms.DataGridView dg;
+        private System.Windows.Forms.Button bt_default;
 
 
     }

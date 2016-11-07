@@ -46,5 +46,437 @@ namespace ClassLibrary1.Properties {
                 this["scriptFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public long s1Power {
+            get {
+                return ((long)(this["s1Power"]));
+            }
+            set {
+                this["s1Power"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public long s2Power {
+            get {
+                return ((long)(this["s2Power"]));
+            }
+            set {
+                this["s2Power"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public long s3Power {
+            get {
+                return ((long)(this["s3Power"]));
+            }
+            set {
+                this["s3Power"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s1LaserOn {
+            get {
+                return ((long)(this["s1LaserOn"]));
+            }
+            set {
+                this["s1LaserOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s2LaserOn {
+            get {
+                return ((long)(this["s2LaserOn"]));
+            }
+            set {
+                this["s2LaserOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s3LaserOn {
+            get {
+                return ((long)(this["s3LaserOn"]));
+            }
+            set {
+                this["s3LaserOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s1LaserOff {
+            get {
+                return ((long)(this["s1LaserOff"]));
+            }
+            set {
+                this["s1LaserOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s2LaserOff {
+            get {
+                return ((long)(this["s2LaserOff"]));
+            }
+            set {
+                this["s2LaserOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s3LaserOff {
+            get {
+                return ((long)(this["s3LaserOff"]));
+            }
+            set {
+                this["s3LaserOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s1PolygonDelay {
+            get {
+                return ((long)(this["s1PolygonDelay"]));
+            }
+            set {
+                this["s1PolygonDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s2PolygonDelay {
+            get {
+                return ((long)(this["s2PolygonDelay"]));
+            }
+            set {
+                this["s2PolygonDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s3PolygonDelay {
+            get {
+                return ((long)(this["s3PolygonDelay"]));
+            }
+            set {
+                this["s3PolygonDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s1MarkDelay {
+            get {
+                return ((long)(this["s1MarkDelay"]));
+            }
+            set {
+                this["s1MarkDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s2MarkDelay {
+            get {
+                return ((long)(this["s2MarkDelay"]));
+            }
+            set {
+                this["s2MarkDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long s3MarkDelay {
+            get {
+                return ((long)(this["s3MarkDelay"]));
+            }
+            set {
+                this["s3MarkDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s1JampDelay {
+            get {
+                return ((long)(this["s1JampDelay"]));
+            }
+            set {
+                this["s1JampDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s2JampDelay {
+            get {
+                return ((long)(this["s2JampDelay"]));
+            }
+            set {
+                this["s2JampDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public long s3JampDelay {
+            get {
+                return ((long)(this["s3JampDelay"]));
+            }
+            set {
+                this["s3JampDelay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long s1Fps {
+            get {
+                return ((long)(this["s1Fps"]));
+            }
+            set {
+                this["s1Fps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long s2Fps {
+            get {
+                return ((long)(this["s2Fps"]));
+            }
+            set {
+                this["s2Fps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long s3Fps {
+            get {
+                return ((long)(this["s3Fps"]));
+            }
+            set {
+                this["s3Fps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public long s1Q1 {
+            get {
+                return ((long)(this["s1Q1"]));
+            }
+            set {
+                this["s1Q1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public long s2Q1 {
+            get {
+                return ((long)(this["s2Q1"]));
+            }
+            set {
+                this["s2Q1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public long s3Q1 {
+            get {
+                return ((long)(this["s3Q1"]));
+            }
+            set {
+                this["s3Q1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public long s1Q2 {
+            get {
+                return ((long)(this["s1Q2"]));
+            }
+            set {
+                this["s1Q2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public long s2Q2 {
+            get {
+                return ((long)(this["s2Q2"]));
+            }
+            set {
+                this["s2Q2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public long s3Q2 {
+            get {
+                return ((long)(this["s3Q2"]));
+            }
+            set {
+                this["s3Q2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s1JampSize {
+            get {
+                return ((long)(this["s1JampSize"]));
+            }
+            set {
+                this["s1JampSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s2JampSize {
+            get {
+                return ((long)(this["s2JampSize"]));
+            }
+            set {
+                this["s2JampSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s3JampSize {
+            get {
+                return ((long)(this["s3JampSize"]));
+            }
+            set {
+                this["s3JampSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s1MarkSize {
+            get {
+                return ((long)(this["s1MarkSize"]));
+            }
+            set {
+                this["s1MarkSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s2MarkSize {
+            get {
+                return ((long)(this["s2MarkSize"]));
+            }
+            set {
+                this["s2MarkSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public long s3MarkSize {
+            get {
+                return ((long)(this["s3MarkSize"]));
+            }
+            set {
+                this["s3MarkSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public long s1Step {
+            get {
+                return ((long)(this["s1Step"]));
+            }
+            set {
+                this["s1Step"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public long s2Step {
+            get {
+                return ((long)(this["s2Step"]));
+            }
+            set {
+                this["s2Step"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public long s3Step {
+            get {
+                return ((long)(this["s3Step"]));
+            }
+            set {
+                this["s3Step"] = value;
+            }
+        }
     }
 }
