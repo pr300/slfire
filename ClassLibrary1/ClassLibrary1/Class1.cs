@@ -175,7 +175,11 @@ namespace ClassLibrary1
                  "Set active card", rSetAct.ToString(),
                  "Oscillator on", rOsc.ToString() ,
                  "Open script", openScript.ToString(), cs.scriptPath),
-                 "Initialize is " + (initOk ? "Success" : "Fail"), MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+                 "Initialize is " + (initOk ? "Success" : "Fail"), 
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.None, 
+                 MessageBoxDefaultButton.Button1, 
+                 (MessageBoxOptions)0x40000);
 //             MessageBox.Show(new Form() { TopMost = true }, "I'm on top!");
 
 
