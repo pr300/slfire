@@ -38,7 +38,7 @@ namespace ClassLibrary1
         static Int16[] actualArgs = new Int16[4];
 
         static bool m_resetFile = false;
-
+        static public cardSetting m_cs;
         static StreamWriter file;//= new StreamWriter("F:\\write_code.txt", false);
         // private Object thisLock = new Object();
 

@@ -16,6 +16,22 @@ namespace ClassLibrary1
     public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, FillList = 0x08 };
     public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
+    public struct styles
+	{
+		public long lStep;
+        public long lLaserOn;
+        public long lLaserOff;
+        public long lPolygon;
+        public long lMarkDelay;
+        public long lJampDelay;
+        public long lFps;
+        public long lQt1;
+        public long lQt2;
+        public long lJampSize;
+        public long lMarkSize;
+        public long lPower;
+	}
+
     public struct cardSetting
     {
         public UInt16 mode;
@@ -28,6 +44,9 @@ namespace ClassLibrary1
         public Int16 num;
         public string scriptPath;
         public bool doInit;
+        public styles style1;
+        public styles style2;
+        public styles style3;
 
     };
 
@@ -162,7 +181,7 @@ namespace ClassLibrary1
             bool rSetMode = Set_Mode(cs.mode);
             bool rOsc = Write_Port_List(0xC, 0x010);
 
-
+            fileLoader.m_cs = cs;
 
             bool openScript = fileLoader.openJobfile(cs.scriptPath);
 
@@ -194,7 +213,7 @@ namespace ClassLibrary1
             var frm = new Form1();
 
             frm.initCmd += initFromForm;
-
+            frm.TopMost = true;
             frm.ShowDialog();
         }
 

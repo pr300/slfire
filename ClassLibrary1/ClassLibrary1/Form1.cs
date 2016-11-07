@@ -225,13 +225,55 @@ namespace ClassLibrary1
             cs.num = Int16.Parse(tb_devn.Text);
             cs.scriptPath = tb_script.Text;
 
+            int i = 1;
+            cs.style1.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            cs.style1.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            cs.style1.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            cs.style1.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            cs.style1.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            cs.style1.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            cs.style1.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            cs.style1.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            cs.style1.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            cs.style1.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
+            cs.style1.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style1.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+
+            i = 2;
+            cs.style2.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            cs.style2.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            cs.style2.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            cs.style2.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            cs.style2.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            cs.style2.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            cs.style2.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            cs.style2.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            cs.style2.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            cs.style2.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
+            cs.style2.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style2.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+
+            i = 3;
+            cs.style3.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            cs.style3.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            cs.style3.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            cs.style3.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            cs.style3.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            cs.style3.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            cs.style3.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            cs.style3.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            cs.style3.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            cs.style3.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
+            cs.style3.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style3.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+
             bool result = initCmd(cs);
             if (result)
             {
                 Properties.Settings.Default.correctionFile = tb_corrFile.Text;
                 Properties.Settings.Default.scriptFile = tb_script.Text;
 
-                int i = 1;
+                 i = 1;
                 Properties.Settings.Default.s1Step = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
                 Properties.Settings.Default.s1LaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
                 Properties.Settings.Default.s1LaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
@@ -397,6 +439,21 @@ namespace ClassLibrary1
                 dg.Rows[(int)prm.lMarkSize].Cells[i].Value = 50;
                 dg.Rows[(int)prm.lPower].Cells[i].Value = 100;
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -124,7 +124,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(811, 623);
+            this.groupBox1.Size = new System.Drawing.Size(785, 622);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
@@ -132,9 +132,9 @@
             // 
             // bt_default
             // 
-            this.bt_default.Location = new System.Drawing.Point(704, 370);
+            this.bt_default.Location = new System.Drawing.Point(704, 314);
             this.bt_default.Name = "bt_default";
-            this.bt_default.Size = new System.Drawing.Size(75, 23);
+            this.bt_default.Size = new System.Drawing.Size(75, 32);
             this.bt_default.TabIndex = 59;
             this.bt_default.Text = "Default";
             this.bt_default.UseVisualStyleBackColor = true;
@@ -146,7 +146,7 @@
             this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg.Location = new System.Drawing.Point(238, 12);
             this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(541, 340);
+            this.dg.Size = new System.Drawing.Size(541, 296);
             this.dg.TabIndex = 58;
             // 
             // cb_scanComplete
@@ -300,15 +300,15 @@
             // 
             // tb_script
             // 
-            this.tb_script.Location = new System.Drawing.Point(127, 304);
+            this.tb_script.Location = new System.Drawing.Point(127, 261);
             this.tb_script.Name = "tb_script";
-            this.tb_script.Size = new System.Drawing.Size(100, 20);
+            this.tb_script.Size = new System.Drawing.Size(85, 20);
             this.tb_script.TabIndex = 41;
             this.tb_script.Text = "g.script";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(7, 304);
+            this.button1.Location = new System.Drawing.Point(10, 255);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(65, 23);
             this.button1.TabIndex = 40;
@@ -318,7 +318,7 @@
             // 
             // tb_devn
             // 
-            this.tb_devn.Location = new System.Drawing.Point(127, 239);
+            this.tb_devn.Location = new System.Drawing.Point(127, 234);
             this.tb_devn.Name = "tb_devn";
             this.tb_devn.Size = new System.Drawing.Size(85, 20);
             this.tb_devn.TabIndex = 15;
@@ -326,9 +326,9 @@
             // 
             // bt_initialise
             // 
-            this.bt_initialise.Location = new System.Drawing.Point(238, 371);
+            this.bt_initialise.Location = new System.Drawing.Point(238, 314);
             this.bt_initialise.Name = "bt_initialise";
-            this.bt_initialise.Size = new System.Drawing.Size(120, 20);
+            this.bt_initialise.Size = new System.Drawing.Size(120, 29);
             this.bt_initialise.TabIndex = 39;
             this.bt_initialise.Text = "Initialise";
             this.bt_initialise.UseVisualStyleBackColor = true;
@@ -337,15 +337,16 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 239);
+            this.label3.Location = new System.Drawing.Point(9, 231);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 16;
             this.label3.Text = "device number";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // bt_LoadCorrFile
             // 
-            this.bt_LoadCorrFile.Location = new System.Drawing.Point(7, 346);
+            this.bt_LoadCorrFile.Location = new System.Drawing.Point(10, 289);
             this.bt_LoadCorrFile.Name = "bt_LoadCorrFile";
             this.bt_LoadCorrFile.Size = new System.Drawing.Size(65, 23);
             this.bt_LoadCorrFile.TabIndex = 38;
@@ -355,9 +356,9 @@
             // 
             // tb_corrFile
             // 
-            this.tb_corrFile.Location = new System.Drawing.Point(127, 346);
+            this.tb_corrFile.Location = new System.Drawing.Point(127, 288);
             this.tb_corrFile.Name = "tb_corrFile";
-            this.tb_corrFile.Size = new System.Drawing.Size(100, 20);
+            this.tb_corrFile.Size = new System.Drawing.Size(85, 20);
             this.tb_corrFile.TabIndex = 37;
             this.tb_corrFile.Text = "C200_15.gcd";
             // 
@@ -371,11 +372,12 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 214);
+            this.label9.Location = new System.Drawing.Point(9, 207);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(34, 13);
             this.label9.TabIndex = 34;
             this.label9.Text = "Mode";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // cb_mode_b10
             // 
@@ -518,17 +520,18 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(38, 393);
+            this.label8.Location = new System.Drawing.Point(12, 323);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 21;
             this.label8.Text = "Scale";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // tb_scale
             // 
-            this.tb_scale.Location = new System.Drawing.Point(127, 386);
+            this.tb_scale.Location = new System.Drawing.Point(127, 315);
             this.tb_scale.Name = "tb_scale";
-            this.tb_scale.Size = new System.Drawing.Size(100, 20);
+            this.tb_scale.Size = new System.Drawing.Size(85, 20);
             this.tb_scale.TabIndex = 20;
             this.tb_scale.Text = "50";
             // 
@@ -553,7 +556,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(811, 623);
+            this.ClientSize = new System.Drawing.Size(785, 622);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
