@@ -47,6 +47,7 @@ namespace ClassLibrary1
         public styles style1;
         public styles style2;
         public styles style3;
+        public bool debug;
 
     };
 
@@ -169,6 +170,10 @@ namespace ClassLibrary1
         public static extern bool Long_Delay(UInt16 usDelay);
         [DllImport("SP-ICE.dll")]
         public static extern bool Mark_Abs(Int16 ssXVal, Int16 ssYVal);
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Set_Mark_Parameters_List(UInt16  usStepPeriod, UInt16  usStepSize);
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Set_Jump_Parameters_List(UInt16 usStepPeriod, UInt16 usJumpSize);
 
         private static bool initFromForm(cardSetting cs)
         {
@@ -213,7 +218,7 @@ namespace ClassLibrary1
             var frm = new Form1();
 
             frm.initCmd += initFromForm;
-            frm.TopMost = true;
+
             frm.ShowDialog();
         }
 
@@ -342,6 +347,8 @@ namespace ClassLibrary1
             Set_Start_List_1();
             printDebug("Set_Start_List_1()");
             Set_Delays(60, 100, 100, 100, 100, 100, 1000, 500, 0);
+            //styles st1 = fileLoader.m_cs.style1;
+            //Set_Delays((UInt16)st.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
             printDebug("Set_Delays");
             Long_Delay(10); //??
             printDebug("Long_Delay");
@@ -388,6 +395,17 @@ namespace ClassLibrary1
                         PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
+                    case Command.Style:
+                        styles st = fileLoader.m_listJob[iterator].x == 1 ? fileLoader.m_cs.style1 : fileLoader.m_listJob[iterator].x == 2 ? fileLoader.m_cs.style2 : fileLoader.m_cs.style3;
+                         Write_DA_List((UInt16)st.lPower);
+                         printDebug(iterator, "Write_DA_List", (Int16)st.lPower, 0);
+                         Set_Mark_Parameters_List((UInt16)st.lStep, (UInt16)st.lMarkSize);
+                         printDebug(iterator, "Set_Mark_Parameters_List", (Int16)st.lStep, (Int16)st.lMarkSize);
+                         Set_Jump_Parameters_List((UInt16)st.lStep, (UInt16)st.lJampSize);
+                         printDebug(iterator, "Set_Jump_Parameters_List", (Int16)st.lStep, (Int16)st.lJampSize);
+                        // Set_Delays((UInt16)st.lStep, (UInt16)st.lJampDelay, (UInt16)st.lMarkDelay, (UInt16)st.lPolygon, (UInt16)st.lLaserOff, (UInt16)st.lLaserOn, (UInt16)st.lQt1, (UInt16)st.lQt2, 0);
+                         printDebug("Set_Delays");
+                        break;
 
                 }
 
@@ -432,10 +450,21 @@ namespace ClassLibrary1
         }
         private static void printDebug(long iterator, Command cmd, Int16 x, Int16 y)
         {
-            file.WriteLine(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", iterator.ToString(), cmd.ToString(), x.ToString(), y.ToString(), getLastError()));
-            file.Flush();
+            if (fileLoader.m_cs.debug)
+            {
+                file.WriteLine(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", iterator.ToString(), cmd.ToString(), x.ToString(), y.ToString(), getLastError()));
+                file.Flush();
+            }
         }
 
+        private static void printDebug(long iterator, String cmd, Int16 x, Int16 y)
+        {
+            if (fileLoader.m_cs.debug)
+            {
+                file.WriteLine(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", iterator.ToString(), cmd, x.ToString(), y.ToString(), getLastError()));
+                file.Flush();
+            }
+        }
 
         public static void deinitialize()
         {

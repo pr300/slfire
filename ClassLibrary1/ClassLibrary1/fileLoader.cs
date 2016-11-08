@@ -11,7 +11,9 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80, EndF = 0x100 };
+    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80, EndF = 0x100, Style = 0x200 };
+    public enum StyleState {stUndefine = 0x0,  stStyle1 = 0x1, stStyle2 = 0x2, stStyle3 = 0x3 };
+
     public struct JobCommand
     {
         public Command cmd;
@@ -36,7 +38,7 @@ namespace ClassLibrary1
         private static StreamReader f;
         static string m_fileName;
         static Int16[] actualArgs = new Int16[4];
-
+        private static StyleState m_style;
         static bool m_resetFile = false;
         static public cardSetting m_cs;
         static StreamWriter file;//= new StreamWriter("F:\\write_code.txt", false);
@@ -150,6 +152,12 @@ namespace ClassLibrary1
                             switch (command)
                             {
                                 case "Image.Line":
+                                    if (m_style != StyleState.stStyle2)
+                                    {
+                                        correctLastPol(0, 0, true);
+                                        addCommandAtEnd(Command.Style, 2, 0, 0, 0, "");
+                                        m_style = StyleState.stStyle2;
+                                    }
                                     //Match match = regexOperand.Match(str);
                                     MatchCollection matches = regexOperand.Matches(str);
 
@@ -192,12 +200,20 @@ namespace ClassLibrary1
                                     break;
                                 case "F_In":
                                     addCommandAtEnd(Command.StarLayer, 0, 0, 0, 0);
+                                    m_style = StyleState.stUndefine;
                                     break;
                                 case "F_Out":
                                     correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
                                     addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
+                                    m_style = StyleState.stUndefine;
                                     break;
                                 case "Image.Polyline3D":
+                                    if (m_style != StyleState.stStyle1)
+                                    {
+                                        correctLastPol(0, 0, true);
+                                        addCommandAtEnd(Command.Style, 1, 0, 0, 0,"");
+                                        m_style = StyleState.stStyle1;
+                                    }
                                     MatchCollection pol3D = regexOperand.Matches(str.Substring(16));
 
                                     correctLastPol(0, 0, true);
@@ -295,17 +311,19 @@ namespace ClassLibrary1
             m_listJob[pos].x = a1;
             m_listJob[pos].y = a2;
             endPosition++;
-
-            string deb = string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", pos.ToString(), cmd.ToString(), a1.ToString(), a2.ToString(), debug);
-            file.WriteLine(deb);
-            file.Flush();
+            if (m_cs.debug)
+            {
+                string deb = string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", pos.ToString(), cmd.ToString(), a1.ToString(), a2.ToString(), debug);
+                file.WriteLine(deb);
+                file.Flush();
+            }
 
         }
 
         static bool isPolA(Int16 x, Int16 y)
         {
             long pos = (endPosition - 1) % BUFFER_SIZE;
-            if ((m_listJob[pos].cmd & (Command.StarLayer | Command.EndLayer | Command.Jamp | Command.PolC_Abs | Command.Mark | Command.Nop)) != 0) return true;
+            if ((m_listJob[pos].cmd & (Command.StarLayer | Command.EndLayer | Command.Jamp | Command.PolC_Abs | Command.Mark | Command.Nop| Command.Style)) != 0) return true;
             return false;
         }
 
@@ -329,8 +347,11 @@ namespace ClassLibrary1
                 if (isEnd || m_listJob[pos].x != x || m_listJob[pos].y != y)
                 {
                     m_listJob[pos].cmd = Command.Mark;
-                    file.WriteLine(string.Format("<{0, 9}:  <----correct to Mark", pos.ToString()));
-                    file.Flush();
+                    if (m_cs.debug)
+                    {
+                        file.WriteLine(string.Format("<{0, 9}:  <----correct to Mark", pos.ToString()));
+                        file.Flush();
+                    }
                 }
             }
             else if (m_listJob[pos].cmd == Command.PolB_Abs)
@@ -338,8 +359,11 @@ namespace ClassLibrary1
                 if (isEnd || m_listJob[pos].x != x || m_listJob[pos].y != y)
                 {
                     m_listJob[pos].cmd = Command.PolC_Abs;
-                    file.WriteLine(string.Format("<{0, 9}:  <----correct to PolC_Abs", pos.ToString()));
-                    file.Flush();
+                    if (m_cs.debug)
+                    {
+                        file.WriteLine(string.Format("<{0, 9}:  <----correct to PolC_Abs", pos.ToString()));
+                        file.Flush();
+                    }
                 }
             }
         }

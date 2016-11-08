@@ -42,6 +42,7 @@ namespace ClassLibrary1
             InitializeComponent();
             tb_corrFile.Text = Properties.Settings.Default.correctionFile;
             tb_script.Text = Properties.Settings.Default.scriptFile;
+            cb_printDebug.Checked = Properties.Settings.Default.printDebug;
 
             readCorrectionTextFile(tb_corrFile.Text);
             dg.Columns.Add("name", "Name");
@@ -224,6 +225,7 @@ namespace ClassLibrary1
             cs.scale = float.Parse(tb_scale.Text, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture);//UInt16.Parse(tb_scale.Text);
             cs.num = Int16.Parse(tb_devn.Text);
             cs.scriptPath = tb_script.Text;
+            cs.debug = cb_printDebug.Checked;
 
             int i = 1;
             cs.style1.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
@@ -272,6 +274,7 @@ namespace ClassLibrary1
             {
                 Properties.Settings.Default.correctionFile = tb_corrFile.Text;
                 Properties.Settings.Default.scriptFile = tb_script.Text;
+                Properties.Settings.Default.printDebug = cb_printDebug.Checked;
 
                  i = 1;
                 Properties.Settings.Default.s1Step = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());

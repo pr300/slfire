@@ -478,5 +478,17 @@ namespace ClassLibrary1.Properties {
                 this["s3Step"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool printDebug {
+            get {
+                return ((bool)(this["printDebug"]));
+            }
+            set {
+                this["printDebug"] = value;
+            }
+        }
     }
 }
