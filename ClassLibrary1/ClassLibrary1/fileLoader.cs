@@ -32,7 +32,7 @@ namespace ClassLibrary1
         public static long runPermission = 0;
         public static bool m_isBufferFull = false;
 
-        const long BUFFER_SIZE = 150000;
+        const long BUFFER_SIZE = 1001000;
         static public double gateMmToField = 100;
         static public JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
         private static StreamReader f;
@@ -120,6 +120,7 @@ namespace ClassLibrary1
         {
             // endPosition++;
             // MessageBox.Show("fillJobList p1", "str", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+            int multilp = 0;
             while (runPermission == 1)
             {
 
@@ -136,6 +137,7 @@ namespace ClassLibrary1
                 }
                 else if ((Interlocked.CompareExchange(ref isValidFile, 1, 1) == 1) && isNextFree())
                 {
+                    multilp += 1;
                     try
                     {
                         m_isBufferFull = false;
@@ -269,7 +271,11 @@ namespace ClassLibrary1
                     m_isBufferFull = true;
                 }
 
-                Thread.Sleep(0);
+                if (multilp > 100 || m_isBufferFull)
+                {
+                    Thread.Sleep(0);
+                    multilp = 0;
+                }
             }
 
         }

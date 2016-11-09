@@ -9,23 +9,26 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
+using SpannedDataGridView;
+
 namespace ClassLibrary1
 {
 
     public enum prm
     {
         lStep = 0,
-        lLaserOn = 1,
-        lLaserOff = 2,
-        lPolygon = 3,
-        lMarkDelay = 4,
-        lJampDelay = 5,
-        lFps = 6,
-        lQt1 = 7,
-        lQt2 = 8,
-        lJampSize =9,
-        lMarkSize = 10,
-        lPower = 11
+                lJampSize =1,
+        lMarkSize = 2,
+        lPower = 3,
+        lLaserOn = 4,
+        lLaserOff = 5,
+        lPolygon = 6,
+        lMarkDelay = 7,
+        lJampDelay = 8,
+        lFps = 9,
+        lQt1 = 10,
+        lQt2 = 11
+
     };
 
 
@@ -45,11 +48,14 @@ namespace ClassLibrary1
             cb_printDebug.Checked = Properties.Settings.Default.printDebug;
 
             readCorrectionTextFile(tb_corrFile.Text);
-            dg.Columns.Add("name", "Name");
-            dg.Columns.Add("style1", "Style 1");
-            dg.Columns.Add("style2", "Style 2");
-            dg.Columns.Add("style3", "Style 3");
+            //dg.Columns.Add("name", "Name");
+            //dg.Columns.Add("style1", "Style 1");
+            //dg.Columns.Add("style2", "Style 2");
+            //dg.Columns.Add("style3", "Style 3");
             dg.Rows.Add("Step");
+            dg.Rows.Add("Jump size in period");
+            dg.Rows.Add("Mark size in period");
+            dg.Rows.Add("Power");
             dg.Rows.Add("LaserOn Delay");
             dg.Rows.Add("LaserOff Delay");
             dg.Rows.Add("Polygon Delay");
@@ -58,12 +64,44 @@ namespace ClassLibrary1
             dg.Rows.Add("FPS");
             dg.Rows.Add("Q-Switch t1");
             dg.Rows.Add("Q-Switch t2");
-            dg.Rows.Add("Jump size in period");
-            dg.Rows.Add("Mark size in period");
-            dg.Rows.Add("Power");
+
+
+
+            var cell = (DataGridViewTextBoxCellEx)dg[1, 4];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 5];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 6];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 7];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1,8];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 9];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 10];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 11];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+
+            dg.AutoGenerateColumns = false;
+           // cell = (DataGridViewTextBoxCellEx)dg[3, 0];
+           // cell.ColumnSpan = 3;
+           // cell.RowSpan = 1;
 
             dg.AllowUserToAddRows = false;
 
+            Column2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column3.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column4.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dg.Rows[(int)prm.lStep].Cells[1].Value = Properties.Settings.Default.s1Step;
             dg.Rows[(int)prm.lLaserOn].Cells[1].Value = Properties.Settings.Default.s1LaserOn;

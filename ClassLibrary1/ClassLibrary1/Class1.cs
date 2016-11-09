@@ -82,7 +82,7 @@ namespace ClassLibrary1
         public static cardStatus m_cardStatus;
 
         static StreamWriter file;
-        const long LIST_SISE = 140000;
+        const long LIST_SISE = 1000000;
         public static bool test;
         static public IntState m_state = IntState.Wait;
         static public UInt32 m_layerNumber = 0;
@@ -346,9 +346,9 @@ namespace ClassLibrary1
             printDebug("Stop_Execution");
             Set_Start_List_1();
             printDebug("Set_Start_List_1()");
-            Set_Delays(60, 100, 100, 100, 100, 100, 1000, 500, 0);
-            //styles st1 = fileLoader.m_cs.style1;
-            //Set_Delays((UInt16)st.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
+            //Set_Delays(60, 100, 100, 100, 100, 100, 1000, 500, 0);
+            styles st1 = fileLoader.m_cs.style1;
+            Set_Delays((UInt16)st1.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
             printDebug("Set_Delays");
             Long_Delay(10); //??
             printDebug("Long_Delay");

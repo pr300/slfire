@@ -1,0 +1,2 @@
+1.check t1 = 0, t2 = 1
+2. uncomment dellay setting on style change

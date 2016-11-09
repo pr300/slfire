@@ -57,10 +57,25 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SpannedDataGridView\DataGridViewCellExHelper.cs" />
+    <Compile Include="SpannedDataGridView\DataGridViewHelper.cs" />
+    <Compile Include="SpannedDataGridView\DataGridViewImageCellEx.cs" />
+    <Compile Include="SpannedDataGridView\DataGridViewTextBoxCellEx.cs" />
+    <Compile Include="SpannedDataGridView\DemoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpannedDataGridView\DemoForm.Designer.cs">
+      <DependentUpon>DemoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SpannedDataGridView\ISpannedCell.cs" />
+    <Compile Include="SpannedDataGridView\Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpannedDataGridView\DemoForm.resx">
+      <DependentUpon>DemoForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +84,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SpannedDataGridView\!changelog.txt" />
+    <Content Include="SpannedDataGridView\SpannedDataGridView2008.csproj" />
+    <Content Include="SpannedDataGridView\SpannedDataGridView2010.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
