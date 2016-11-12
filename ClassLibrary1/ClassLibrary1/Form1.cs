@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
 using SpannedDataGridView;
+using System.Text.RegularExpressions;
 
 namespace ClassLibrary1
 {
@@ -27,7 +28,9 @@ namespace ClassLibrary1
         lJampDelay = 8,
         lFps = 9,
         lQt1 = 10,
-        lQt2 = 11
+        lQt2 = 11,
+        lScript = 12,
+        lCorrect = 13
 
     };
 
@@ -41,30 +44,33 @@ namespace ClassLibrary1
         public Form1()
         {
             this.Closing += Form1_Closing;
+ 
+
 
             InitializeComponent();
-            tb_corrFile.Text = Properties.Settings.Default.correctionFile;
-            tb_script.Text = Properties.Settings.Default.scriptFile;
+            //tb_corrFile.Text = Properties.Settings.Default.correctionFile;
+           // tb_script.Text = Properties.Settings.Default.scriptFile;
             cb_printDebug.Checked = Properties.Settings.Default.printDebug;
 
-            readCorrectionTextFile(tb_corrFile.Text);
+            
             //dg.Columns.Add("name", "Name");
             //dg.Columns.Add("style1", "Style 1");
             //dg.Columns.Add("style2", "Style 2");
             //dg.Columns.Add("style3", "Style 3");
             dg.Rows.Add("Step");
-            dg.Rows.Add("Jump size in period");
-            dg.Rows.Add("Mark size in period");
+            dg.Rows.Add("Jump speed mm/ms");
+            dg.Rows.Add("Mark speed mm/ms");
             dg.Rows.Add("Power");
             dg.Rows.Add("LaserOn Delay");
             dg.Rows.Add("LaserOff Delay");
             dg.Rows.Add("Polygon Delay");
-            dg.Rows.Add("Mark Dela");
+            dg.Rows.Add("Mark Delay");
             dg.Rows.Add("Jump Delay");
             dg.Rows.Add("FPS");
             dg.Rows.Add("Q-Switch t1");
             dg.Rows.Add("Q-Switch t2");
-
+            dg.Rows.Add("Script");
+            dg.Rows.Add("Correction");
 
 
             var cell = (DataGridViewTextBoxCellEx)dg[1, 4];
@@ -89,6 +95,12 @@ namespace ClassLibrary1
             cell.ColumnSpan = 3;
             cell.RowSpan = 1;
             cell = (DataGridViewTextBoxCellEx)dg[1, 11];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 12];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 13];
             cell.ColumnSpan = 3;
             cell.RowSpan = 1;
 
@@ -142,6 +154,14 @@ namespace ClassLibrary1
             dg.Rows[(int)prm.lMarkSize].Cells[3].Value = Properties.Settings.Default.s3MarkSize;
             dg.Rows[(int)prm.lPower].Cells[3].Value = Properties.Settings.Default.s3Power;
 
+            dg.Rows[(int)prm.lScript].Cells[1].Value = Properties.Settings.Default.scriptFile;
+            dg.Rows[(int)prm.lCorrect].Cells[1].Value = Properties.Settings.Default.correctionFile;
+
+            readCorrectionTextFile(dg.Rows[(int)prm.lCorrect].Cells[1].Value.ToString());
+
+            dg.EditingControlShowing +=
+new DataGridViewEditingControlShowingEventHandler(
+dg_EditingControlShowing);
         }
 
         private void Form1_Closing(object sender, EventArgs e)
@@ -185,6 +205,14 @@ namespace ClassLibrary1
 
             return mode;
 
+        }
+
+        private Int64 speedToJampPeriod(Int64 step, float speed, float K)
+        { 
+          float st =(float) step;
+            float sp = speed;
+
+            return (Int64)(sp * st * K / 1000);
         }
 
         private void cb_mode_b0_CheckedChanged(object sender, EventArgs e)
@@ -247,6 +275,74 @@ namespace ClassLibrary1
             solveMode();
         }
 
+        void dg_EditingControlShowing(object sender,
+            DataGridViewEditingControlShowingEventArgs e)
+        {
+            //restrict the input in the cell[1,1]
+         //   if (this.dg.CurrentCell.ColumnIndex == 1)
+        //            lStep = 0,
+        //        lJampSize =1,
+        //lMarkSize = 2,
+        //lPower = 3,
+        //lLaserOn = 4,
+        //lLaserOff = 5,
+        //lPolygon = 6,
+        //lMarkDelay = 7,
+        //lJampDelay = 8,
+        //lFps = 9,
+        //lQt1 = 10,
+        //lQt2 = 11,
+        //lScript = 12,
+        //lCorrect = 13
+            {
+
+                TextBox tx = e.Control as TextBox;
+
+                if (this.dg.CurrentCell.RowIndex == (int)prm.lJampSize || this.dg.CurrentCell.RowIndex == (int)prm.lMarkSize)
+                {
+
+                    tx.KeyPress += new KeyPressEventHandler(tx_KeyPress);
+                }
+                else if (this.dg.CurrentCell.RowIndex == (int)prm.lStep ||
+                    this.dg.CurrentCell.RowIndex == (int)prm.lLaserOn ||
+                    this.dg.CurrentCell.RowIndex == (int)prm.lLaserOff ||
+                    this.dg.CurrentCell.RowIndex == (int)prm.lPower 
+                    )
+                {
+                    tx.KeyPress += new KeyPressEventHandler(tx_KeyPress_Int);
+                }
+                else
+                {
+
+                    tx.KeyPress -= new KeyPressEventHandler(tx_KeyPress);
+                    tx.KeyPress -= new KeyPressEventHandler(tx_KeyPress_Int);
+
+                }
+            }
+        }
+
+        void tx_KeyPress_Int(object sender, KeyPressEventArgs e)
+        {
+            TextBox tx = sender as TextBox;
+            long tst;
+            if (!(Int64.TryParse(tx.Text + e.KeyChar,out tst) || e.KeyChar == '\b'))
+            {
+                e.Handled = true;
+            }
+            return;
+        }
+
+        void tx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextBox tx = sender as TextBox;
+            float tst;
+            if (!(float.TryParse(tx.Text + e.KeyChar, out tst) || e.KeyChar == '\b' ))
+            {
+                e.Handled = true;
+            }
+            return;
+        }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -258,12 +354,20 @@ namespace ClassLibrary1
             UInt16 usmode = solveMode();
             cardSetting cs = new cardSetting();
             cs.mode = usmode;
-            cs.corrFilePatch = tb_corrFile.Text;
+            cs.corrFilePatch = dg.Rows[(int)prm.lCorrect].Cells[1].Value.ToString();
             cs.power = UInt16.Parse(tb_Power.Text);
             cs.scale = float.Parse(tb_scale.Text, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture);//UInt16.Parse(tb_scale.Text);
             cs.num = Int16.Parse(tb_devn.Text);
-            cs.scriptPath = tb_script.Text;
+            cs.scriptPath = dg.Rows[(int)prm.lScript].Cells[1].Value.ToString();//tb_script.Text;
             cs.debug = cb_printDebug.Checked;
+
+            dg.Rows[(int)prm.lJampSize].Cells[1].Value = dg.Rows[(int)prm.lJampSize].Cells[1].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lJampSize].Cells[2].Value = dg.Rows[(int)prm.lJampSize].Cells[2].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lJampSize].Cells[3].Value = dg.Rows[(int)prm.lJampSize].Cells[3].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[1].Value = dg.Rows[(int)prm.lMarkSize].Cells[1].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[2].Value = dg.Rows[(int)prm.lMarkSize].Cells[2].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[3].Value = dg.Rows[(int)prm.lMarkSize].Cells[3].Value.ToString().Replace('.', ',');
+
 
             int i = 1;
             cs.style1.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
@@ -275,8 +379,8 @@ namespace ClassLibrary1
             cs.style1.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
             cs.style1.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
             cs.style1.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style1.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-            cs.style1.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style1.lJampSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            cs.style1.lMarkSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style1.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
             i = 2;
@@ -289,8 +393,8 @@ namespace ClassLibrary1
             cs.style2.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
             cs.style2.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
             cs.style2.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style2.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-            cs.style2.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style2.lJampSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            cs.style2.lMarkSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style2.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
             i = 3;
@@ -303,15 +407,15 @@ namespace ClassLibrary1
             cs.style3.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
             cs.style3.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
             cs.style3.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style3.lJampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-            cs.style3.lMarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+            cs.style3.lJampSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            cs.style3.lMarkSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style3.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
             bool result = initCmd(cs);
             if (result)
             {
-                Properties.Settings.Default.correctionFile = tb_corrFile.Text;
-                Properties.Settings.Default.scriptFile = tb_script.Text;
+                Properties.Settings.Default.correctionFile = dg.Rows[(int)prm.lCorrect].Cells[1].Value.ToString();
+                Properties.Settings.Default.scriptFile = dg.Rows[(int)prm.lScript].Cells[1].Value.ToString(); ;//tb_script.Text;
                 Properties.Settings.Default.printDebug = cb_printDebug.Checked;
 
                  i = 1;
@@ -324,8 +428,8 @@ namespace ClassLibrary1
                 Properties.Settings.Default.s1Fps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
                 Properties.Settings.Default.s1Q1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
                 Properties.Settings.Default.s1Q2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-                Properties.Settings.Default.s1JampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-                Properties.Settings.Default.s1MarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+                Properties.Settings.Default.s1JampSize = float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
+                Properties.Settings.Default.s1MarkSize =float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
                 Properties.Settings.Default.s1Power = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
                 i = 2;
@@ -338,8 +442,8 @@ namespace ClassLibrary1
                 Properties.Settings.Default.s2Fps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
                 Properties.Settings.Default.s2Q1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
                 Properties.Settings.Default.s2Q2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-                Properties.Settings.Default.s2JampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-                Properties.Settings.Default.s2MarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+                Properties.Settings.Default.s2JampSize = float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
+                Properties.Settings.Default.s2MarkSize = float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
                 Properties.Settings.Default.s2Power = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
                 i = 3;
@@ -352,8 +456,8 @@ namespace ClassLibrary1
                 Properties.Settings.Default.s3Fps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
                 Properties.Settings.Default.s3Q1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
                 Properties.Settings.Default.s3Q2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-                Properties.Settings.Default.s3JampSize = long.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString());
-                Properties.Settings.Default.s3MarkSize = long.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString());
+                Properties.Settings.Default.s3JampSize = float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
+                Properties.Settings.Default.s3MarkSize = float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
                 Properties.Settings.Default.s3Power = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
 
                 Properties.Settings.Default.Save();
@@ -375,9 +479,17 @@ namespace ClassLibrary1
             cb_l1redy.Checked = Class1.m_cardStatus.l1redy;
             cb_l1busy.Checked = Class1.m_cardStatus.l1busy;
 
+            cb_l2load.Checked = Class1.m_cardStatus.l2load;
+            cb_l2redy.Checked = Class1.m_cardStatus.l2redy;
+            cb_l2busy.Checked = Class1.m_cardStatus.l2busy;
+
             cb_busy.Checked = Class1.m_cardStatus.busy;
             cb_LaserOn.Checked = Class1.m_cardStatus.laserOn;
             cb_scanComplete.Checked = Class1.m_cardStatus.scanComlete;
+
+            tb_l1_state.Text = PrefetchList.getListState(ListNumber.list1);
+            tb_l2_state.Text = PrefetchList.getListState(ListNumber.list2);
+            tb_cl1_state.Text = Class1.getStateString();
         }
 
         private void bt_LoadCorrFile_Click(object sender, EventArgs e)
@@ -394,7 +506,7 @@ namespace ClassLibrary1
 
                 //  if (( openFileDialog1.FileName) != null)
                 {
-                    tb_corrFile.Text = openFileDialog1.FileName;
+                    dg.Rows[(int)prm.lCorrect].Cells[1].Value = openFileDialog1.FileName;
                     // getCorrespondingCorrectionFilePath(openFileDialog1.FileName);
                     readCorrectionTextFile(openFileDialog1.FileName);
                     //fileLoader.openJobfile(openFileDialog1.FileName);
@@ -419,8 +531,8 @@ namespace ClassLibrary1
                 {
                       if (( openFileDialog1.FileName) != null)
                     {
-                        tb_script.Text = openFileDialog1.FileName;
-
+                        //tb_script.Text = openFileDialog1.FileName;
+                        dg.Rows[(int)prm.lScript].Cells[1].Value = openFileDialog1.FileName;
                     }
 
                 }
@@ -476,8 +588,8 @@ namespace ClassLibrary1
                 dg.Rows[(int)prm.lFps].Cells[i].Value = 0;
                 dg.Rows[(int)prm.lQt1].Cells[i].Value = 1000;
                 dg.Rows[(int)prm.lQt2].Cells[i].Value = 500;
-                dg.Rows[(int)prm.lJampSize].Cells[i].Value = 50;
-                dg.Rows[(int)prm.lMarkSize].Cells[i].Value = 50;
+                dg.Rows[(int)prm.lJampSize].Cells[i].Value = "8,34";
+                dg.Rows[(int)prm.lMarkSize].Cells[i].Value = "8,34";
                 dg.Rows[(int)prm.lPower].Cells[i].Value = 100;
             }
         }

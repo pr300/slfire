@@ -374,9 +374,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s1JampSize {
+        public float s1JampSize {
             get {
-                return ((long)(this["s1JampSize"]));
+                return ((float)(this["s1JampSize"]));
             }
             set {
                 this["s1JampSize"] = value;
@@ -386,9 +386,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s2JampSize {
+        public float s2JampSize {
             get {
-                return ((long)(this["s2JampSize"]));
+                return ((float)(this["s2JampSize"]));
             }
             set {
                 this["s2JampSize"] = value;
@@ -398,9 +398,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s3JampSize {
+        public float s3JampSize {
             get {
-                return ((long)(this["s3JampSize"]));
+                return ((float)(this["s3JampSize"]));
             }
             set {
                 this["s3JampSize"] = value;
@@ -410,9 +410,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s1MarkSize {
+        public float s1MarkSize {
             get {
-                return ((long)(this["s1MarkSize"]));
+                return ((float)(this["s1MarkSize"]));
             }
             set {
                 this["s1MarkSize"] = value;
@@ -422,9 +422,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s2MarkSize {
+        public float s2MarkSize {
             get {
-                return ((long)(this["s2MarkSize"]));
+                return ((float)(this["s2MarkSize"]));
             }
             set {
                 this["s2MarkSize"] = value;
@@ -434,9 +434,9 @@ namespace ClassLibrary1.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public long s3MarkSize {
+        public float s3MarkSize {
             get {
-                return ((long)(this["s3MarkSize"]));
+                return ((float)(this["s3MarkSize"]));
             }
             set {
                 this["s3MarkSize"] = value;

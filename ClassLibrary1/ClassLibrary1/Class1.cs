@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace ClassLibrary1
 {
-    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, FillList = 0x08 };
+    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, WaitListReay = 0x08 };
     public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
     public struct styles
@@ -73,10 +73,14 @@ namespace ClassLibrary1
 
         static Class1()
         {
+            file = new StreamWriter("write_layer.txt", false);
             m_procesThreadAllowed = true;
             myThread = new Thread(threadProcessSignals);
             myThread.Start();
+
         }
+
+
 
         public static IntSignals m_inputSignals = IntSignals.Empty;
         public static cardStatus m_cardStatus;
@@ -92,6 +96,9 @@ namespace ClassLibrary1
         static private bool m_procesThreadAllowed = false;
         static Thread myThread;
         static private cardSetting m_cardSetting;
+        static bool m_isIntiialize = false;
+        static ListNumber m_runningLIst = ListNumber.Undefine;
+        internal static Mutex m_mut = new Mutex();
 
         // public static fileLoader fL = new fileLoader();
         static private bool m_dirtyRunSignal = false;
@@ -122,6 +129,8 @@ namespace ClassLibrary1
         [DllImport("SP-ICE.dll")]
         public static extern bool Set_Start_List_1();
         [DllImport("SP-ICE.dll")]
+        public static extern bool Set_Start_List_2();
+        [DllImport("SP-ICE.dll")]
         public static extern bool Set_Delays(UInt16 usStepPeriod, UInt16 usJumpDelay, UInt16 usMarkDelay, UInt16 usPolyDelay,
     UInt16 usLaserOffDelay, UInt16 usLaserOnDelay, UInt16 usT1, UInt16 usT2, UInt16 usT3);
         [DllImport("SP-ICE.dll")]
@@ -138,6 +147,8 @@ namespace ClassLibrary1
         public static extern bool Set_End_Of_List();
         [DllImport("SP-ICE.dll")]
         public static extern bool Execute_List_1();
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Execute_List_2();
         [DllImport("SP-ICE.dll")]
         public static extern bool Stop_Execution();
         [DllImport("SP-ICE.dll")]
@@ -177,6 +188,9 @@ namespace ClassLibrary1
 
         private static bool initFromForm(cardSetting cs)
         {
+            fileLoader.m_mut.WaitOne();
+            m_mut.WaitOne();
+
             m_cardSetting = cs;
             fileLoader.gateMmToField = cs.scale;
             m_laserPower = cs.power;
@@ -189,8 +203,9 @@ namespace ClassLibrary1
             fileLoader.m_cs = cs;
 
             bool openScript = fileLoader.openJobfile(cs.scriptPath);
+            PrefetchList.resetList();
 
-            bool initOk = (rInit == 0) && rSetAct && rSetMode && rOsc && openScript;
+            m_isIntiialize = (rInit == 0) && rSetAct && rSetMode && rOsc && openScript;
 
             MessageBox.Show(string.Format(" {0, -25} -- {1, -10} \n {2,-25} -- {4, -10}   ({3}) \n {5,-25} -- {6, -10} \n {7, -25} -- {8, -10} \n {9,-25} -- {10, -10}  \n {11,-25} -- {12, -10} ({13})",
                  "Init", (rInit == 0).ToString(),
@@ -199,7 +214,7 @@ namespace ClassLibrary1
                  "Set active card", rSetAct.ToString(),
                  "Oscillator on", rOsc.ToString() ,
                  "Open script", openScript.ToString(), cs.scriptPath),
-                 "Initialize is " + (initOk ? "Success" : "Fail"), 
+                 "Initialize is " + (m_isIntiialize ? "Success" : "Fail"), 
                  MessageBoxButtons.OK,
                  MessageBoxIcon.None, 
                  MessageBoxDefaultButton.Button1, 
@@ -208,8 +223,12 @@ namespace ClassLibrary1
 
 
             m_layersFinishid = false;
+          
 
-            return initOk;
+            fileLoader.m_mut.ReleaseMutex();
+            m_mut.ReleaseMutex();
+
+            return m_isIntiialize;
 
         }
 
@@ -241,7 +260,9 @@ namespace ClassLibrary1
         {
             while (m_procesThreadAllowed)
             {
+                m_mut.WaitOne();
                 processSignals();
+                m_mut.ReleaseMutex();
                 Thread.Sleep(10);
             }
         }
@@ -249,10 +270,13 @@ namespace ClassLibrary1
 
         public static void processSignals()
         {
-            if ((m_state & (IntState.Work | IntState.FillList)) !=0)
-            {
+            
+
                 readStatus();
-            }
+
+
+            if (m_isIntiialize)
+            PrefetchList.stepExecution();
 
             IntSignals s = m_inputSignals;
             switch (m_state)
@@ -262,13 +286,13 @@ namespace ClassLibrary1
                     if ((s & IntSignals.Run) != 0)
                     {
                         m_inputSignals &= ~IntSignals.Run;
-                        m_state = IntState.FillList;
+                        m_state = IntState.WaitListReay;
                     }
 
 
                     break;
 
-                case IntState.FillList:
+                case IntState.WaitListReay:
 
                     fillList();
 
@@ -303,12 +327,32 @@ namespace ClassLibrary1
                     break;
 
             }
+            
+            
         }
 
         private static void fillList()
         {
-            if (fileLoader.m_isBufferFull) //wait until buffre fill
-                fillList1();
+            //wait list ready
+            m_runningLIst = PrefetchList.getNextReadyList();
+            if (m_runningLIst == ListNumber.Undefine)
+            {
+                m_layersFinishid = PrefetchList.m_lastListReay;
+                m_state = IntState.Wait;
+                return;
+            }
+
+            m_layersFinishid = false;
+ 
+            if (m_runningLIst == ListNumber.list1)
+                Execute_List_1();
+            else
+                Execute_List_2();
+
+            m_state = IntState.Work;
+
+            //if (fileLoader.m_isBufferFull) //wait until buffre fill
+            //    fillList1();
 
         }
 
@@ -316,8 +360,21 @@ namespace ClassLibrary1
         {
             if (m_cardStatus.scanComlete) //wait until escan comlete
             {
-                m_state = IntState.Wait;
+                bool finish = PrefetchList.isOneListOnLayer(m_runningLIst);
+                PrefetchList.setFree(m_runningLIst);
+                m_state = finish ? IntState.Wait : IntState.WaitListReay;
             }
+
+
+            if (PrefetchList.getNextReadyList() == ListNumber.Undefine)
+            {
+                m_layersFinishid = PrefetchList.m_lastListReay;
+            }
+
+            //if (m_cardStatus.scanComlete) //wait until escan comlete
+            //{
+            //    m_state = IntState.Wait;
+            //}
         }
 
         private static void StopState()
@@ -340,7 +397,7 @@ namespace ClassLibrary1
                 return;
             }
 
-            file = new StreamWriter("write_layer.txt", false);
+           
 
             Stop_Execution();
             printDebug("Stop_Execution");
@@ -424,7 +481,7 @@ namespace ClassLibrary1
             Execute_List_1();
             printDebug("Execute_List_1();");
 
-            file.Close();
+           // file.Close();
             if (isEnd) m_state = IntState.Work;
         }
 
@@ -447,6 +504,15 @@ namespace ClassLibrary1
         {
             file.WriteLine(str);
             file.Flush();
+        }
+
+        private static void printDebugWithError(string str)
+        {
+            if (fileLoader.m_cs.debug)
+            {
+                file.WriteLine(string.Format("{0, -10}:  {1}", getLastError(), str));
+                file.Flush();
+            }
         }
         private static void printDebug(long iterator, Command cmd, Int16 x, Int16 y)
         {
@@ -474,6 +540,7 @@ namespace ClassLibrary1
                 myThread.Join();
 
                 fileLoader.stopfillJobList();
+                PrefetchList.terminate();
             }
             catch
             {
@@ -534,11 +601,13 @@ namespace ClassLibrary1
 
         public static string getLastError()
         {
-            if (Get_Last_Error_Code() == 0)
-                return "Ok";
+            //if (Get_Last_Error_Code() == 0)
+           //     return "Ok";
             IntPtr ptr = Get_Last_Error_Message();
             Int16 code = Get_Last_Error_Code();
-            return ("Fail; code = " + code.ToString() + "; " + PtrToStringUtf8(ptr));
+            string descr = PtrToStringUtf8(ptr);
+            if (descr == "No error")  return "Ok";
+            return ("Error (" + code.ToString() + ") =  " + descr);
         }
 
         private static string PtrToStringUtf8(IntPtr ptr) // aPtr is nul-terminated
@@ -620,7 +689,7 @@ namespace ClassLibrary1
 
         public static bool isBusy()
         {
-            return (m_state & (IntState.FillList | IntState.Work)) != 0;
+            return (m_state & (IntState.WaitListReay | IntState.Work)) != 0;
         }
 
         public static bool isWait()
@@ -631,6 +700,117 @@ namespace ClassLibrary1
         public static bool isFinish()
         {
             return m_layersFinishid;
+        }
+
+        internal static bool  PCI_Stop_Execution()
+        {
+            Stop_Execution();
+            printDebugWithError("Stop_Execution");
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_Start_List_1()
+        {
+            Set_Start_List_1();
+            printDebugWithError("Set_Start_List_1");
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_Start_List_2()
+        {
+            Set_Start_List_2();
+            printDebugWithError("Set_Start_List_2");
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_Delays(UInt16 step, UInt16 jampDelay, UInt16 markDelay, UInt16 polygon, UInt16 laserOff, UInt16 laserOn, UInt16 qt1, UInt16 qt2, UInt16 fps = 0) 
+        {
+            Set_Delays(step, jampDelay, markDelay, polygon, laserOff, laserOn, qt1, qt2, fps);
+            printDebugWithError(string.Format("{0, -12}:  {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}", "Set_Delays",step, jampDelay, markDelay, polygon, laserOff, laserOn, qt1, qt2, fps ));
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Long_Delay(UInt16  val)
+    {
+        Long_Delay(val);
+        printDebugWithError("Long_Delay  " + val.ToString());
+        return Get_Last_Error_Code() == 0;
+    }
+    
+        internal static bool PCI_Write_DA_List(UInt16  val)
+        {
+        Write_DA_List(val);
+        printDebugWithError("Write_DA_List  " + val.ToString());
+        return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Write_Port_List(UInt16 usAddressOffset, UInt16 usValue)
+        {
+        Write_Port_List(usAddressOffset, usValue);
+        printDebugWithError("Write_Port_List  " + usAddressOffset.ToString() + ", " + usValue.ToString());
+        return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_End_Of_List()
+        {
+            Set_End_Of_List();
+            printDebugWithError("Set_End_Of_List");
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Jump_Abs(Int16 ssXVal, Int16 ssYVal) 
+        {
+            Jump_Abs(ssXVal, ssYVal);
+            printDebugWithError("Jump_Abs  " + ssXVal.ToString() + ", " + ssYVal.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Mark_Abs(Int16 ssXVal, Int16 ssYVal) 
+        {
+            Mark_Abs(ssXVal, ssYVal);
+            printDebugWithError("Mark_Abs  " + ssXVal.ToString() + ", " + ssYVal.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_PolA_Abs(Int16 ssXVal, Int16 ssYVal) 
+        {
+            PolA_Abs(ssXVal, ssYVal);
+            printDebugWithError("PolA_Abs  " + ssXVal.ToString() + ", " + ssYVal.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_PolB_Abs(Int16 ssXVal, Int16 ssYVal)
+        {
+            PolB_Abs(ssXVal, ssYVal);
+            printDebugWithError("PolB_Abs  " + ssXVal.ToString() + ", " + ssYVal.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+
+        internal static bool PCI_PolC_Abs(Int16 ssXVal, Int16 ssYVal)
+        {
+            PolC_Abs(ssXVal, ssYVal);
+            printDebugWithError("PolC_Abs  " + ssXVal.ToString() + ", " + ssYVal.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_Mark_Parameters_List(UInt16 usStepPeriod, UInt16 usStepSize)
+        { 
+        Set_Mark_Parameters_List(usStepPeriod, usStepSize);
+        printDebugWithError("Set_Mark_Parameters_List  " + usStepPeriod.ToString() + ", " + usStepSize.ToString());
+        return Get_Last_Error_Code() == 0;
+        }
+
+        internal static bool PCI_Set_Jump_Parameters_List(UInt16 usStepPeriod, UInt16 usJumpSize)
+        {
+            Set_Jump_Parameters_List(usStepPeriod, usJumpSize);
+            printDebugWithError("Set_Jump_Parameters_List  " + usStepPeriod.ToString() + ", " + usJumpSize.ToString());
+            return Get_Last_Error_Code() == 0;
+        }
+
+        public static string getStateString()
+        {
+            return string.Format("Class1 state: {0, -20} list: {1, -10}", m_state.ToString(), m_runningLIst.ToString());
         }
     }
 }

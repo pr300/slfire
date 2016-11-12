@@ -31,6 +31,7 @@ namespace ClassLibrary1
         public static long endPosition = 0;
         public static long runPermission = 0;
         public static bool m_isBufferFull = false;
+        internal static Mutex m_mut = new Mutex();
 
         const long BUFFER_SIZE = 1001000;
         static public double gateMmToField = 100;
@@ -123,7 +124,7 @@ namespace ClassLibrary1
             int multilp = 0;
             while (runPermission == 1)
             {
-
+                m_mut.WaitOne();
                 if (m_resetFile)
                 {
                     m_resetFile = false;
@@ -271,11 +272,16 @@ namespace ClassLibrary1
                     m_isBufferFull = true;
                 }
 
-                if (multilp > 100 || m_isBufferFull)
+                m_mut.ReleaseMutex();
+                if (m_isBufferFull)
+                    Thread.Sleep(10);
+                else if (multilp > 100)
                 {
-                    Thread.Sleep(0);
+                    Thread.Sleep(1);
                     multilp = 0;
                 }
+                else
+                    Thread.Sleep(0);
             }
 
         }

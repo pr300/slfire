@@ -427,22 +427,22 @@ namespace testWarp
                 long end = Interlocked.Read(ref fileLoader.endPosition);
                 if (IsHandleCreated)
                 {
-                    Invoke(new Action(() =>
-                      {
-                          cr_startPos.Text = start.ToString();
-                          cr_endPos.Text = end.ToString();
-                          cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
-                          cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
-                          cb_layerFinished.Checked = Class1.m_layersFinishid;
-                          cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
+                    //Invoke(new Action(() =>
+                    //  {
+                    //      cr_startPos.Text = start.ToString();
+                    //      cr_endPos.Text = end.ToString();
+                    //      cr_isInstance.Checked = Interlocked.Read(ref fileLoader.isInstance) == 1;
+                    //      cr_validFileName.Checked = Interlocked.Read(ref fileLoader.isValidFile) == 1;
+                    //      cb_layerFinished.Checked = Class1.m_layersFinishid;
+                    //      cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
 
-                          //aTimer.AutoReset = true;
-                          //aTimer.Enabled = true;
-                          //aTimer.Start();
-                          cr_state.Text = Class1.m_state.ToString();
+                    //      //aTimer.AutoReset = true;
+                    //      //aTimer.Enabled = true;
+                    //      //aTimer.Start();
+                    //      cr_state.Text = Class1.m_state.ToString();
 
 
-                      }));
+                    //  }));
                 }
                 Thread.Sleep(10);
             }

@@ -47,13 +47,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tb_startPosition = new System.Windows.Forms.TextBox();
             this.tb_bufferCount = new System.Windows.Forms.TextBox();
-            this.tb_script = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.bt_LoadCorrFile = new System.Windows.Forms.Button();
-            this.tb_corrFile = new System.Windows.Forms.TextBox();
             this.tb_initMode = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cb_mode_b10 = new System.Windows.Forms.CheckBox();
@@ -73,6 +71,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tb_Power = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.tb_l2_state = new System.Windows.Forms.TextBox();
+            this.tb_l1_state = new System.Windows.Forms.TextBox();
+            this.tb_cl1_state = new System.Windows.Forms.TextBox();
+            this.cb_l2busy = new System.Windows.Forms.CheckBox();
+            this.cb_l2redy = new System.Windows.Forms.CheckBox();
+            this.cb_l2load = new System.Windows.Forms.CheckBox();
             this.dg = new System.Windows.Forms.DataGridView();
             this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
@@ -84,6 +88,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_l2busy);
+            this.groupBox1.Controls.Add(this.cb_l2redy);
+            this.groupBox1.Controls.Add(this.cb_l2load);
+            this.groupBox1.Controls.Add(this.tb_cl1_state);
+            this.groupBox1.Controls.Add(this.tb_l1_state);
+            this.groupBox1.Controls.Add(this.tb_l2_state);
             this.groupBox1.Controls.Add(this.cb_printDebug);
             this.groupBox1.Controls.Add(this.bt_default);
             this.groupBox1.Controls.Add(this.dg);
@@ -103,13 +113,11 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.tb_startPosition);
             this.groupBox1.Controls.Add(this.tb_bufferCount);
-            this.groupBox1.Controls.Add(this.tb_script);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.tb_devn);
             this.groupBox1.Controls.Add(this.bt_initialise);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.bt_LoadCorrFile);
-            this.groupBox1.Controls.Add(this.tb_corrFile);
             this.groupBox1.Controls.Add(this.tb_initMode);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.cb_mode_b10);
@@ -131,7 +139,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(885, 489);
+            this.groupBox1.Size = new System.Drawing.Size(885, 544);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
@@ -142,7 +150,7 @@
             this.cb_printDebug.AutoSize = true;
             this.cb_printDebug.Checked = true;
             this.cb_printDebug.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_printDebug.Location = new System.Drawing.Point(773, 50);
+            this.cb_printDebug.Location = new System.Drawing.Point(779, 272);
             this.cb_printDebug.Name = "cb_printDebug";
             this.cb_printDebug.Size = new System.Drawing.Size(80, 17);
             this.cb_printDebug.TabIndex = 60;
@@ -151,7 +159,7 @@
             // 
             // bt_default
             // 
-            this.bt_default.Location = new System.Drawing.Point(773, 282);
+            this.bt_default.Location = new System.Drawing.Point(779, 304);
             this.bt_default.Name = "bt_default";
             this.bt_default.Size = new System.Drawing.Size(100, 32);
             this.bt_default.TabIndex = 59;
@@ -162,7 +170,7 @@
             // cb_scanComplete
             // 
             this.cb_scanComplete.AutoSize = true;
-            this.cb_scanComplete.Location = new System.Drawing.Point(367, 461);
+            this.cb_scanComplete.Location = new System.Drawing.Point(365, 507);
             this.cb_scanComplete.Name = "cb_scanComplete";
             this.cb_scanComplete.Size = new System.Drawing.Size(97, 17);
             this.cb_scanComplete.TabIndex = 57;
@@ -172,7 +180,7 @@
             // cb_LaserOn
             // 
             this.cb_LaserOn.AutoSize = true;
-            this.cb_LaserOn.Location = new System.Drawing.Point(367, 438);
+            this.cb_LaserOn.Location = new System.Drawing.Point(365, 484);
             this.cb_LaserOn.Name = "cb_LaserOn";
             this.cb_LaserOn.Size = new System.Drawing.Size(66, 17);
             this.cb_LaserOn.TabIndex = 56;
@@ -182,7 +190,7 @@
             // cb_busy
             // 
             this.cb_busy.AutoSize = true;
-            this.cb_busy.Location = new System.Drawing.Point(367, 415);
+            this.cb_busy.Location = new System.Drawing.Point(365, 461);
             this.cb_busy.Name = "cb_busy";
             this.cb_busy.Size = new System.Drawing.Size(48, 17);
             this.cb_busy.TabIndex = 55;
@@ -192,7 +200,7 @@
             // cb_l1busy
             // 
             this.cb_l1busy.AutoSize = true;
-            this.cb_l1busy.Location = new System.Drawing.Point(367, 389);
+            this.cb_l1busy.Location = new System.Drawing.Point(365, 435);
             this.cb_l1busy.Name = "cb_l1busy";
             this.cb_l1busy.Size = new System.Drawing.Size(56, 17);
             this.cb_l1busy.TabIndex = 54;
@@ -202,7 +210,7 @@
             // cb_l1redy
             // 
             this.cb_l1redy.AutoSize = true;
-            this.cb_l1redy.Location = new System.Drawing.Point(367, 366);
+            this.cb_l1redy.Location = new System.Drawing.Point(365, 412);
             this.cb_l1redy.Name = "cb_l1redy";
             this.cb_l1redy.Size = new System.Drawing.Size(54, 17);
             this.cb_l1redy.TabIndex = 53;
@@ -212,7 +220,7 @@
             // cb_l1load
             // 
             this.cb_l1load.AutoSize = true;
-            this.cb_l1load.Location = new System.Drawing.Point(367, 343);
+            this.cb_l1load.Location = new System.Drawing.Point(365, 389);
             this.cb_l1load.Name = "cb_l1load";
             this.cb_l1load.Size = new System.Drawing.Size(54, 17);
             this.cb_l1load.TabIndex = 52;
@@ -222,7 +230,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 411);
+            this.label10.Location = new System.Drawing.Point(12, 457);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(34, 13);
             this.label10.TabIndex = 51;
@@ -231,7 +239,7 @@
             // cr_validFileName
             // 
             this.cr_validFileName.AutoSize = true;
-            this.cr_validFileName.Location = new System.Drawing.Point(243, 461);
+            this.cr_validFileName.Location = new System.Drawing.Point(241, 507);
             this.cr_validFileName.Name = "cr_validFileName";
             this.cr_validFileName.Size = new System.Drawing.Size(92, 17);
             this.cr_validFileName.TabIndex = 46;
@@ -241,7 +249,7 @@
             // cb_isBufferFull
             // 
             this.cb_isBufferFull.AutoSize = true;
-            this.cb_isBufferFull.Location = new System.Drawing.Point(243, 392);
+            this.cb_isBufferFull.Location = new System.Drawing.Point(241, 438);
             this.cb_isBufferFull.Name = "cb_isBufferFull";
             this.cb_isBufferFull.Size = new System.Drawing.Size(77, 17);
             this.cb_isBufferFull.TabIndex = 50;
@@ -251,7 +259,7 @@
             // cb_layerFinished
             // 
             this.cb_layerFinished.AutoSize = true;
-            this.cb_layerFinished.Location = new System.Drawing.Point(243, 415);
+            this.cb_layerFinished.Location = new System.Drawing.Point(241, 461);
             this.cb_layerFinished.Name = "cb_layerFinished";
             this.cb_layerFinished.Size = new System.Drawing.Size(88, 17);
             this.cb_layerFinished.TabIndex = 49;
@@ -261,7 +269,7 @@
             // cr_isInstance
             // 
             this.cr_isInstance.AutoSize = true;
-            this.cr_isInstance.Location = new System.Drawing.Point(243, 438);
+            this.cr_isInstance.Location = new System.Drawing.Point(241, 484);
             this.cr_isInstance.Name = "cr_isInstance";
             this.cr_isInstance.Size = new System.Drawing.Size(74, 17);
             this.cr_isInstance.TabIndex = 47;
@@ -270,7 +278,7 @@
             // 
             // tb_state
             // 
-            this.tb_state.Location = new System.Drawing.Point(120, 408);
+            this.tb_state.Location = new System.Drawing.Point(118, 454);
             this.tb_state.Name = "tb_state";
             this.tb_state.Size = new System.Drawing.Size(100, 20);
             this.tb_state.TabIndex = 48;
@@ -279,7 +287,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 463);
+            this.label5.Location = new System.Drawing.Point(12, 509);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 13);
             this.label5.TabIndex = 45;
@@ -288,7 +296,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 438);
+            this.label4.Location = new System.Drawing.Point(12, 484);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 44;
@@ -296,31 +304,23 @@
             // 
             // tb_startPosition
             // 
-            this.tb_startPosition.Location = new System.Drawing.Point(120, 460);
+            this.tb_startPosition.Location = new System.Drawing.Point(118, 506);
             this.tb_startPosition.Name = "tb_startPosition";
             this.tb_startPosition.Size = new System.Drawing.Size(100, 20);
             this.tb_startPosition.TabIndex = 43;
             // 
             // tb_bufferCount
             // 
-            this.tb_bufferCount.Location = new System.Drawing.Point(120, 434);
+            this.tb_bufferCount.Location = new System.Drawing.Point(118, 480);
             this.tb_bufferCount.Name = "tb_bufferCount";
             this.tb_bufferCount.Size = new System.Drawing.Size(100, 20);
             this.tb_bufferCount.TabIndex = 42;
             // 
-            // tb_script
-            // 
-            this.tb_script.Location = new System.Drawing.Point(135, 115);
-            this.tb_script.Name = "tb_script";
-            this.tb_script.Size = new System.Drawing.Size(85, 20);
-            this.tb_script.TabIndex = 41;
-            this.tb_script.Text = "g.script";
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(135, 89);
+            this.button1.Location = new System.Drawing.Point(773, 49);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 20);
+            this.button1.Size = new System.Drawing.Size(100, 20);
             this.button1.TabIndex = 40;
             this.button1.Text = "Script";
             this.button1.UseVisualStyleBackColor = true;
@@ -328,9 +328,9 @@
             // 
             // tb_devn
             // 
-            this.tb_devn.Location = new System.Drawing.Point(135, 47);
+            this.tb_devn.Location = new System.Drawing.Point(828, 183);
             this.tb_devn.Name = "tb_devn";
-            this.tb_devn.Size = new System.Drawing.Size(85, 20);
+            this.tb_devn.Size = new System.Drawing.Size(44, 20);
             this.tb_devn.TabIndex = 15;
             this.tb_devn.Text = "1";
             // 
@@ -347,30 +347,22 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(135, 25);
+            this.label3.Location = new System.Drawing.Point(776, 187);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 13);
+            this.label3.Size = new System.Drawing.Size(27, 13);
             this.label3.TabIndex = 16;
-            this.label3.Text = "device number";
+            this.label3.Text = "Dev";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // bt_LoadCorrFile
             // 
-            this.bt_LoadCorrFile.Location = new System.Drawing.Point(135, 157);
+            this.bt_LoadCorrFile.Location = new System.Drawing.Point(773, 72);
             this.bt_LoadCorrFile.Name = "bt_LoadCorrFile";
-            this.bt_LoadCorrFile.Size = new System.Drawing.Size(85, 20);
+            this.bt_LoadCorrFile.Size = new System.Drawing.Size(99, 22);
             this.bt_LoadCorrFile.TabIndex = 38;
             this.bt_LoadCorrFile.Text = "CorrFile";
             this.bt_LoadCorrFile.UseVisualStyleBackColor = true;
             this.bt_LoadCorrFile.Click += new System.EventHandler(this.bt_LoadCorrFile_Click);
-            // 
-            // tb_corrFile
-            // 
-            this.tb_corrFile.Location = new System.Drawing.Point(135, 183);
-            this.tb_corrFile.Name = "tb_corrFile";
-            this.tb_corrFile.Size = new System.Drawing.Size(85, 20);
-            this.tb_corrFile.TabIndex = 37;
-            this.tb_corrFile.Text = "C200_15.gcd";
             // 
             // tb_initMode
             // 
@@ -530,7 +522,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(135, 225);
+            this.label8.Location = new System.Drawing.Point(773, 138);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 21;
@@ -539,16 +531,16 @@
             // 
             // tb_scale
             // 
-            this.tb_scale.Location = new System.Drawing.Point(135, 245);
+            this.tb_scale.Location = new System.Drawing.Point(827, 138);
             this.tb_scale.Name = "tb_scale";
-            this.tb_scale.Size = new System.Drawing.Size(85, 20);
+            this.tb_scale.Size = new System.Drawing.Size(45, 20);
             this.tb_scale.TabIndex = 20;
             this.tb_scale.Text = "50";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 385);
+            this.label7.Location = new System.Drawing.Point(12, 431);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 19;
@@ -556,11 +548,62 @@
             // 
             // tb_Power
             // 
-            this.tb_Power.Location = new System.Drawing.Point(120, 380);
+            this.tb_Power.Location = new System.Drawing.Point(118, 426);
             this.tb_Power.Name = "tb_Power";
             this.tb_Power.Size = new System.Drawing.Size(100, 20);
             this.tb_Power.TabIndex = 18;
             this.tb_Power.Text = "100";
+            // 
+            // tb_l2_state
+            // 
+            this.tb_l2_state.Location = new System.Drawing.Point(533, 501);
+            this.tb_l2_state.Name = "tb_l2_state";
+            this.tb_l2_state.Size = new System.Drawing.Size(337, 20);
+            this.tb_l2_state.TabIndex = 61;
+            // 
+            // tb_l1_state
+            // 
+            this.tb_l1_state.Location = new System.Drawing.Point(534, 475);
+            this.tb_l1_state.Name = "tb_l1_state";
+            this.tb_l1_state.Size = new System.Drawing.Size(337, 20);
+            this.tb_l1_state.TabIndex = 62;
+            // 
+            // tb_cl1_state
+            // 
+            this.tb_cl1_state.Location = new System.Drawing.Point(533, 449);
+            this.tb_cl1_state.Name = "tb_cl1_state";
+            this.tb_cl1_state.Size = new System.Drawing.Size(337, 20);
+            this.tb_cl1_state.TabIndex = 63;
+            // 
+            // cb_l2busy
+            // 
+            this.cb_l2busy.AutoSize = true;
+            this.cb_l2busy.Location = new System.Drawing.Point(437, 435);
+            this.cb_l2busy.Name = "cb_l2busy";
+            this.cb_l2busy.Size = new System.Drawing.Size(56, 17);
+            this.cb_l2busy.TabIndex = 66;
+            this.cb_l2busy.Text = "l2busy";
+            this.cb_l2busy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l2redy
+            // 
+            this.cb_l2redy.AutoSize = true;
+            this.cb_l2redy.Location = new System.Drawing.Point(437, 412);
+            this.cb_l2redy.Name = "cb_l2redy";
+            this.cb_l2redy.Size = new System.Drawing.Size(54, 17);
+            this.cb_l2redy.TabIndex = 65;
+            this.cb_l2redy.Text = "l2redy";
+            this.cb_l2redy.UseVisualStyleBackColor = true;
+            // 
+            // cb_l2load
+            // 
+            this.cb_l2load.AutoSize = true;
+            this.cb_l2load.Location = new System.Drawing.Point(437, 389);
+            this.cb_l2load.Name = "cb_l2load";
+            this.cb_l2load.Size = new System.Drawing.Size(54, 17);
+            this.cb_l2load.TabIndex = 64;
+            this.cb_l2load.Text = "l2load";
+            this.cb_l2load.UseVisualStyleBackColor = true;
             // 
             // dg
             // 
@@ -571,9 +614,9 @@
             this.Column2,
             this.Column3,
             this.Column4});
-            this.dg.Location = new System.Drawing.Point(226, 12);
+            this.dg.Location = new System.Drawing.Point(150, 12);
             this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(541, 306);
+            this.dg.Size = new System.Drawing.Size(617, 324);
             this.dg.TabIndex = 58;
             // 
             // Column1
@@ -601,7 +644,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 489);
+            this.ClientSize = new System.Drawing.Size(885, 544);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
@@ -635,11 +678,9 @@
         private System.Windows.Forms.TextBox tb_initMode;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button bt_LoadCorrFile;
-        private System.Windows.Forms.TextBox tb_corrFile;
         private System.Windows.Forms.Button bt_initialise;
         private System.Windows.Forms.TextBox tb_devn;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tb_script;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tb_bufferCount;
         private System.Windows.Forms.TextBox tb_startPosition;
@@ -665,6 +706,12 @@
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
+        private System.Windows.Forms.TextBox tb_l1_state;
+        private System.Windows.Forms.TextBox tb_l2_state;
+        private System.Windows.Forms.TextBox tb_cl1_state;
+        private System.Windows.Forms.CheckBox cb_l2busy;
+        private System.Windows.Forms.CheckBox cb_l2redy;
+        private System.Windows.Forms.CheckBox cb_l2load;
 
 
     }

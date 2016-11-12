@@ -89,22 +89,22 @@
     <Setting Name="s3Q2" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="s1JampSize" Type="System.Int64" Scope="User">
+    <Setting Name="s1JampSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="s2JampSize" Type="System.Int64" Scope="User">
+    <Setting Name="s2JampSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="s3JampSize" Type="System.Int64" Scope="User">
+    <Setting Name="s3JampSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="s1MarkSize" Type="System.Int64" Scope="User">
+    <Setting Name="s1MarkSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="s2MarkSize" Type="System.Int64" Scope="User">
+    <Setting Name="s2MarkSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="s3MarkSize" Type="System.Int64" Scope="User">
+    <Setting Name="s3MarkSize" Type="System.Single" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="s1Step" Type="System.Int64" Scope="User">
