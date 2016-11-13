@@ -60,12 +60,12 @@ namespace ClassLibrary1
             dg.Rows.Add("Step");
             dg.Rows.Add("Jump speed mm/ms");
             dg.Rows.Add("Mark speed mm/ms");
-            dg.Rows.Add("Power");
-            dg.Rows.Add("LaserOn Delay");
-            dg.Rows.Add("LaserOff Delay");
-            dg.Rows.Add("Polygon Delay");
-            dg.Rows.Add("Mark Delay");
-            dg.Rows.Add("Jump Delay");
+            dg.Rows.Add("Power %");
+            dg.Rows.Add("LaserOn Delay mks");
+            dg.Rows.Add("LaserOff Delay mks");
+            dg.Rows.Add("Polygon Delay mks");
+            dg.Rows.Add("Mark Delay mks");
+            dg.Rows.Add("Jump Delay mks");
             dg.Rows.Add("FPS");
             dg.Rows.Add("Q-Switch t1");
             dg.Rows.Add("Q-Switch t2");
@@ -344,6 +344,13 @@ dg_EditingControlShowing);
             return;
         }
 
+        private long procentToPower(long val)
+        { 
+        float f = (float)val;
+            return (long)(255.0*f/100.0);
+        
+        }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -382,7 +389,7 @@ dg_EditingControlShowing);
             cs.style1.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
             cs.style1.lJampSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style1.lMarkSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style1.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+            cs.style1.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
             i = 2;
             cs.style2.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
@@ -396,7 +403,7 @@ dg_EditingControlShowing);
             cs.style2.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
             cs.style2.lJampSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style2.lMarkSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style2.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+            cs.style2.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
             i = 3;
             cs.style3.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
@@ -410,7 +417,7 @@ dg_EditingControlShowing);
             cs.style3.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
             cs.style3.lJampSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style3.lMarkSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style3.lPower = long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString());
+            cs.style3.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
             bool result = initCmd(cs);
             if (result)
@@ -575,7 +582,7 @@ dg_EditingControlShowing);
                 dg.Rows[(int)prm.lQt2].Cells[i].Value = 500;
                 dg.Rows[(int)prm.lJampSize].Cells[i].Value = "8,34";
                 dg.Rows[(int)prm.lMarkSize].Cells[i].Value = "8,34";
-                dg.Rows[(int)prm.lPower].Cells[i].Value = 100;
+                dg.Rows[(int)prm.lPower].Cells[i].Value = 20;
             }
         }
 

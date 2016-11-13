@@ -9,13 +9,13 @@
       <Value Profile="(Default)">g.script</Value>
     </Setting>
     <Setting Name="s1Power" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">150</Value>
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="s2Power" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">150</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="s3Power" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">150</Value>
+      <Value Profile="(Default)">40</Value>
     </Setting>
     <Setting Name="s1LaserOn" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">200</Value>

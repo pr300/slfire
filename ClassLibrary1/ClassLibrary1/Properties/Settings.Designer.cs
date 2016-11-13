@@ -49,7 +49,7 @@ namespace ClassLibrary1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public long s1Power {
             get {
                 return ((long)(this["s1Power"]));
@@ -61,7 +61,7 @@ namespace ClassLibrary1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public long s2Power {
             get {
                 return ((long)(this["s2Power"]));
@@ -73,7 +73,7 @@ namespace ClassLibrary1.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
         public long s3Power {
             get {
                 return ((long)(this["s3Power"]));

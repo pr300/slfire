@@ -7,7 +7,7 @@ using System.IO;
 
 namespace ClassLibrary1
 {
-    public enum ListStateFill{ prolog = 0x01, epilog = 0x02, bobyStart = 0x04, bobyContinue = 0x08, free = 0x10, ready = 0x20 };
+    public enum ListStateFill{ prolog = 0x01, epilog = 0x02, body = 0x04, free = 0x10, ready = 0x20 };
     public enum ListNumber {list1 = 0, list2 = 1, Undefine };
 
     public struct listState
@@ -109,10 +109,8 @@ namespace ClassLibrary1
                 case ListStateFill.prolog:
                     fillProlog();
                     break;
-                case ListStateFill.bobyStart:
+                case ListStateFill.body:
                     bobyStartList();
-                    break;
-                case ListStateFill.bobyContinue:
                     break;
                 case ListStateFill.epilog:
                     fillEpilog();
@@ -153,7 +151,7 @@ namespace ClassLibrary1
         private static void fillProlog()
         {
             writeLog("prolog fill");
-            m_l[(Int32)m_currentList].filling = ListStateFill.bobyStart;
+            m_l[(Int32)m_currentList].filling = ListStateFill.body;
         }
 
         private static void bobyStartList()

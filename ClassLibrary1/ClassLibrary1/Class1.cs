@@ -313,7 +313,11 @@ namespace ClassLibrary1
                     if ((s & (IntSignals.Reset)) != 0)
                     {
                         Stop_Execution();
+                        fileLoader.m_mut.WaitOne();
+
                         fileLoader.resetFile();
+                        PrefetchList.resetList();
+                        fileLoader.m_mut.ReleaseMutex();
                         m_inputSignals &= ~(IntSignals.Reset);
 
                         m_state = IntState.Wait;
@@ -331,7 +335,11 @@ namespace ClassLibrary1
                     if ((s & (IntSignals.Reset)) != 0)
                     {
                         Stop_Execution();
+                        fileLoader.m_mut.WaitOne();
                         fileLoader.resetFile();
+                        PrefetchList.resetList();
+                        fileLoader.m_mut.ReleaseMutex();
+
                         m_inputSignals &= ~(IntSignals.Reset);
 
                         m_state = IntState.Wait;
