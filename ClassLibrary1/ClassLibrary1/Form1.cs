@@ -302,6 +302,7 @@ dg_EditingControlShowing);
                 {
 
                     tx.KeyPress += new KeyPressEventHandler(tx_KeyPress);
+                    tx.KeyPress -= new KeyPressEventHandler(tx_KeyPress_Int);
                 }
                 else if (this.dg.CurrentCell.RowIndex == (int)prm.lStep ||
                     this.dg.CurrentCell.RowIndex == (int)prm.lLaserOn ||
@@ -466,30 +467,14 @@ dg_EditingControlShowing);
 
         private void updateSignals(object sender, EventArgs e)
         {
-            tb_bufferCount.Text = fileLoader.endPosition.ToString();
-            tb_startPosition.Text = fileLoader.startPosition.ToString();
-            tb_state.Text = Class1.m_state.ToString();
-
-            cr_isInstance.Checked = fileLoader.isInstance == 1;
-            cr_validFileName.Checked = fileLoader.isValidFile == 1;
-            cb_layerFinished.Checked = Class1.m_layersFinishid;
-            cb_isBufferFull.Checked = fileLoader.m_isBufferFull;
-
-            cb_l1load.Checked = Class1.m_cardStatus.l1load;
-            cb_l1redy.Checked = Class1.m_cardStatus.l1redy;
-            cb_l1busy.Checked = Class1.m_cardStatus.l1busy;
-
-            cb_l2load.Checked = Class1.m_cardStatus.l2load;
-            cb_l2redy.Checked = Class1.m_cardStatus.l2redy;
-            cb_l2busy.Checked = Class1.m_cardStatus.l2busy;
-
-            cb_busy.Checked = Class1.m_cardStatus.busy;
-            cb_LaserOn.Checked = Class1.m_cardStatus.laserOn;
-            cb_scanComplete.Checked = Class1.m_cardStatus.scanComlete;
-
+            tb_buff_state.Text = Class1.m_cardStatus.toString();
             tb_l1_state.Text = PrefetchList.getListState(ListNumber.list1);
             tb_l2_state.Text = PrefetchList.getListState(ListNumber.list2);
             tb_cl1_state.Text = Class1.getStateString();
+            tb_buffLOad_state.Text = fileLoader.getStateString();
+            tb_form_state.Text = fileLoader.m_cs.toString();
+            //string styles = "<style> h2 {color:fff;font-size: 20px;} div { font-family: monospace; width: 100px; font-size: 12px; border: 1px solid black; } </style>";
+            //wb.DocumentText = "<html><body>" + styles + Class1.m_cardStatus.toString() + "</body></html>";
         }
 
         private void bt_LoadCorrFile_Click(object sender, EventArgs e)
@@ -605,6 +590,11 @@ dg_EditingControlShowing);
         }
 
         private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cb_printDebug_CheckedChanged(object sender, EventArgs e)
         {
 
         }

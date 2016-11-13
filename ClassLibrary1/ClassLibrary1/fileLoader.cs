@@ -33,7 +33,7 @@ namespace ClassLibrary1
         public static bool m_isBufferFull = false;
         internal static Mutex m_mut = new Mutex();
 
-        const long BUFFER_SIZE = 1001000;
+        const long BUFFER_SIZE = 100100;
         static public double gateMmToField = 100;
         static public JobCommand[] m_listJob = new JobCommand[BUFFER_SIZE];
         private static StreamReader f;
@@ -394,6 +394,12 @@ namespace ClassLibrary1
         static public void resetFile()
         {
             m_resetFile = true;
+        }
+
+        public static string getStateString()
+        {
+            return string.Format("FLoad : runPermission: [{0}] isValidFile: [{1}] startPosition: {2, -5} endPosition: {3, -5} bufferFull [{4}]",
+                runPermission.toX(), isValidFile.toX(), startPosition, endPosition, m_isBufferFull.toX());
         }
 
     }

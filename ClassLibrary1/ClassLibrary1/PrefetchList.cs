@@ -44,7 +44,8 @@ namespace ClassLibrary1
         static StreamWriter m_logFile;
         static ListNumber m_currentList;
         static Int64 m_layerNumber;
-        static public  bool m_lastListReay = false;
+        static public  bool m_lastListReady = false;
+        static Queue<ListNumber> m_listQueue = new Queue<ListNumber>();
 
         static PrefetchList()
         {
@@ -79,14 +80,14 @@ namespace ClassLibrary1
             m_l[1].reset();
             m_layerNumber = 0;
             m_currentList = ListNumber.Undefine;
-            m_lastListReay = false;
+            m_lastListReady = false;
         }
 
         public static void stepExecution()
         {
-            m_lastListReay = !fileLoader.isAviableNExt() && (fileLoader.isValidFile == 0);
+            m_lastListReady = !fileLoader.isAviableNExt() && (fileLoader.isValidFile == 0);
 
-            if (m_lastListReay)
+            if (m_lastListReady)
             {
                 m_l[(Int32)m_currentList].filling = ListStateFill.free;
                 return;
@@ -117,6 +118,7 @@ namespace ClassLibrary1
                     fillEpilog();
                     break;
                 case ListStateFill.ready:
+                   // m_listQueue.Enqueue(m_currentList);
                     m_currentList = ListNumber.Undefine;
                     break;
                 default:
@@ -267,6 +269,8 @@ namespace ClassLibrary1
 
         public static ListNumber getNextReadyList()
         {
+           // return m_listQueue.Count > 0 ? m_listQueue.First() : ListNumber.Undefine;
+
             Int64 l1 = m_l[0].filling == ListStateFill.ready ? m_l[0].indexLayer : -1;
             Int64 l2 = m_l[1].filling == ListStateFill.ready ? m_l[1].indexLayer : -1;
 
@@ -313,8 +317,13 @@ namespace ClassLibrary1
             if (list == ListNumber.Undefine) return "Undefine list..";
             string res = "";
 
-            res = string.Format("{0, 6} state: {1, -20} layer: {2, -6} size: {3, 6} fin: {4, 5}", list.ToString(), m_l[(Int32)list].filling.ToString(), m_l[(Int32)list].indexLayer.ToString("X6"), m_l[(Int32)list].size.ToString("D6"), m_l[(Int32)list].finishid);//
+            res = string.Format("{0, 6}: {1, -20} layer: {2, -6} size: {3, 6} fin: {4, 5}", list.ToString(), m_l[(Int32)list].filling.ToString(), m_l[(Int32)list].indexLayer.ToString("X6"), m_l[(Int32)list].size.ToString("D6"), m_l[(Int32)list].finishid);//
             return res;
         }
+
+
     }
+
+
+
 }

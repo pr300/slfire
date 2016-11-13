@@ -9,11 +9,12 @@ using System.Security;
 using System.IO;
 using System.Threading;
 using System.Reflection;
+using System.Diagnostics;
 
 
 namespace ClassLibrary1
 {
-    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, WaitListReay = 0x08 };
+    public enum IntState { Wait = 0x01, Stop =0x02, Work = 0x04, WaitListReady = 0x08 };
     public enum IntSignals { Empty = 0x0, Run = 0x01, Stop = 0x02, Reset = 0x4, Pause = 0x8 };
 
     public struct styles
@@ -49,6 +50,11 @@ namespace ClassLibrary1
         public styles style3;
         public bool debug;
 
+        public string toString()
+        {
+            return string.Format(" Card: s1.JS {0} s1.MS {1} s2.JS {2} s2.MS {3} s3.JS {4} s3.MS {5}",
+        style1.lJampSize, style1.lMarkSize, style2.lJampSize, style2.lMarkSize, style3.lJampSize, style3.lMarkSize);
+        }
     };
 
     public struct cardStatus
@@ -64,6 +70,12 @@ namespace ClassLibrary1
         public bool scanComlete;
         public bool b9;
         public bool b10;
+
+        public string toString()
+        {
+            return string.Format(" Card : L1 load [{0}] ready[{1}] busy[{2}] L2 load[{3}] ready[{4}] busy[{5}] | busy[{6}] laserOn[{7}] complete[{8}]",
+                l1load.toX(), l1redy.toX(), l1busy.toX(), l2load.toX(), l2redy.toX(), l2busy.toX(), busy.toX(), laserOn.toX(), scanComlete.toX());
+        }
 
     }
 
@@ -99,6 +111,8 @@ namespace ClassLibrary1
         static bool m_isIntiialize = false;
         static ListNumber m_runningLIst = ListNumber.Undefine;
         internal static Mutex m_mut = new Mutex();
+        static Stopwatch m_stopWatch= new Stopwatch();
+        static TimeSpan m_timeExecutinLayer;
 
         // public static fileLoader fL = new fileLoader();
         static private bool m_dirtyRunSignal = false;
@@ -286,13 +300,13 @@ namespace ClassLibrary1
                     if ((s & IntSignals.Run) != 0)
                     {
                         m_inputSignals &= ~IntSignals.Run;
-                        m_state = IntState.WaitListReay;
+                        m_state = IntState.WaitListReady;
                     }
 
 
                     break;
 
-                case IntState.WaitListReay:
+                case IntState.WaitListReady:
 
                     fillList();
 
@@ -337,13 +351,16 @@ namespace ClassLibrary1
             m_runningLIst = PrefetchList.getNextReadyList();
             if (m_runningLIst == ListNumber.Undefine)
             {
-                m_layersFinishid = PrefetchList.m_lastListReay;
-                m_state = IntState.Wait;
+                m_layersFinishid = PrefetchList.m_lastListReady;
+                if (m_layersFinishid) m_state = IntState.Wait;
                 return;
             }
 
             m_layersFinishid = false;
- 
+
+            m_stopWatch.Restart();
+ //m_stopWatch.Start();
+
             if (m_runningLIst == ListNumber.list1)
                 Execute_List_1();
             else
@@ -362,13 +379,15 @@ namespace ClassLibrary1
             {
                 bool finish = PrefetchList.isOneListOnLayer(m_runningLIst);
                 PrefetchList.setFree(m_runningLIst);
-                m_state = finish ? IntState.Wait : IntState.WaitListReay;
+                m_state = finish ? IntState.Wait : IntState.WaitListReady;
+                m_stopWatch.Stop();
+                m_timeExecutinLayer = m_stopWatch.Elapsed;
             }
 
 
             if (PrefetchList.getNextReadyList() == ListNumber.Undefine)
             {
-                m_layersFinishid = PrefetchList.m_lastListReay;
+                m_layersFinishid = PrefetchList.m_lastListReady;
             }
 
             //if (m_cardStatus.scanComlete) //wait until escan comlete
@@ -689,7 +708,7 @@ namespace ClassLibrary1
 
         public static bool isBusy()
         {
-            return (m_state & (IntState.WaitListReay | IntState.Work)) != 0;
+            return (m_state & (IntState.WaitListReady | IntState.Work)) != 0;
         }
 
         public static bool isWait()
@@ -810,7 +829,20 @@ namespace ClassLibrary1
 
         public static string getStateString()
         {
-            return string.Format("Class1 state: {0, -20} list: {1, -10}", m_state.ToString(), m_runningLIst.ToString());
+            return string.Format("Class1: {0, -20} list: {1, -10} LayerFinished: {2, 5} timeExec: {3}", m_state.ToString(), m_runningLIst, m_layersFinishid.toX(), m_timeExecutinLayer);
+        }
+    }
+
+    public static class stringExtension
+    {
+        public static string toX(this bool val)
+        {
+            return val ? "X" : " ";
+        }
+
+        public static string toX(this long val)
+        {
+            return val != 0 ? "X" : " " ;
         }
     }
 }

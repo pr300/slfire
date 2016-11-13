@@ -1,2 +1,10 @@
 1.check t1 = 0, t2 = 1
 2. uncomment dellay setting on style change
+
+
+50 <= step period  mks <= 65535     //60
+50 <= jamp delay mks  <= 65535      //200
+50 <= mark del mks <= 65535         //100
+50 <= poly del mks <= 65535         //50
+50 <= laser off mks <= 65535        //100
+50 <= laser on mks <= 65535         //200
