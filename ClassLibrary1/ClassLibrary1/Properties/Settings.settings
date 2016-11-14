@@ -45,22 +45,22 @@
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="s1MarkDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s2MarkDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s3MarkDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s1JampDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s2JampDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s3JampDelay" Type="System.Int64" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="s1Fps" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">0</Value>

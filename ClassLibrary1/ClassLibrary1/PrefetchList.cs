@@ -137,7 +137,7 @@ namespace ClassLibrary1
             styles st1 = fileLoader.m_cs.style1;
             Class1.PCI_Set_Delays((UInt16)st1.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
             Class1.PCI_Long_Delay(10);
-            Class1.PCI_Write_DA_List((UInt16)st1.lPower); ///???
+            //Class1.PCI_Write_DA_List((UInt16)st1.lPower); ///???
             Class1.PCI_Write_Port_List(0xC, 0x010);
 
             m_l[(Int32)m_currentList].indexLayer = m_layerNumber;

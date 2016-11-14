@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_printDebug = new System.Windows.Forms.CheckBox();
             this.tb_form_state = new System.Windows.Forms.TextBox();
             this.tb_buffLOad_state = new System.Windows.Forms.TextBox();
             this.tb_buff_state = new System.Windows.Forms.TextBox();
@@ -36,6 +37,7 @@
             this.tb_l1_state = new System.Windows.Forms.TextBox();
             this.tb_l2_state = new System.Windows.Forms.TextBox();
             this.bt_default = new System.Windows.Forms.Button();
+            this.dg = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
@@ -61,12 +63,10 @@
             this.tb_Power = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.dg = new System.Windows.Forms.DataGridView();
             this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column3 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column4 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            this.cb_printDebug = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
@@ -113,6 +113,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // cb_printDebug
+            // 
+            this.cb_printDebug.AutoSize = true;
+            this.cb_printDebug.Location = new System.Drawing.Point(779, 281);
+            this.cb_printDebug.Name = "cb_printDebug";
+            this.cb_printDebug.Size = new System.Drawing.Size(81, 17);
+            this.cb_printDebug.TabIndex = 70;
+            this.cb_printDebug.Text = "Debug print";
+            this.cb_printDebug.UseVisualStyleBackColor = true;
             // 
             // tb_form_state
             // 
@@ -183,6 +193,21 @@
             this.bt_default.Text = "Default";
             this.bt_default.UseVisualStyleBackColor = true;
             this.bt_default.Click += new System.EventHandler(this.bt_default_Click);
+            // 
+            // dg
+            // 
+            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
+            this.dg.Location = new System.Drawing.Point(150, 12);
+            this.dg.Name = "dg";
+            this.dg.Size = new System.Drawing.Size(617, 324);
+            this.dg.TabIndex = 58;
+            this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
             // 
             // button1
             // 
@@ -422,20 +447,6 @@
             this.tb_Power.TabIndex = 18;
             this.tb_Power.Text = "100";
             // 
-            // dg
-            // 
-            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
-            this.dg.Location = new System.Drawing.Point(150, 12);
-            this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(617, 324);
-            this.dg.TabIndex = 58;
-            // 
             // Column1
             // 
             this.Column1.HeaderText = "Name";
@@ -444,28 +455,18 @@
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "Style 1";
+            this.Column2.HeaderText = "Style 1 Border";
             this.Column2.Name = "Column2";
             // 
             // Column3
             // 
-            this.Column3.HeaderText = "Style 2";
+            this.Column3.HeaderText = "Style 2 Outer";
             this.Column3.Name = "Column3";
             // 
             // Column4
             // 
-            this.Column4.HeaderText = "Style 3";
+            this.Column4.HeaderText = "Style 3 Inner";
             this.Column4.Name = "Column4";
-            // 
-            // cb_printDebug
-            // 
-            this.cb_printDebug.AutoSize = true;
-            this.cb_printDebug.Location = new System.Drawing.Point(779, 281);
-            this.cb_printDebug.Name = "cb_printDebug";
-            this.cb_printDebug.Size = new System.Drawing.Size(81, 17);
-            this.cb_printDebug.TabIndex = 70;
-            this.cb_printDebug.Text = "Debug print";
-            this.cb_printDebug.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -512,10 +513,6 @@
         private System.Windows.Forms.DataGridView dg;
         private System.Windows.Forms.Button bt_default;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column1;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
         private System.Windows.Forms.TextBox tb_l1_state;
         private System.Windows.Forms.TextBox tb_l2_state;
         private System.Windows.Forms.TextBox tb_cl1_state;
@@ -524,6 +521,10 @@
         private System.Windows.Forms.TextBox tb_form_state;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.CheckBox cb_printDebug;
+        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column1;
+        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
+        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
+        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
 
 
     }

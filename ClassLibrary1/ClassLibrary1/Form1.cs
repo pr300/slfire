@@ -57,9 +57,9 @@ namespace ClassLibrary1
             //dg.Columns.Add("style1", "Style 1");
             //dg.Columns.Add("style2", "Style 2");
             //dg.Columns.Add("style3", "Style 3");
-            dg.Rows.Add("Step");
-            dg.Rows.Add("Jump speed mm/ms");
-            dg.Rows.Add("Mark speed mm/ms");
+            dg.Rows.Add("Step mks");
+            dg.Rows.Add("Jump speed mm/s");
+            dg.Rows.Add("Mark speed mm/s");
             dg.Rows.Add("Power %");
             dg.Rows.Add("LaserOn Delay mks");
             dg.Rows.Add("LaserOff Delay mks");
@@ -212,7 +212,7 @@ dg_EditingControlShowing);
           float st =(float) step;
             float sp = speed;
 
-            return (Int64)(sp * st * K / 1000);
+            return (Int64)(sp * st * K / 1000/1000);
         }
 
         private void cb_mode_b0_CheckedChanged(object sender, EventArgs e)
@@ -580,8 +580,8 @@ dg_EditingControlShowing);
                 dg.Rows[(int)prm.lFps].Cells[i].Value = 0;
                 dg.Rows[(int)prm.lQt1].Cells[i].Value = 1000;
                 dg.Rows[(int)prm.lQt2].Cells[i].Value = 500;
-                dg.Rows[(int)prm.lJampSize].Cells[i].Value = "8,34";
-                dg.Rows[(int)prm.lMarkSize].Cells[i].Value = "8,34";
+                dg.Rows[(int)prm.lJampSize].Cells[i].Value = "8000,34";
+                dg.Rows[(int)prm.lMarkSize].Cells[i].Value = "8000,34";
                 dg.Rows[(int)prm.lPower].Cells[i].Value = 20;
             }
         }
@@ -602,6 +602,11 @@ dg_EditingControlShowing);
         }
 
         private void cb_printDebug_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dg_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
