@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tb_progress = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.pb = new System.Windows.Forms.PictureBox();
             this.cb_printDebug = new System.Windows.Forms.CheckBox();
             this.tb_form_state = new System.Windows.Forms.TextBox();
             this.tb_buffLOad_state = new System.Windows.Forms.TextBox();
@@ -37,7 +41,6 @@
             this.tb_l1_state = new System.Windows.Forms.TextBox();
             this.tb_l2_state = new System.Windows.Forms.TextBox();
             this.bt_default = new System.Windows.Forms.Button();
-            this.dg = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
@@ -63,16 +66,27 @@
             this.tb_Power = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
+            this.button4 = new System.Windows.Forms.Button();
+            this.dg = new System.Windows.Forms.DataGridView();
             this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column3 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column4 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.tb_progress);
+            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.pb);
             this.groupBox1.Controls.Add(this.cb_printDebug);
             this.groupBox1.Controls.Add(this.tb_form_state);
             this.groupBox1.Controls.Add(this.tb_buffLOad_state);
@@ -108,11 +122,47 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(885, 487);
+            this.groupBox1.Size = new System.Drawing.Size(1234, 512);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // tb_progress
+            // 
+            this.tb_progress.Location = new System.Drawing.Point(885, 406);
+            this.tb_progress.Name = "tb_progress";
+            this.tb_progress.Size = new System.Drawing.Size(100, 20);
+            this.tb_progress.TabIndex = 74;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(987, 375);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 73;
+            this.button3.Text = "drow list 2";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(887, 375);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 72;
+            this.button2.Text = "drow list 1";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pb
+            // 
+            this.pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb.Location = new System.Drawing.Point(880, 20);
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(350, 350);
+            this.pb.TabIndex = 71;
+            this.pb.TabStop = false;
             // 
             // cb_printDebug
             // 
@@ -193,21 +243,6 @@
             this.bt_default.Text = "Default";
             this.bt_default.UseVisualStyleBackColor = true;
             this.bt_default.Click += new System.EventHandler(this.bt_default_Click);
-            // 
-            // dg
-            // 
-            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
-            this.dg.Location = new System.Drawing.Point(150, 12);
-            this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(617, 324);
-            this.dg.TabIndex = 58;
-            this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
             // 
             // button1
             // 
@@ -447,6 +482,31 @@
             this.tb_Power.TabIndex = 18;
             this.tb_Power.Text = "100";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(1087, 375);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 75;
+            this.button4.Text = "reset top list";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // dg
+            // 
+            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
+            this.dg.Location = new System.Drawing.Point(150, 12);
+            this.dg.Name = "dg";
+            this.dg.Size = new System.Drawing.Size(617, 324);
+            this.dg.TabIndex = 58;
+            this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
+            // 
             // Column1
             // 
             this.Column1.HeaderText = "Name";
@@ -468,17 +528,28 @@
             this.Column4.HeaderText = "Style 3 Inner";
             this.Column4.Name = "Column4";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(1013, 408);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(74, 17);
+            this.checkBox1.TabIndex = 76;
+            this.checkBox1.Text = "drow jamp";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 487);
+            this.ClientSize = new System.Drawing.Size(1234, 512);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             this.ResumeLayout(false);
 
@@ -525,6 +596,13 @@
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
+        private System.Windows.Forms.PictureBox pb;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.ComponentModel.BackgroundWorker backgroundWorker3;
+        private System.Windows.Forms.TextBox tb_progress;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox checkBox1;
 
 
     }

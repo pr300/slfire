@@ -11,6 +11,7 @@ using System.IO;
 using System.Globalization;
 using SpannedDataGridView;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ClassLibrary1
 {
@@ -40,6 +41,7 @@ namespace ClassLibrary1
 
         public delegate bool initialise(cardSetting cs);
         public event initialise initCmd;
+        public static float  progress = 0;
 
         public Form1()
         {
@@ -173,7 +175,7 @@ dg_EditingControlShowing);
         {
             solveMode();
 
-            Timer timer = new Timer();
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Interval = (300);
             timer.Tick += new EventHandler(updateSignals);
             timer.Start();
@@ -482,6 +484,8 @@ dg_EditingControlShowing);
             tb_form_state.Text = fileLoader.m_cs.toString();
             //string styles = "<style> h2 {color:fff;font-size: 20px;} div { font-family: monospace; width: 100px; font-size: 12px; border: 1px solid black; } </style>";
             //wb.DocumentText = "<html><body>" + styles + Class1.m_cardStatus.toString() + "</body></html>";
+           // pb.Refresh();
+            tb_progress.Text = progress.ToString() + "%";
         }
 
         private void bt_LoadCorrFile_Click(object sender, EventArgs e)
@@ -609,6 +613,137 @@ dg_EditingControlShowing);
         private void dg_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Thread myThread = new Thread(drow);
+            //myThread.Start();
+
+            drow(0);
+         
+        }
+
+        void drow(int l = 0)
+        {
+
+            pb.Image = null;
+
+            Bitmap btmBack = new Bitmap(2000, 2000);      //изображение
+            Bitmap btmFront = new Bitmap(2000, 2000);     //фон
+            Graphics grBack = Graphics.FromImage(btmBack);
+            Graphics grFront = Graphics.FromImage(btmFront);  //лучше объявить заранее глобально.
+            pb.Image = btmFront;
+            pb.BackgroundImage = btmBack;
+
+
+            // Graphics g = Graphics.FromHwnd(Handle);
+            Pen p = new Pen(Color.Blue);
+            Pen p1 = new Pen(Color.Gray);
+            Pen p3 = new Pen(Color.DarkGoldenrod);
+            Pen p4 = new Pen(Color.Yellow);
+            Pen p5 = new Pen(Color.White);
+            Pen p6 = new Pen(Color.Red);
+            // g.DrawLine(p, new Point(0, 0), new Point(10, 0));
+
+            float k = 100;
+            float shift = 100;
+
+            long x, y;
+            x = 0;
+            y = 0;
+
+            bool drawJamp = checkBox1.Checked;
+
+            // grBack.DrawLine(p, x, y, 200, 250);
+
+            // return;
+            long minx = 0, maxx = 0, miny = 0, maxy = 0;
+            for (long i = 0; i < PrefetchList.m_l[0].size; i++)
+            {
+                JobCommand cmd = PrefetchList.m_listJob[l, i];
+
+                if (cmd.x < minx) minx = cmd.x;
+                if (cmd.y < miny) miny = cmd.y;
+
+                if (cmd.x > maxx) maxx = cmd.x;
+                if (cmd.y > maxy) maxy = cmd.y;
+            }
+
+            double kx = ((double)(maxx - minx)) / 350.0;
+            double ky = ((double)(maxy - miny)) / 350.0;
+
+            bool laseOn = false;
+
+
+            for (long i = 0; i < PrefetchList.m_l[l].size; i++)
+            {
+                JobCommand cmd = PrefetchList.m_listJob[l, i];
+                switch (cmd.cmd)
+                {
+                    case Command.StarLayer:
+                        break;
+                    case Command.EndLayer:
+                        break;
+
+                    //case Command.PolB_Abs:
+                    //case Command.PolC_Abs:
+                    //case Command.Mark:
+
+                    case Command.PolA_Abs:
+                        laseOn = true;
+                        grBack.DrawLine(p, (int)((x - minx) / kx), (int)((y - miny) / ky), (int)((cmd.x - minx) / kx), (int)((cmd.y - miny) / ky));
+                        x = cmd.x;
+                        y = cmd.y;
+                        break;
+                    case Command.PolB_Abs:
+                        if(laseOn) grBack.DrawLine(p3, (int)((x - minx) / kx), (int)((y - miny) / ky), (int)((cmd.x - minx) / kx), (int)((cmd.y - miny) / ky));
+                        x = cmd.x;
+                        y = cmd.y;
+                        break;
+                    case Command.PolC_Abs:
+                        laseOn = false;
+                        grBack.DrawLine(p4, (int)((x - minx) / kx), (int)((y - miny) / ky), (int)((cmd.x - minx) / kx), (int)((cmd.y - miny) / ky));
+                        x = cmd.x;
+                        y = cmd.y;
+                        break;
+                    case Command.Jamp:
+                        if (laseOn || drawJamp)
+                            grBack.DrawLine(drawJamp ? p5: p6, (int)((x - minx) / kx), (int)((y - miny) / ky), (int)((cmd.x - minx) / kx), (int)((cmd.y - miny) / ky));
+                        x = cmd.x;
+                        y = cmd.y;
+                        break;
+                    case Command.Mark:
+                        laseOn = false;
+                        grBack.DrawLine(p1, (int)((x - minx) / kx), (int)((y - miny) / ky), (int)((cmd.x - minx) / kx), (int)((cmd.y - miny) / ky));
+                        x = cmd.x;
+                        y = cmd.y;
+                        break;
+                    case Command.Nop:
+                        break;
+                    case Command.EndF:
+                        break;
+                    case Command.Style:
+                        break;
+                    default:
+                        break;
+                }
+                progress = (((float)i) / (float)PrefetchList.m_l[0].size) * 100;
+               // tb_progress.Text = progress.ToString() + "%";
+                if(i % 100 == 0)pb.Refresh();
+               // Thread.Sleep(1);
+
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            drow(1);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PrefetchList.setFreeTopList();
         }
     }
 }

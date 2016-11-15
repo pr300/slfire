@@ -47,6 +47,9 @@ namespace ClassLibrary1
         static public  bool m_lastListReady = false;
         static Queue<ListNumber> m_listQueue = new Queue<ListNumber>();
 
+        static public JobCommand[,] m_listJob = new JobCommand[2,1000000];
+
+
         static PrefetchList()
         {
             m_l = new listState[2]
@@ -179,6 +182,9 @@ namespace ClassLibrary1
             bool result = false;
             bool skipIncrement = false;
             Int64 iterator = fileLoader.getStartPos();
+
+            m_listJob[(Int32)m_currentList, m_l[(Int32)m_currentList].size] = fileLoader.m_listJob[iterator];
+
             switch (fileLoader.m_listJob[iterator].cmd)
             {
                 case Command.EndF:
@@ -319,7 +325,11 @@ namespace ClassLibrary1
             return res;
         }
 
+        public static void setFreeTopList()
+        {
+            setFree(getNextReadyList());
 
+        }
     }
 
 
