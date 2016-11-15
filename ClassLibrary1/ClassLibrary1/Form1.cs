@@ -644,6 +644,7 @@ dg_EditingControlShowing);
             Pen p4 = new Pen(Color.Yellow);
             Pen p5 = new Pen(Color.White);
             Pen p6 = new Pen(Color.Red);
+
             // g.DrawLine(p, new Point(0, 0), new Point(10, 0));
 
             float k = 100;
