@@ -18,7 +18,7 @@ namespace testWarp
 
         public Form1()
         {
-            Directory.SetCurrentDirectory("F:\\");
+            Directory.SetCurrentDirectory("E:\\");
 
             InitializeComponent();
             solveMode();
