@@ -11,6 +11,7 @@ using System.IO;
 using System.Globalization;
 using SpannedDataGridView;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace ClassLibrary1
 {
@@ -74,6 +75,18 @@ namespace ClassLibrary1
 
 
             var cell = (DataGridViewTextBoxCellEx)dg[1, 4];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 0];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 1];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 2];
+            cell.ColumnSpan = 3;
+            cell.RowSpan = 1;
+            cell = (DataGridViewTextBoxCellEx)dg[1, 3];
             cell.ColumnSpan = 3;
             cell.RowSpan = 1;
             cell = (DataGridViewTextBoxCellEx)dg[1, 5];
@@ -207,13 +220,7 @@ dg_EditingControlShowing);
 
         }
 
-        private Int64 speedToJampPeriod(Int64 step, float speed, float K)
-        { 
-          float st =(float) step;
-            float sp = speed;
 
-            return (Int64)(sp * st * K / 1000/1000);
-        }
 
         private void cb_mode_b0_CheckedChanged(object sender, EventArgs e)
         {
@@ -363,11 +370,12 @@ dg_EditingControlShowing);
             cardSetting cs = new cardSetting();
             cs.mode = usmode;
             cs.corrFilePatch = dg.Rows[(int)prm.lCorrect].Cells[1].Value.ToString();
-            cs.power = UInt16.Parse(tb_Power.Text);
+            cs.power = (UInt16)procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[1].Value.ToString()));
             cs.scale = float.Parse(tb_scale.Text, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture);//UInt16.Parse(tb_scale.Text);
             cs.num = Int16.Parse(tb_devn.Text);
             cs.scriptPath = dg.Rows[(int)prm.lScript].Cells[1].Value.ToString();//tb_script.Text;
             cs.debug = cb_printDebug.Checked;
+            cs.ignoreLocalSetting = cb_ignoreListSetting.Checked;
 
             dg.Rows[(int)prm.lJampSize].Cells[1].Value = dg.Rows[(int)prm.lJampSize].Cells[1].Value.ToString().Replace('.', ',');
             dg.Rows[(int)prm.lJampSize].Cells[2].Value = dg.Rows[(int)prm.lJampSize].Cells[2].Value.ToString().Replace('.', ',');
@@ -387,37 +395,37 @@ dg_EditingControlShowing);
             cs.style1.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
             cs.style1.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
             cs.style1.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style1.lJampSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style1.lMarkSize = speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            cs.style1.lJampSize = Class1.speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            cs.style1.lMarkSize = Class1.speedToJampPeriod(cs.style1.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
             cs.style1.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
-            i = 2;
-            cs.style2.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
-            cs.style2.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
-            cs.style2.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
-            cs.style2.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
-            cs.style2.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
-            cs.style2.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
-            cs.style2.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
-            cs.style2.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
-            cs.style2.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style2.lJampSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style2.lMarkSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style2.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
+            //i = 2;
+            //cs.style2.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            //cs.style2.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            //cs.style2.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            //cs.style2.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            //cs.style2.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            //cs.style2.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            //cs.style2.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            //cs.style2.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            //cs.style2.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            //cs.style2.lJampSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            //cs.style2.lMarkSize = speedToJampPeriod(cs.style2.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            //cs.style2.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
-            i = 3;
-            cs.style3.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
-            cs.style3.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
-            cs.style3.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
-            cs.style3.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
-            cs.style3.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
-            cs.style3.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
-            cs.style3.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
-            cs.style3.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
-            cs.style3.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
-            cs.style3.lJampSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style3.lMarkSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
-            cs.style3.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
+            //i = 3;
+            //cs.style3.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            //cs.style3.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            //cs.style3.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            //cs.style3.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            //cs.style3.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            //cs.style3.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            //cs.style3.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            //cs.style3.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            //cs.style3.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            //cs.style3.lJampSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            //cs.style3.lMarkSize = speedToJampPeriod(cs.style3.lStep, float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float), cs.scale);
+            //cs.style3.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
 
             bool result = initCmd(cs);
             if (result)
@@ -608,6 +616,111 @@ dg_EditingControlShowing);
 
         private void dg_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
+        }
+
+        private void bt_storeSetting_Click(object sender, EventArgs e)
+        {
+
+            cardSetting cs = new cardSetting();
+ 
+            cs.corrFilePatch = dg.Rows[(int)prm.lCorrect].Cells[1].Value.ToString();
+            cs.power = UInt16.Parse(dg.Rows[(int)prm.lPower].Cells[1].Value.ToString());
+            cs.scale = float.Parse(tb_scale.Text, System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture);//UInt16.Parse(tb_scale.Text);
+            cs.num = Int16.Parse(tb_devn.Text);
+            cs.scriptPath = dg.Rows[(int)prm.lScript].Cells[1].Value.ToString();//tb_script.Text;
+            cs.debug = cb_printDebug.Checked;
+            cs.ignoreLocalSetting = cb_ignoreListSetting.Checked;
+
+            dg.Rows[(int)prm.lJampSize].Cells[1].Value = dg.Rows[(int)prm.lJampSize].Cells[1].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lJampSize].Cells[2].Value = dg.Rows[(int)prm.lJampSize].Cells[2].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lJampSize].Cells[3].Value = dg.Rows[(int)prm.lJampSize].Cells[3].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[1].Value = dg.Rows[(int)prm.lMarkSize].Cells[1].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[2].Value = dg.Rows[(int)prm.lMarkSize].Cells[2].Value.ToString().Replace('.', ',');
+            dg.Rows[(int)prm.lMarkSize].Cells[3].Value = dg.Rows[(int)prm.lMarkSize].Cells[3].Value.ToString().Replace('.', ',');
+
+            int i = 1;
+            cs.style1.lStep = long.Parse(dg.Rows[(int)prm.lStep].Cells[i].Value.ToString());
+            cs.style1.lLaserOn = long.Parse(dg.Rows[(int)prm.lLaserOn].Cells[i].Value.ToString());
+            cs.style1.lLaserOff = long.Parse(dg.Rows[(int)prm.lLaserOff].Cells[i].Value.ToString());
+            cs.style1.lPolygon = long.Parse(dg.Rows[(int)prm.lPolygon].Cells[i].Value.ToString());
+            cs.style1.lMarkDelay = long.Parse(dg.Rows[(int)prm.lMarkDelay].Cells[i].Value.ToString());
+            cs.style1.lJampDelay = long.Parse(dg.Rows[(int)prm.lJampDelay].Cells[i].Value.ToString());
+            cs.style1.lFps = long.Parse(dg.Rows[(int)prm.lFps].Cells[i].Value.ToString());
+            cs.style1.lQt1 = long.Parse(dg.Rows[(int)prm.lQt1].Cells[i].Value.ToString());
+            cs.style1.lQt2 = long.Parse(dg.Rows[(int)prm.lQt2].Cells[i].Value.ToString());
+            cs.style1.lJampSize =(UInt16) float.Parse(dg.Rows[(int)prm.lJampSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
+            cs.style1.lMarkSize = (UInt16) float.Parse(dg.Rows[(int)prm.lMarkSize].Cells[i].Value.ToString(), System.Globalization.NumberStyles.Float);
+            cs.style1.lPower = procentToPower(long.Parse(dg.Rows[(int)prm.lPower].Cells[i].Value.ToString()));
+
+            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+
+            openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "setting (*.ini)|*.ini|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((openFileDialog1.FileName) != null)
+                {
+                    //tb_script.Text = openFileDialog1.FileName;
+                    using (Stream writer = new FileStream(openFileDialog1.FileName, FileMode.Create))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(cardSetting));
+                        serializer.Serialize(writer, cs);
+                    }
+                }
+
+            }
+        }
+
+        private void bt_loadSetting_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "setting (*.ini)|*.ini|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 1;
+                openFileDialog1.RestoreDirectory = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    if ((openFileDialog1.FileName) != null)
+                    {
+                        //tb_script.Text = openFileDialog1.FileName;
+                        using (Stream stream = new FileStream(openFileDialog1.FileName, FileMode.Open))
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(cardSetting));
+                            cardSetting cs= (cardSetting)serializer.Deserialize(stream);
+
+                            dg.Rows[(int)prm.lStep].Cells[1].Value = cs.style1.lStep.ToString();
+                            dg.Rows[(int)prm.lLaserOn].Cells[1].Value = cs.style1.lLaserOn.ToString();
+                            dg.Rows[(int)prm.lLaserOff].Cells[1].Value = cs.style1.lLaserOff.ToString();
+                            dg.Rows[(int)prm.lPolygon].Cells[1].Value = cs.style1.lPolygon.ToString();
+                            dg.Rows[(int)prm.lMarkDelay].Cells[1].Value = cs.style1.lMarkDelay.ToString();
+                            dg.Rows[(int)prm.lJampDelay].Cells[1].Value = cs.style1.lJampDelay.ToString();
+                            dg.Rows[(int)prm.lFps].Cells[1].Value = cs.style1.lFps.ToString();
+                            dg.Rows[(int)prm.lQt1].Cells[1].Value = cs.style1.lQt1.ToString();
+                            dg.Rows[(int)prm.lQt2].Cells[1].Value = cs.style1.lQt2.ToString();
+                            dg.Rows[(int)prm.lJampSize].Cells[1].Value =cs.style1.lJampSize.ToString();
+                            dg.Rows[(int)prm.lMarkSize].Cells[1].Value = cs.style1.lMarkSize.ToString();
+                            dg.Rows[(int)prm.lPower].Cells[1].Value = cs.style1.lPower.ToString();
+
+
+                        }
+                    }
+
+                }
+
+            }
+            catch
+            {
+
+
+            }
 
         }
     }

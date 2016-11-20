@@ -11,8 +11,9 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80, EndF = 0x100, Style = 0x200 };
-    public enum StyleState {stUndefine = 0x0,  stStyle1 = 0x1, stStyle2 = 0x2, stStyle3 = 0x3 };
+    public enum Command { StarLayer = 0x1, EndLayer = 0x2, PolA_Abs = 0x4, PolB_Abs = 0x8, PolC_Abs = 0x10, Jamp = 0x20, Mark = 0x40, Nop = 0x80, EndF = 0x100, Style = 0x200, Power =0x400, MarkSize =800 };
+   // public enum StyleState {stUndefine = 0x0,  stStyle1 = 0x1, stStyle2 = 0x2, stStyle3 = 0x3 };
+    public enum SettingStace {globalSpace, listSpace};
 
     public struct JobCommand
     {
@@ -32,6 +33,8 @@ namespace ClassLibrary1
         public static long runPermission = 0;
         public static bool m_isBufferFull = false;
         internal static Mutex m_mut = new Mutex();
+        private static SettingStace m_settingStace = SettingStace.globalSpace;
+        volatile static internal bool m_isPreambuleFinish = false;
 
         const long BUFFER_SIZE = 1001000;
         static public double gateMmToField = 100;
@@ -39,10 +42,11 @@ namespace ClassLibrary1
         private static StreamReader f;
         static string m_fileName;
         static Int16[] actualArgs = new Int16[4];
-        private static StyleState m_style;
+       // private static StyleState m_style;
         static bool m_resetFile = false;
         static public cardSetting m_cs;
         static StreamWriter file;//= new StreamWriter("F:\\write_code.txt", false);
+        static internal styles m_globalStyle;
         // private Object thisLock = new Object();
 
 
@@ -54,6 +58,8 @@ namespace ClassLibrary1
         {
             runPermission = 1;
             isValidFile = 0;
+            m_settingStace = SettingStace.globalSpace;
+            initGloballStettingStyle();
             file = new StreamWriter("write_code.txt", false);
             Interlocked.Exchange(ref isInstance, 1);
             Thread myThread = new Thread(fillJobList);
@@ -78,6 +84,10 @@ namespace ClassLibrary1
                 f = new StreamReader(path);
                 //GC.SuppressFinalize(f);
                 //string str = f.ReadLine();
+                m_settingStace = SettingStace.globalSpace;
+                //initGloballStettingStyle();
+                m_globalStyle = m_cs.style1;
+                m_isPreambuleFinish = false;
                 startPosition = 0;
                 endPosition = 0;
                 addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
@@ -155,12 +165,12 @@ namespace ClassLibrary1
                             switch (command)
                             {
                                 case "Image.Line":
-                                    if (m_style != StyleState.stStyle2)
-                                    {
-                                        correctLastPol(0, 0, true);
-                                        addCommandAtEnd(Command.Style, 2, 0, 0, 0, "");
-                                        m_style = StyleState.stStyle2;
-                                    }
+                                    //if (m_style != StyleState.stStyle2)
+                                    //{
+                                    //    correctLastPol(0, 0, true);
+                                    //    addCommandAtEnd(Command.Style, 2, 0, 0, 0, "");
+                                    //    m_style = StyleState.stStyle2;
+                                    //}
                                     //Match match = regexOperand.Match(str);
                                     MatchCollection matches = regexOperand.Matches(str);
 
@@ -203,20 +213,69 @@ namespace ClassLibrary1
                                     break;
                                 case "F_In":
                                     addCommandAtEnd(Command.StarLayer, 0, 0, 0, 0);
-                                    m_style = StyleState.stUndefine;
+                                    m_settingStace = SettingStace.listSpace;
+                                    m_isPreambuleFinish = true;
+                                  //  m_style = StyleState.stUndefine;
                                     break;
                                 case "F_Out":
                                     correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
                                     addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
-                                    m_style = StyleState.stUndefine;
+                                    m_settingStace = SettingStace.globalSpace;
+                                   // m_style = StyleState.stUndefine;
+                                    break;
+                                case "Laser.Power":
+                                    if (m_cs.ignoreLocalSetting) break;
+                                    correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
+                                    UInt32 power = 0;
+                                    MatchCollection matchesPower = regexOperand.Matches(str);
+                                    if (matchesPower.Count == 1)
+                                    {
+                                        string strPower = matchesPower[0].Value;
+                                        power = UInt32.Parse(strPower);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Invalid command:  str = " + str + ", requre 1 arg for Laser.Power");
+                                        isValidFile = 0;
+                                    }
+
+                                    power = (power >> 24);
+                                    if (m_settingStace == SettingStace.globalSpace)
+                                        m_globalStyle.lPower = power;
+                                    else
+                                        addCommandAtEnd(Command.Power, (Int16)power, 0, 0, 0);
+                                    break;
+                                case "Laser.MarkSpeed":
+                                    if (m_cs.ignoreLocalSetting) break;
+                                    correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
+ 
+                                     UInt32 markSpeed = 0;
+                                     MatchCollection speed = regexOperand.Matches(str);
+                                     if (speed.Count == 1)
+                                    {
+                                        string strPower = speed[0].Value;
+                                        markSpeed = UInt32.Parse(strPower);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Invalid command:  str = " + str + ", requre 1 arg for Laser.MarkSpeed");
+                                        isValidFile = 0;
+                                    }
+
+                                     UInt32 markSize = (UInt32)Class1.speedToJampPeriod((Int64)m_cs.style1.lStep, (float)markSpeed, m_cs.scale);
+                                     if (m_settingStace == SettingStace.globalSpace)
+                                         m_globalStyle.lMarkSize = markSize;
+                                     else
+                                         addCommandAtEnd(Command.MarkSize, (Int16)m_cs.style1.lStep, (Int16)markSize, 0, 0);
+
                                     break;
                                 case "Image.Polyline3D":
-                                    if (m_style != StyleState.stStyle1)
-                                    {
-                                        correctLastPol(0, 0, true);
-                                        addCommandAtEnd(Command.Style, 1, 0, 0, 0,"");
-                                        m_style = StyleState.stStyle1;
-                                    }
+                                    //if (m_style != StyleState.stStyle1)
+                                    //{
+                                    //    correctLastPol(0, 0, true);
+                                    //    addCommandAtEnd(Command.Style, 1, 0, 0, 0,"");
+                                    //    m_style = StyleState.stStyle1;
+                                    //}
                                     MatchCollection pol3D = regexOperand.Matches(str.Substring(16));
 
                                     correctLastPol(0, 0, true);
@@ -396,10 +455,16 @@ namespace ClassLibrary1
             m_resetFile = true;
         }
 
+        static private void initGloballStettingStyle()
+        {
+            m_globalStyle.lPower = 25;
+            m_globalStyle.lMarkSize = 50;
+        }
+
         public static string getStateString()
         {
-            return string.Format("FLoad : runPermission: [{0}] isValidFile: [{1}] startPosition: {2, -5} endPosition: {3, -5} bufferFull [{4}]",
-                runPermission.toX(), isValidFile.toX(), startPosition, endPosition, m_isBufferFull.toX());
+            return string.Format("FLoad : perm: [{0}] ValidFile: [{1}] start: {2, -5} end: {3, -5} bufferFull [{4}], gPower {5, 3}, gMark {6, 4}",
+                runPermission.toX(), isValidFile.toX(), startPosition, endPosition, m_isBufferFull.toX(), m_globalStyle.lPower, m_globalStyle.lMarkSize);
         }
 
     }

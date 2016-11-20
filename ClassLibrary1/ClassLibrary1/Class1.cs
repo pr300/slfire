@@ -45,15 +45,19 @@ namespace ClassLibrary1
         public Int16 num;
         public string scriptPath;
         public bool doInit;
+        public bool ignoreLocalSetting;
+
         public styles style1;
-        public styles style2;
-        public styles style3;
+
+       // public styles style2;
+       // public styles style3;
         public bool debug;
 
         public string toString()
         {
-            return string.Format(" Card: s1.JS {0} s1.MS {1} s2.JS {2} s2.MS {3} s3.JS {4} s3.MS {5}",
-        style1.lJampSize, style1.lMarkSize, style2.lJampSize, style2.lMarkSize, style3.lJampSize, style3.lMarkSize);
+        //    return string.Format(" Card: s1.JS {0} s1.MS {1} s2.JS {2} s2.MS {3} s3.JS {4} s3.MS {5}",
+        //style1.lJampSize, style1.lMarkSize, style2.lJampSize, style2.lMarkSize, style3.lJampSize, style3.lMarkSize);
+            return string.Format(" Card: s1.JS {0} s1.MS {1} ", style1.lJampSize, style1.lMarkSize);
         }
     };
 
@@ -107,7 +111,7 @@ namespace ClassLibrary1
         static public bool m_layersFinishid = false;
         static private bool m_procesThreadAllowed = false;
         static Thread myThread;
-        static private cardSetting m_cardSetting;
+        static internal cardSetting m_cardSetting;
         static bool m_isIntiialize = false;
         static ListNumber m_runningLIst = ListNumber.Undefine;
         internal static Mutex m_mut = new Mutex();
@@ -173,6 +177,8 @@ namespace ClassLibrary1
         public static extern IntPtr Get_Last_Error_Message();
         [DllImport("SP-ICE.dll")]
         public static extern Int16 Get_Last_Error_Code();
+        [DllImport("SP-ICE.dll")]
+        public static extern bool Write_Port(UInt16 usAddressOffset, UInt16 usValue);
         [DllImport("SP-ICE.dll")]
         public static extern bool Write_Port_List(UInt16 usAddressOffset, UInt16 usValue);
         [DllImport("SP-ICE.dll")]
@@ -313,6 +319,7 @@ namespace ClassLibrary1
                     if ((s & (IntSignals.Reset)) != 0)
                     {
                         Stop_Execution();
+                        Write_Port(0xC, 0x000);
                         fileLoader.m_mut.WaitOne();
 
                         fileLoader.resetFile();
@@ -335,6 +342,7 @@ namespace ClassLibrary1
                     if ((s & (IntSignals.Reset)) != 0)
                     {
                         Stop_Execution();
+                        Write_Port(0xC, 0x000);
                         fileLoader.m_mut.WaitOne();
                         fileLoader.resetFile();
                         PrefetchList.resetList();
@@ -479,17 +487,17 @@ namespace ClassLibrary1
                         PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         printDebug(iterator, fileLoader.m_listJob[iterator].cmd, fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                         break;
-                    case Command.Style:
-                        styles st = fileLoader.m_listJob[iterator].x == 1 ? fileLoader.m_cs.style1 : fileLoader.m_listJob[iterator].x == 2 ? fileLoader.m_cs.style2 : fileLoader.m_cs.style3;
-                         Write_DA_List((UInt16)st.lPower);
-                         printDebug(iterator, "Write_DA_List", (Int16)st.lPower, 0);
-                         Set_Mark_Parameters_List((UInt16)st.lStep, (UInt16)st.lMarkSize);
-                         printDebug(iterator, "Set_Mark_Parameters_List", (Int16)st.lStep, (Int16)st.lMarkSize);
-                         Set_Jump_Parameters_List((UInt16)st.lStep, (UInt16)st.lJampSize);
-                         printDebug(iterator, "Set_Jump_Parameters_List", (Int16)st.lStep, (Int16)st.lJampSize);
-                        // Set_Delays((UInt16)st.lStep, (UInt16)st.lJampDelay, (UInt16)st.lMarkDelay, (UInt16)st.lPolygon, (UInt16)st.lLaserOff, (UInt16)st.lLaserOn, (UInt16)st.lQt1, (UInt16)st.lQt2, 0);
-                         printDebug("Set_Delays");
-                        break;
+                    //case Command.Style:
+                    //    styles st = fileLoader.m_listJob[iterator].x == 1 ? fileLoader.m_cs.style1 : fileLoader.m_listJob[iterator].x == 2 ? fileLoader.m_cs.style2 : fileLoader.m_cs.style3;
+                    //     Write_DA_List((UInt16)st.lPower);
+                    //     printDebug(iterator, "Write_DA_List", (Int16)st.lPower, 0);
+                    //     Set_Mark_Parameters_List((UInt16)st.lStep, (UInt16)st.lMarkSize);
+                    //     printDebug(iterator, "Set_Mark_Parameters_List", (Int16)st.lStep, (Int16)st.lMarkSize);
+                    //     Set_Jump_Parameters_List((UInt16)st.lStep, (UInt16)st.lJampSize);
+                    //     printDebug(iterator, "Set_Jump_Parameters_List", (Int16)st.lStep, (Int16)st.lJampSize);
+                    //    // Set_Delays((UInt16)st.lStep, (UInt16)st.lJampDelay, (UInt16)st.lMarkDelay, (UInt16)st.lPolygon, (UInt16)st.lLaserOff, (UInt16)st.lLaserOn, (UInt16)st.lQt1, (UInt16)st.lQt2, 0);
+                    //     printDebug("Set_Delays");
+                    //    break;
 
                 }
 
@@ -766,6 +774,7 @@ namespace ClassLibrary1
     
         internal static bool PCI_Write_DA_List(UInt16  val)
         {
+        val = val > (UInt16)255 ? (UInt16)255 : val;
         Write_DA_List(val);
         printDebugWithError("Write_DA_List  " + val.ToString());
         return Get_Last_Error_Code() == 0;
@@ -838,6 +847,14 @@ namespace ClassLibrary1
         public static string getStateString()
         {
             return string.Format("Class1: {0, -20} list: {1, -10} LayerFinished: {2, 5} timeExec: {3}", m_state.ToString(), m_runningLIst, m_layersFinishid.toX(), m_timeExecutinLayer);
+        }
+
+        internal static Int64 speedToJampPeriod(Int64 step, float speed, float K)
+        {
+            float st = (float)step;
+            float sp = speed;
+            Int64 res = (Int64)(sp * st * K / 1000 / 1000);
+            return res < 1 ? 1 : res;
         }
     }
 

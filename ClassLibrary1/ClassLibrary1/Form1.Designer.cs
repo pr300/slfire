@@ -37,7 +37,6 @@
             this.tb_l1_state = new System.Windows.Forms.TextBox();
             this.tb_l2_state = new System.Windows.Forms.TextBox();
             this.bt_default = new System.Windows.Forms.Button();
-            this.dg = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
@@ -59,10 +58,12 @@
             this.cb_mode_b3 = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tb_scale = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tb_Power = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.cb_ignoreListSetting = new System.Windows.Forms.CheckBox();
+            this.bt_loadSetting = new System.Windows.Forms.Button();
+            this.bt_storeSetting = new System.Windows.Forms.Button();
+            this.dg = new System.Windows.Forms.DataGridView();
             this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
             this.Column3 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
@@ -73,6 +74,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.bt_storeSetting);
+            this.groupBox1.Controls.Add(this.bt_loadSetting);
+            this.groupBox1.Controls.Add(this.cb_ignoreListSetting);
             this.groupBox1.Controls.Add(this.cb_printDebug);
             this.groupBox1.Controls.Add(this.tb_form_state);
             this.groupBox1.Controls.Add(this.tb_buffLOad_state);
@@ -103,8 +107,6 @@
             this.groupBox1.Controls.Add(this.cb_mode_b3);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.tb_scale);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.tb_Power);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -194,26 +196,11 @@
             this.bt_default.UseVisualStyleBackColor = true;
             this.bt_default.Click += new System.EventHandler(this.bt_default_Click);
             // 
-            // dg
-            // 
-            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
-            this.dg.Location = new System.Drawing.Point(150, 12);
-            this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(617, 324);
-            this.dg.TabIndex = 58;
-            this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(773, 49);
+            this.button1.Location = new System.Drawing.Point(773, 48);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 20);
+            this.button1.Size = new System.Drawing.Size(100, 29);
             this.button1.TabIndex = 40;
             this.button1.Text = "Script";
             this.button1.UseVisualStyleBackColor = true;
@@ -221,7 +208,7 @@
             // 
             // tb_devn
             // 
-            this.tb_devn.Location = new System.Drawing.Point(828, 183);
+            this.tb_devn.Location = new System.Drawing.Point(827, 254);
             this.tb_devn.Name = "tb_devn";
             this.tb_devn.Size = new System.Drawing.Size(44, 20);
             this.tb_devn.TabIndex = 15;
@@ -240,7 +227,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(776, 187);
+            this.label3.Location = new System.Drawing.Point(773, 254);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(27, 13);
             this.label3.TabIndex = 16;
@@ -249,9 +236,9 @@
             // 
             // bt_LoadCorrFile
             // 
-            this.bt_LoadCorrFile.Location = new System.Drawing.Point(773, 72);
+            this.bt_LoadCorrFile.Location = new System.Drawing.Point(774, 82);
             this.bt_LoadCorrFile.Name = "bt_LoadCorrFile";
-            this.bt_LoadCorrFile.Size = new System.Drawing.Size(99, 22);
+            this.bt_LoadCorrFile.Size = new System.Drawing.Size(100, 29);
             this.bt_LoadCorrFile.TabIndex = 38;
             this.bt_LoadCorrFile.Text = "CorrFile";
             this.bt_LoadCorrFile.UseVisualStyleBackColor = true;
@@ -415,7 +402,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(773, 138);
+            this.label8.Location = new System.Drawing.Point(773, 222);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 21;
@@ -424,28 +411,56 @@
             // 
             // tb_scale
             // 
-            this.tb_scale.Location = new System.Drawing.Point(827, 138);
+            this.tb_scale.Location = new System.Drawing.Point(826, 222);
             this.tb_scale.Name = "tb_scale";
             this.tb_scale.Size = new System.Drawing.Size(45, 20);
             this.tb_scale.TabIndex = 20;
             this.tb_scale.Text = "50";
             // 
-            // label7
+            // cb_ignoreListSetting
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(770, 262);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(37, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Power";
+            this.cb_ignoreListSetting.AutoSize = true;
+            this.cb_ignoreListSetting.Location = new System.Drawing.Point(771, 116);
+            this.cb_ignoreListSetting.Name = "cb_ignoreListSetting";
+            this.cb_ignoreListSetting.Size = new System.Drawing.Size(105, 17);
+            this.cb_ignoreListSetting.TabIndex = 71;
+            this.cb_ignoreListSetting.Text = "Ignore list setting";
+            this.cb_ignoreListSetting.UseVisualStyleBackColor = true;
             // 
-            // tb_Power
+            // bt_loadSetting
             // 
-            this.tb_Power.Location = new System.Drawing.Point(827, 259);
-            this.tb_Power.Name = "tb_Power";
-            this.tb_Power.Size = new System.Drawing.Size(46, 20);
-            this.tb_Power.TabIndex = 18;
-            this.tb_Power.Text = "100";
+            this.bt_loadSetting.Location = new System.Drawing.Point(774, 138);
+            this.bt_loadSetting.Name = "bt_loadSetting";
+            this.bt_loadSetting.Size = new System.Drawing.Size(100, 29);
+            this.bt_loadSetting.TabIndex = 72;
+            this.bt_loadSetting.Text = "Load setting";
+            this.bt_loadSetting.UseVisualStyleBackColor = true;
+            this.bt_loadSetting.Click += new System.EventHandler(this.bt_loadSetting_Click);
+            // 
+            // bt_storeSetting
+            // 
+            this.bt_storeSetting.Location = new System.Drawing.Point(774, 172);
+            this.bt_storeSetting.Name = "bt_storeSetting";
+            this.bt_storeSetting.Size = new System.Drawing.Size(100, 29);
+            this.bt_storeSetting.TabIndex = 73;
+            this.bt_storeSetting.Text = "Store setting";
+            this.bt_storeSetting.UseVisualStyleBackColor = true;
+            this.bt_storeSetting.Click += new System.EventHandler(this.bt_storeSetting_Click);
+            // 
+            // dg
+            // 
+            this.dg.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
+            this.dg.Location = new System.Drawing.Point(150, 12);
+            this.dg.Name = "dg";
+            this.dg.Size = new System.Drawing.Size(617, 324);
+            this.dg.TabIndex = 58;
+            this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
             // 
             // Column1
             // 
@@ -489,8 +504,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tb_scale;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tb_Power;
         private System.Windows.Forms.CheckBox cb_mode_b10;
         private System.Windows.Forms.CheckBox cb_mode_b8;
         private System.Windows.Forms.CheckBox cb_mode_b13;
@@ -525,6 +538,9 @@
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
         private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
+        private System.Windows.Forms.CheckBox cb_ignoreListSetting;
+        private System.Windows.Forms.Button bt_storeSetting;
+        private System.Windows.Forms.Button bt_loadSetting;
 
 
     }
