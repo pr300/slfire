@@ -723,5 +723,11 @@ dg_EditingControlShowing);
             }
 
         }
+
+        private void bt_reset_Click(object sender, EventArgs e)
+        {
+            Class1.ResetSignal(true);
+            Class1.ResetSignal(false);
+        }
     }
 }

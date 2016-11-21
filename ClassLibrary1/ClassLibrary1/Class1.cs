@@ -218,8 +218,10 @@ namespace ClassLibrary1
             bool rLoad = Load_Corr_N(cs.corrFilePatch, cs.num);
             bool rSetAct = Set_Active_Card((UInt16)cs.num);
             bool rSetMode = Set_Mode(cs.mode);
-            bool rOsc = Write_Port_List(0xC, 0x010);
-
+            Stop_Execution();
+            bool rOsc =  Write_Port_List(0xC, 0x00);
+          
+           
             fileLoader.m_cs = cs;
 
             bool openScript = fileLoader.openJobfile(cs.scriptPath);
