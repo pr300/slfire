@@ -394,7 +394,7 @@ namespace ClassLibrary1
         static bool isPolA(Int16 x, Int16 y)
         {
             long pos = (endPosition - 1) % BUFFER_SIZE;
-            if ((m_listJob[pos].cmd & (Command.StarLayer | Command.EndLayer | Command.Jamp | Command.PolC_Abs | Command.Mark | Command.Nop| Command.Style)) != 0) return true;
+            if ((m_listJob[pos].cmd & (Command.StarLayer | Command.EndLayer | Command.Jamp | Command.PolC_Abs | Command.Mark | Command.Nop | Command.Style | Command.Power | Command.MarkSize)) != 0) return true;
             return false;
         }
 

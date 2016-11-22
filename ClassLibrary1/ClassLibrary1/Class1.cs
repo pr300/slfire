@@ -326,6 +326,7 @@ namespace ClassLibrary1
 
                         fileLoader.resetFile();
                         PrefetchList.resetList();
+                        m_runningLIst = ListNumber.Undefine;
                         fileLoader.m_mut.ReleaseMutex();
                         m_inputSignals &= ~(IntSignals.Reset);
 
@@ -348,6 +349,7 @@ namespace ClassLibrary1
                         fileLoader.m_mut.WaitOne();
                         fileLoader.resetFile();
                         PrefetchList.resetList();
+                        m_runningLIst = ListNumber.Undefine;
                         fileLoader.m_mut.ReleaseMutex();
 
                         m_inputSignals &= ~(IntSignals.Reset);
@@ -871,5 +873,6 @@ namespace ClassLibrary1
         {
             return val != 0 ? "X" : " " ;
         }
+
     }
 }
