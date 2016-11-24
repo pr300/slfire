@@ -71,6 +71,9 @@ namespace ClassLibrary1
             //else
             //    AppDomain.CurrentDomain.DomainUnload += terminate;
 
+            m_lastedStyle.lPower = long.MaxValue;
+            m_lastedStyle.lMarkSize = long.MaxValue;
+
             writeLog("start prefetchList");
         }
 
@@ -87,6 +90,8 @@ namespace ClassLibrary1
             m_layerNumber = 0;
             m_currentList = ListNumber.Undefine;
             m_lastListReady = false;
+            m_lastedStyle.lPower = long.MaxValue;
+            m_lastedStyle.lMarkSize = long.MaxValue;
         }
 
         public static void stepExecution()
@@ -145,10 +150,10 @@ namespace ClassLibrary1
             st1.lMarkSize = fileLoader.m_globalStyle.lMarkSize;
             st1.lPower = fileLoader.m_globalStyle.lPower;
 
-            if (m_isNeedRestoreStyleOnProlog)
+            //if (m_isNeedRestoreStyleOnProlog)
             {
-                st1.lMarkSize = m_lastedStyle.lMarkSize;
-                st1.lPower= m_lastedStyle.lPower;
+                if (m_lastedStyle.lPower != long.MaxValue) st1.lPower = m_lastedStyle.lPower;
+                if (m_lastedStyle.lMarkSize != long.MaxValue) st1.lMarkSize = m_lastedStyle.lMarkSize; 
             }
 
             Class1.PCI_Set_Delays((UInt16)st1.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);

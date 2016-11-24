@@ -239,7 +239,7 @@ namespace ClassLibrary1
                                         isValidFile = 0;
                                     }
 
-                                    power = (power >> 24);
+                                    //power = (power >> 24);
                                     if (m_settingStace == SettingStace.globalSpace)
                                         m_globalStyle.lPower = power;
                                     else
