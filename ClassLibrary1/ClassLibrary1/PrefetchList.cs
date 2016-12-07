@@ -5,12 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace ClassLibrary1
+namespace SpIceControllerLib
 {
     public enum ListStateFill{ prolog = 0x01, epilog = 0x02, body = 0x04, free = 0x10, ready = 0x20 };
-    public enum ListNumber {list1 = 0, list2 = 1, Undefine };
-
-    
 
     public struct listState
     {
@@ -74,13 +71,11 @@ namespace ClassLibrary1
             m_lastedStyle.lPower = long.MaxValue;
             m_lastedStyle.lMarkSize = long.MaxValue;
 
-            writeLog("start prefetchList");
         }
 
         static internal void terminate() //(object sender, EventArgs e)
         {
             m_logFile.Close();
-            writeLog("close prefetchList");
         }
 
         static public void resetList()
@@ -141,9 +136,9 @@ namespace ClassLibrary1
             if (!fileLoader.m_isPreambuleFinish) return;
 
             if (m_currentList == ListNumber.list1)
-                Class1.PCI_Set_Start_List_1();
+                NativeMethods.PCI_Set_Start_List_1();
             else
-                Class1.PCI_Set_Start_List_2();
+                NativeMethods.PCI_Set_Start_List_2();
 
             styles st1 = fileLoader.m_cs.style1;
 
@@ -156,14 +151,13 @@ namespace ClassLibrary1
                 if (m_lastedStyle.lMarkSize != long.MaxValue) st1.lMarkSize = m_lastedStyle.lMarkSize; 
             }
 
-            Class1.PCI_Set_Delays((UInt16)st1.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
-            Class1.PCI_Set_Mark_Parameters_List((UInt16)st1.lStep, (UInt16)st1.lMarkSize);
-            Class1.PCI_Long_Delay(10);
-            Class1.PCI_Write_DA_List((UInt16)st1.lPower); 
-            Class1.PCI_Write_Port_List(0xC, 0x010);
+            NativeMethods.PCI_Set_Delays((UInt16)st1.lStep, (UInt16)st1.lJampDelay, (UInt16)st1.lMarkDelay, (UInt16)st1.lPolygon, (UInt16)st1.lLaserOff, (UInt16)st1.lLaserOn, (UInt16)st1.lQt1, (UInt16)st1.lQt2, 0);
+            NativeMethods.PCI_Set_Mark_Parameters_List((UInt16)st1.lStep, (UInt16)st1.lMarkSize);
+            NativeMethods.PCI_Long_Delay(10);
+            NativeMethods.PCI_Write_DA_List((UInt16)st1.lPower);
+            NativeMethods.PCI_Write_Port_List(0xC, 0x010);
 
             m_l[(Int32)m_currentList].indexLayer = m_layerNumber;
-            writeLog("open list");
             m_l[(Int32)m_currentList].filling = ListStateFill.prolog;
             m_layerNumber++;
             m_l[(Int32)m_currentList].size = 0;
@@ -172,7 +166,6 @@ namespace ClassLibrary1
 
         private static void fillProlog()
         {
-            writeLog("prolog fill");
             m_l[(Int32)m_currentList].filling = ListStateFill.body;
         }
 
@@ -189,7 +182,6 @@ namespace ClassLibrary1
 
             if (isEnd)
             {
-                writeLog("body start list filling finish");
                 m_l[(Int32)m_currentList].filling = ListStateFill.epilog;
 
             }
@@ -204,73 +196,47 @@ namespace ClassLibrary1
             switch (fileLoader.m_listJob[iterator].cmd)
             {
                 case Command.EndF:
-                    writeLog("command: End of File");
                     result = true;
                     break;
                 case Command.StarLayer:
-                    writeLog("command: Start layer");
                     break;
                 case Command.EndLayer:
-                    writeLog("command: End layer");
                     m_l[(Int32)m_currentList].finishid = true;
                     result = true;
                     break;
                 case Command.Jamp:
-                    Class1.PCI_Jump_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_Jump_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
                     skipIncrement = finishOnNearest;
                     result = finishOnNearest;
-                    writeLog("command: Jamp");
                     break;
                 case Command.Mark:
-                    Class1.PCI_Mark_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_Mark_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
-                    writeLog("command: Mark_Abs");
                     break;
                 case Command.PolA_Abs:
-                    Class1.PCI_PolA_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_PolA_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
-                    writeLog("command: PolA_Abs");
                     break;
                 case Command.PolB_Abs:
-                    Class1.PCI_PolB_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_PolB_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
-                    writeLog("command: PolB_Abs");
                     break;
                 case Command.PolC_Abs:
-                    Class1.PCI_PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_PolC_Abs(fileLoader.m_listJob[iterator].x, fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
-                    writeLog("command: PolC_Abs");
                     result = finishOnNearest;
                     break;
                 case Command.Power:
-                    Class1.PCI_Write_DA_List((UInt16)fileLoader.m_listJob[iterator].x);
+                    NativeMethods.PCI_Write_DA_List((UInt16)fileLoader.m_listJob[iterator].x);
                     m_l[(Int32)m_currentList].size++;
                     m_lastedStyle.lPower = (UInt16)fileLoader.m_listJob[iterator].x;
-                    writeLog("command: PCI_Write_DA_List");
                     break;
                 case Command.MarkSize:
-                    Class1.PCI_Set_Mark_Parameters_List((UInt16)fileLoader.m_listJob[iterator].x, (UInt16)fileLoader.m_listJob[iterator].y);
+                    NativeMethods.PCI_Set_Mark_Parameters_List((UInt16)fileLoader.m_listJob[iterator].x, (UInt16)fileLoader.m_listJob[iterator].y);
                     m_l[(Int32)m_currentList].size++;
                     m_lastedStyle.lStep= (UInt16)fileLoader.m_listJob[iterator].x;
                     m_lastedStyle.lMarkSize = (UInt16)fileLoader.m_listJob[iterator].y;
-                    writeLog("command: PCI_Set_Mark_Parameters_List");
-                    break;
-                case Command.Style:
-                    throw new Exception("disabled command - Style - was finded");
-                   // writeLog("command: Style change");
-                   // styles st = fileLoader.m_listJob[iterator].x == 1 ? fileLoader.m_cs.style1 : fileLoader.m_listJob[iterator].x == 2 ? fileLoader.m_cs.style2 : fileLoader.m_cs.style3;
-                   // Class1.PCI_Write_DA_List((UInt16)st.lPower);
-                   // m_l[(Int32)m_currentList].size++;
-                   // //printDebug(iterator, "Write_DA_List", (Int16)st.lPower, 0);
-                   // Class1.PCI_Set_Mark_Parameters_List((UInt16)st.lStep, (UInt16)st.lMarkSize);
-                   // m_l[(Int32)m_currentList].size++;
-                   // //printDebug(iterator, "Set_Mark_Parameters_List", (Int16)st.lStep, (Int16)st.lMarkSize);
-                   // Class1.PCI_Set_Jump_Parameters_List((UInt16)st.lStep, (UInt16)st.lJampSize);
-                   // m_l[(Int32)m_currentList].size++;
-                   // //printDebug(iterator, "Set_Jump_Parameters_List", (Int16)st.lStep, (Int16)st.lJampSize);
-                   // //Class1.PCI_Set_Delays((UInt16)st.lStep, (UInt16)st.lJampDelay, (UInt16)st.lMarkDelay, (UInt16)st.lPolygon, (UInt16)st.lLaserOff, (UInt16)st.lLaserOn, (UInt16)st.lQt1, (UInt16)st.lQt2, 0);
-                   //// m_l[(Int32)m_currentList].size++;
                     break;
 
             }
@@ -284,9 +250,8 @@ namespace ClassLibrary1
 
         private static void fillEpilog()
         {
-            Class1.PCI_Write_Port_List(0xC, 0x000);
-            Class1.PCI_Set_End_Of_List();
-            writeLog("fill epilog");
+            NativeMethods.PCI_Write_Port_List(0xC, 0x000);
+            NativeMethods.PCI_Set_End_Of_List();
             if(m_l[(Int32)m_currentList].size>0)
             m_l[(Int32)m_currentList].filling = ListStateFill.ready;
             else
@@ -336,15 +301,6 @@ namespace ClassLibrary1
         {
             if (m_currentList == ListNumber.Undefine) return -1;
             return m_l[(Int32)m_currentList].size;
-        }
-
-        private static void writeLog(string str)
-        {
-            if (fileLoader.m_cs.debug)
-            {
-                m_logFile.WriteLine(string.Format("{0, -8}L:{1, -5} T:{2,-1} I:{3, -5} {4} ", DateTime.Now.ToString("h:mm:ss tt"), m_layerNumber.ToString("X5"), (Int32)m_currentList, getCurrentSize().ToString("X5"), str));
-                m_logFile.Flush();
-            }
         }
 
 

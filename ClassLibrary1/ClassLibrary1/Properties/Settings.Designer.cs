@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClassLibrary1.Properties {
+namespace SpIceControllerLib.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -488,6 +488,18 @@ namespace ClassLibrary1.Properties {
             }
             set {
                 this["printDebug"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("F:\\spiCtrl")]
+        public string workSpace {
+            get {
+                return ((string)(this["workSpace"]));
+            }
+            set {
+                this["workSpace"] = value;
             }
         }
     }

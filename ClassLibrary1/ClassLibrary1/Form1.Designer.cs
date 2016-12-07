@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1
+﻿namespace SpIceControllerLib
 {
     partial class Form1
     {
@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.bt_reset = new System.Windows.Forms.Button();
             this.bt_storeSetting = new System.Windows.Forms.Button();
             this.bt_loadSetting = new System.Windows.Forms.Button();
             this.cb_ignoreListSetting = new System.Windows.Forms.CheckBox();
@@ -41,10 +42,8 @@
             this.tb_l2_state = new System.Windows.Forms.TextBox();
             this.bt_default = new System.Windows.Forms.Button();
             this.dg = new System.Windows.Forms.DataGridView();
-            this.Column1 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            this.Column2 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            this.Column3 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
-            this.Column4 = new SpannedDataGridView.DataGridViewTextBoxColumnEx();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Values = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.tb_devn = new System.Windows.Forms.TextBox();
             this.bt_initialise = new System.Windows.Forms.Button();
@@ -68,7 +67,6 @@
             this.tb_scale = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.bt_reset = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
@@ -112,11 +110,21 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(885, 487);
+            this.groupBox1.Size = new System.Drawing.Size(914, 510);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // bt_reset
+            // 
+            this.bt_reset.Location = new System.Drawing.Point(776, 313);
+            this.bt_reset.Name = "bt_reset";
+            this.bt_reset.Size = new System.Drawing.Size(100, 32);
+            this.bt_reset.TabIndex = 74;
+            this.bt_reset.Text = "Reset";
+            this.bt_reset.UseVisualStyleBackColor = true;
+            this.bt_reset.Click += new System.EventHandler(this.bt_reset_Click);
             // 
             // bt_storeSetting
             // 
@@ -162,7 +170,7 @@
             // 
             this.tb_form_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_form_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_form_state.Location = new System.Drawing.Point(12, 463);
+            this.tb_form_state.Location = new System.Drawing.Point(12, 483);
             this.tb_form_state.Name = "tb_form_state";
             this.tb_form_state.ReadOnly = true;
             this.tb_form_state.Size = new System.Drawing.Size(867, 15);
@@ -172,7 +180,7 @@
             // 
             this.tb_buffLOad_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_buffLOad_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_buffLOad_state.Location = new System.Drawing.Point(12, 353);
+            this.tb_buffLOad_state.Location = new System.Drawing.Point(12, 396);
             this.tb_buffLOad_state.Name = "tb_buffLOad_state";
             this.tb_buffLOad_state.ReadOnly = true;
             this.tb_buffLOad_state.Size = new System.Drawing.Size(867, 15);
@@ -182,17 +190,18 @@
             // 
             this.tb_buff_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_buff_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_buff_state.Location = new System.Drawing.Point(12, 375);
+            this.tb_buff_state.Location = new System.Drawing.Point(12, 373);
             this.tb_buff_state.Name = "tb_buff_state";
             this.tb_buff_state.ReadOnly = true;
             this.tb_buff_state.Size = new System.Drawing.Size(867, 15);
             this.tb_buff_state.TabIndex = 67;
+            this.tb_buff_state.TextChanged += new System.EventHandler(this.tb_buff_state_TextChanged);
             // 
             // tb_cl1_state
             // 
             this.tb_cl1_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_cl1_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_cl1_state.Location = new System.Drawing.Point(12, 397);
+            this.tb_cl1_state.Location = new System.Drawing.Point(12, 417);
             this.tb_cl1_state.Name = "tb_cl1_state";
             this.tb_cl1_state.ReadOnly = true;
             this.tb_cl1_state.Size = new System.Drawing.Size(867, 15);
@@ -202,7 +211,7 @@
             // 
             this.tb_l1_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_l1_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_l1_state.Location = new System.Drawing.Point(12, 419);
+            this.tb_l1_state.Location = new System.Drawing.Point(12, 439);
             this.tb_l1_state.Name = "tb_l1_state";
             this.tb_l1_state.ReadOnly = true;
             this.tb_l1_state.Size = new System.Drawing.Size(867, 15);
@@ -212,7 +221,7 @@
             // 
             this.tb_l2_state.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_l2_state.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tb_l2_state.Location = new System.Drawing.Point(12, 441);
+            this.tb_l2_state.Location = new System.Drawing.Point(12, 461);
             this.tb_l2_state.Name = "tb_l2_state";
             this.tb_l2_state.ReadOnly = true;
             this.tb_l2_state.Size = new System.Drawing.Size(867, 15);
@@ -234,35 +243,25 @@
             this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
+            this.Values});
             this.dg.Location = new System.Drawing.Point(150, 12);
             this.dg.Name = "dg";
-            this.dg.Size = new System.Drawing.Size(617, 324);
+            this.dg.Size = new System.Drawing.Size(617, 355);
             this.dg.TabIndex = 58;
             this.dg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_CellContentClick);
             // 
             // Column1
             // 
+            this.Column1.FillWeight = 30F;
             this.Column1.HeaderText = "Name";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             // 
-            // Column2
+            // Values
             // 
-            this.Column2.HeaderText = "Style 1 Border";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Style 2 Outer";
-            this.Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Style 3 Inner";
-            this.Column4.Name = "Column4";
+            this.Values.FillWeight = 130F;
+            this.Values.HeaderText = "values";
+            this.Values.Name = "Values";
             // 
             // button1
             // 
@@ -485,21 +484,11 @@
             this.tb_scale.TabIndex = 20;
             this.tb_scale.Text = "50";
             // 
-            // bt_reset
-            // 
-            this.bt_reset.Location = new System.Drawing.Point(776, 313);
-            this.bt_reset.Name = "bt_reset";
-            this.bt_reset.Size = new System.Drawing.Size(100, 32);
-            this.bt_reset.TabIndex = 74;
-            this.bt_reset.Text = "Reset";
-            this.bt_reset.UseVisualStyleBackColor = true;
-            this.bt_reset.Click += new System.EventHandler(this.bt_reset_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(885, 487);
+            this.ClientSize = new System.Drawing.Size(914, 510);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
@@ -546,14 +535,12 @@
         private System.Windows.Forms.TextBox tb_form_state;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.CheckBox cb_printDebug;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column1;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column2;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column3;
-        private SpannedDataGridView.DataGridViewTextBoxColumnEx Column4;
         private System.Windows.Forms.CheckBox cb_ignoreListSetting;
         private System.Windows.Forms.Button bt_storeSetting;
         private System.Windows.Forms.Button bt_loadSetting;
         private System.Windows.Forms.Button bt_reset;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Values;
 
 
     }

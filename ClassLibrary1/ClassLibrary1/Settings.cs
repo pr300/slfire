@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1.Properties {
+﻿namespace SpIceControllerLib.Properties {
     
     
     // Этот класс позволяет обрабатывать определенные события в классе параметров:
