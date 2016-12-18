@@ -152,8 +152,13 @@ namespace SpIceControllerLib
                             Match matchC = comand.Match(str);
                             if (matchC.Success) command = matchC.Value;
 
-                            if (command == "F_In") m_layerReaded++;                             
-                            if (!m_isPreambuleFinish && m_layerReaded  < m_cs.startLayer ) command = "IGNORE";
+                            if (command == "F_In")
+                            {
+                                m_layerReaded++;
+                                m_isPreambuleFinish = true;
+                            }
+                            if (m_isPreambuleFinish && m_layerReaded  < m_cs.startLayer )
+                                command = "IGNORE";
                             
 
                             switch (command)
@@ -203,13 +208,12 @@ namespace SpIceControllerLib
                                     }
                                     break;
                                 case "F_In":
-                                    addCommandAtEnd(Command.StarLayer, (Int16)m_layerReaded, 0, 0, 0);
+                                    addCommandAtEnd(Command.StarLayer, (Int16)m_layerReaded, 0, 0, 0,str);
                                     m_settingStace = SettingStace.listSpace;
-                                    m_isPreambuleFinish = true;
                                     break;
                                 case "F_Out":
                                     correctLastPol(Int16.MaxValue, Int16.MaxValue, true);
-                                    addCommandAtEnd(Command.EndLayer, 0, 0, 0, 0);
+                                    addCommandAtEnd(Command.EndLayer, (Int16)m_layerReaded, 0, 0, 0, str);
                                     m_settingStace = SettingStace.globalSpace;
                                     break;
                                 case "Laser.Power":
@@ -230,9 +234,13 @@ namespace SpIceControllerLib
 
                                     //power = (power >> 24);
                                     if (m_settingStace == SettingStace.globalSpace)
+                                    {
                                         m_globalStyle.lPower = power;
+                                        if (m_cs.debug)
+                                            printDebug(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", "global", command, power, 0, str));
+                                    }
                                     else
-                                        addCommandAtEnd(Command.Power, (Int16)power, 0, 0, 0);
+                                        addCommandAtEnd(Command.Power, (Int16)power, 0, 0, 0, str);
                                     break;
                                 case "Laser.MarkSpeed":
                                     if (m_cs.ignoreLocalSetting) break;
@@ -253,9 +261,13 @@ namespace SpIceControllerLib
 
                                     UInt32 markSize = (UInt32)helpers.speedToJampPeriod((Int64)m_cs.style1.lStep, (float)markSpeed, m_cs.scale);
                                     if (m_settingStace == SettingStace.globalSpace)
+                                    {
                                         m_globalStyle.lMarkSize = markSize;
+                                        if (m_cs.debug)
+                                            printDebug(string.Format("{0, 10}:  {1, -12}  {2, -10} {3, -10}   => {4}", "global", command, markSize, 0, str));
+                                    }
                                     else
-                                        addCommandAtEnd(Command.MarkSize, (Int16)m_cs.style1.lStep, (Int16)markSize, 0, 0);
+                                        addCommandAtEnd(Command.MarkSize, (Int16)m_cs.style1.lStep, (Int16)markSize, 0, 0, str);
 
                                     break;
                                 case "Image.Polyline3D":
