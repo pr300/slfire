@@ -72,7 +72,7 @@ namespace SpIceControllerLib
             get { return (m_cardStatus); }
         }
 
-
+        static private Int32 m_currenlList = 0;
 
 
 
@@ -97,7 +97,7 @@ namespace SpIceControllerLib
 
             bool openScript = fileLoader.openJobfile(e.cs.scriptPath);
             PrefetchList.resetList();
-
+            m_state = IntState.Wait ;
             m_isIntiialize = rInit  && rSetAct && rSetMode && rOsc && openScript;
 
             MessageBox.Show(string.Format(" {0, -25} -- {1, -10} \n {2,-25} -- {4, -10}   ({3}) \n {5,-25} -- {6, -10} \n {7, -25} -- {8, -10} \n {9,-25} -- {10, -10}  \n {11,-25} -- {12, -10} ({13})",
@@ -107,9 +107,9 @@ namespace SpIceControllerLib
                  "Set active card", rSetAct.ToString(),
                  "Oscillator on", rOsc.ToString(),
                  "Open script", openScript.ToString(), e.cs.scriptPath),
-                 "Initialize is " + (m_isIntiialize ? "Success" : "Fail"),
+                  (m_isIntiialize ? "Инициализация прошла успешно!" : "Ошибка при инициализации"),
                  MessageBoxButtons.OK,
-                 MessageBoxIcon.None,
+                 m_isIntiialize ? MessageBoxIcon.Information : MessageBoxIcon.Error,
                  MessageBoxDefaultButton.Button1,
                  (MessageBoxOptions)0x40000);
 
@@ -214,6 +214,8 @@ namespace SpIceControllerLib
             else
                 NativeMethods.PCI_Execute_List_2();
 
+            m_currenlList = (Int32) PrefetchList.getLayerNumber(m_runningLIst);
+                ;
             m_state = IntState.Work;
         }
 
@@ -295,11 +297,25 @@ namespace SpIceControllerLib
             return m_layersFinishid;
         }
 
-        public static string getStateString()
+        public static Int32 getCurrentLayer()
         {
-            return string.Format("Controller: {0, -20} List: {1, -10} Finished: {2, 5} LastTimeExecution: {3}", m_state.ToString(), m_runningLIst, m_layersFinishid.toX(), m_timeExecutinLayer);
+            return m_currenlList;
         }
 
+        public static string getStateString()
+        {
+            return string.Format("Controller: {0, -20} isFinished: [{1}] TimeExecution: {2, 10}, Layer: {3, 6}", 
+                m_state.ToString(),
+                m_layersFinishid.toX(), 
+                m_timeExecutinLayer,
+                getCurrentLayer());
+        }
+
+        public static string getStateStringDebug()
+        {
+            return string.Format("List: {0, -10}",
+                m_runningLIst);
+        }
 
     }
 }

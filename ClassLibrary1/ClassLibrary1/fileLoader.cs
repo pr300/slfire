@@ -68,6 +68,8 @@ namespace SpIceControllerLib
         static Regex regexOperand = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
         static Regex comand = new Regex(@"^\w+\.?(\w+)?");
 
+        static UInt64 m_layerReaded = 0;
+
         static fileLoader()
         {
             runPermission = 1;
@@ -103,9 +105,11 @@ namespace SpIceControllerLib
                 endPosition = 0;
                 addCommandAtEnd(Command.Nop, 0, 0, 0, 0);
                 Array.Clear(actualArgs, 0, 3);
+                m_layerReaded = 0;
                 isValidFile = 1;
                 m_fileName = path;
                 result = true;
+                
             }
             catch (Exception ex)
             {
@@ -147,9 +151,18 @@ namespace SpIceControllerLib
 
                             Match matchC = comand.Match(str);
                             if (matchC.Success) command = matchC.Value;
+
+                            if (command == "F_In") m_layerReaded++;                             
+                            if (!m_isPreambuleFinish && m_layerReaded  < m_cs.startLayer ) command = "IGNORE";
+                            
+
                             switch (command)
                             {
+                                case "IGNORE":
+
+                                break;
                                 case "Image.Line":
+                                    
                                     MatchCollection matches = regexOperand.Matches(str);
 
                                     if (matches.Count == 4)
@@ -190,7 +203,7 @@ namespace SpIceControllerLib
                                     }
                                     break;
                                 case "F_In":
-                                    addCommandAtEnd(Command.StarLayer, 0, 0, 0, 0);
+                                    addCommandAtEnd(Command.StarLayer, (Int16)m_layerReaded, 0, 0, 0);
                                     m_settingStace = SettingStace.listSpace;
                                     m_isPreambuleFinish = true;
                                     break;
@@ -436,8 +449,8 @@ namespace SpIceControllerLib
 
         public static string getStateString()
         {
-            return string.Format("Load :  isValidFile: [{0}] Processed: {1, -5} Parsed: {2, -5} isFull [{3}]",
-                 isValidFile.toX(), startPosition, endPosition, m_isBufferFull.toX());
+            return string.Format("File :  isValidFile: [{0}] Processed: {1, -5} Parsed: {2, -5}/{3, -5} isFull [{4}]",
+                 isValidFile.toX(), startPosition, endPosition,m_layerReaded, m_isBufferFull.toX());
         }
 
         public static string getStateStringDebug()

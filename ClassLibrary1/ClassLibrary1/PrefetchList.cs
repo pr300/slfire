@@ -13,25 +13,28 @@ namespace SpIceControllerLib
     {
         public ListStateFill filling;
         public readonly ListNumber number;
-        public Int64 indexLayer;
+        public Int64 exListNumber;
         public Int64 size;
         public bool finishid;
+        public UInt64 layerNumber;
 
         public listState(ListNumber num)
         {
             filling = ListStateFill.free;
             number = num;
-            indexLayer = 0;
+            exListNumber = 0;
             size = 0;
             finishid = false;
+            layerNumber = 0;
         }
 
         public void reset()
         {
             filling = ListStateFill.free;
-            indexLayer = 0;
+            exListNumber = 0;
             size = 0;
             finishid = false;
+            layerNumber = 0;
         }
     }
 
@@ -157,9 +160,11 @@ namespace SpIceControllerLib
             NativeMethods.PCI_Write_DA_List((UInt16)st1.lPower);
             NativeMethods.PCI_Write_Port_List(0xC, 0x010);
 
-            m_l[(Int32)m_currentList].indexLayer = m_layerNumber;
-            m_l[(Int32)m_currentList].filling = ListStateFill.prolog;
             m_layerNumber++;
+
+            m_l[(Int32)m_currentList].exListNumber = m_layerNumber;
+            m_l[(Int32)m_currentList].filling = ListStateFill.prolog;
+            
             m_l[(Int32)m_currentList].size = 0;
             m_l[(Int32)m_currentList].finishid = false;
         }
@@ -199,6 +204,7 @@ namespace SpIceControllerLib
                     result = true;
                     break;
                 case Command.StarLayer:
+                    m_l[(Int32)m_currentList].layerNumber = (UInt64)(fileLoader.m_listJob[iterator].x);
                     break;
                 case Command.EndLayer:
                     m_l[(Int32)m_currentList].finishid = true;
@@ -272,8 +278,8 @@ namespace SpIceControllerLib
         {
            // return m_listQueue.Count > 0 ? m_listQueue.First() : ListNumber.Undefine;
 
-            Int64 l1 = m_l[0].filling == ListStateFill.ready ? m_l[0].indexLayer : -1;
-            Int64 l2 = m_l[1].filling == ListStateFill.ready ? m_l[1].indexLayer : -1;
+            Int64 l1 = m_l[0].filling == ListStateFill.ready ? m_l[0].exListNumber : -1;
+            Int64 l2 = m_l[1].filling == ListStateFill.ready ? m_l[1].exListNumber : -1;
 
             if(l1 != -1  || l2 != -1)
             {
@@ -303,16 +309,36 @@ namespace SpIceControllerLib
             return m_l[(Int32)m_currentList].size;
         }
 
+        public static UInt64 getLayerNumber(ListNumber list)
+        {
+            if (list == ListNumber.Undefine) return 0;
+            return m_l[(Int32)list].layerNumber;
+        }
 
         public static string getListState(ListNumber list)
         {
             if (list == ListNumber.Undefine) return "Undefine list..";
             string res = "";
 
-            res = string.Format("{0, 6}: {1, -20} layer: {2, -6} size: {3, 6} fin: {4, 5}", list.ToString(), m_l[(Int32)list].filling.ToString(), m_l[(Int32)list].indexLayer.ToString("X6"), m_l[(Int32)list].size.ToString("D6"), m_l[(Int32)list].finishid);//
+            res = string.Format("{0, 6} ({5, 6}): {1, -7} size: {2, 6} fin [{3}], layer: {4, -5}", 
+                list.ToString(), 
+                m_l[(Int32)list].filling.ToString(), 
+                m_l[(Int32)list].size.ToString("D6"), 
+                m_l[(Int32)list].finishid.toX(),
+                m_l[(Int32)list].layerNumber, m_l[(Int32)list].exListNumber.ToString("D6"));//
             return res;
         }
 
+        public static string getListStateDebug(ListNumber list)
+        {
+            if (list == ListNumber.Undefine) return "Undefine list..";
+            string res = "";
+
+            return res;
+            //res = string.Format(", eXList: {0, -6}",
+            //    m_l[(Int32)list].exListNumber.ToString("D6"));//
+            //return res;
+        }
 
     }
 

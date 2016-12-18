@@ -51,6 +51,7 @@ namespace SpIceControllerLib
         // public styles style2;
         // public styles style3;
         public bool debug;
+        public UInt64 startLayer;
 
         public string toString()
         {

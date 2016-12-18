@@ -313,6 +313,7 @@ dg_EditingControlShowing);
             cs.scriptPath = dg.Rows[(int)prm.lScript].Cells[1].Value.ToString();//tb_script.Text;
             cs.debug = cb_printDebug.Checked;
             cs.ignoreLocalSetting = cb_ignoreListSetting.Checked;
+            cs.startLayer = UInt64.Parse(tb_startLayer.Text);
 
             dg.Rows[(int)prm.lJampSize].Cells[1].Value = dg.Rows[(int)prm.lJampSize].Cells[1].Value.ToString().Replace('.', ',');
             dg.Rows[(int)prm.lMarkSize].Cells[1].Value = dg.Rows[(int)prm.lMarkSize].Cells[1].Value.ToString().Replace('.', ',');
@@ -365,9 +366,9 @@ dg_EditingControlShowing);
         private void updateSignals(object sender, EventArgs e)
         {
             tb_buff_state.Text = SpIceController.cardStatus.toString();
-            tb_l1_state.Text = PrefetchList.getListState(ListNumber.list1);
-            tb_l2_state.Text = PrefetchList.getListState(ListNumber.list2);
-            tb_cl1_state.Text = SpIceController.getStateString();
+            tb_l1_state.Text = PrefetchList.getListState(ListNumber.list1) +  (cb_printDebug.Checked ? PrefetchList.getListStateDebug(ListNumber.list1) : "");
+            tb_l2_state.Text = PrefetchList.getListState(ListNumber.list2) + (cb_printDebug.Checked ? PrefetchList.getListStateDebug(ListNumber.list2) : "");
+            tb_cl1_state.Text = SpIceController.getStateString() + (cb_printDebug.Checked ? ", " + SpIceController.getStateStringDebug() : "");
             tb_buffLOad_state.Text = fileLoader.getStateString() +  (cb_printDebug.Checked ? fileLoader.getStateStringDebug() : "" );
             tb_form_state.Text = cb_printDebug.Checked ? fileLoader.m_cs.toString() : "";
    

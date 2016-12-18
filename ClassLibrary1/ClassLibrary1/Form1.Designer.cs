@@ -67,12 +67,16 @@
             this.tb_scale = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tb_startLayer = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tb_startLayer);
+            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.bt_reset);
             this.groupBox1.Controls.Add(this.bt_storeSetting);
             this.groupBox1.Controls.Add(this.bt_loadSetting);
@@ -110,7 +114,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(914, 510);
+            this.groupBox1.Size = new System.Drawing.Size(928, 510);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры инициализации";
@@ -118,52 +122,52 @@
             // 
             // bt_reset
             // 
-            this.bt_reset.Location = new System.Drawing.Point(776, 313);
+            this.bt_reset.Location = new System.Drawing.Point(776, 339);
             this.bt_reset.Name = "bt_reset";
-            this.bt_reset.Size = new System.Drawing.Size(100, 32);
+            this.bt_reset.Size = new System.Drawing.Size(140, 32);
             this.bt_reset.TabIndex = 74;
-            this.bt_reset.Text = "Reset";
+            this.bt_reset.Text = "Сброс";
             this.bt_reset.UseVisualStyleBackColor = true;
             this.bt_reset.Click += new System.EventHandler(this.bt_reset_Click);
             // 
             // bt_storeSetting
             // 
-            this.bt_storeSetting.Location = new System.Drawing.Point(774, 172);
+            this.bt_storeSetting.Location = new System.Drawing.Point(774, 198);
             this.bt_storeSetting.Name = "bt_storeSetting";
-            this.bt_storeSetting.Size = new System.Drawing.Size(100, 29);
+            this.bt_storeSetting.Size = new System.Drawing.Size(142, 29);
             this.bt_storeSetting.TabIndex = 73;
-            this.bt_storeSetting.Text = "Store setting";
+            this.bt_storeSetting.Text = "Загрузить настр.";
             this.bt_storeSetting.UseVisualStyleBackColor = true;
             this.bt_storeSetting.Click += new System.EventHandler(this.bt_storeSetting_Click);
             // 
             // bt_loadSetting
             // 
-            this.bt_loadSetting.Location = new System.Drawing.Point(774, 138);
+            this.bt_loadSetting.Location = new System.Drawing.Point(774, 164);
             this.bt_loadSetting.Name = "bt_loadSetting";
-            this.bt_loadSetting.Size = new System.Drawing.Size(100, 29);
+            this.bt_loadSetting.Size = new System.Drawing.Size(142, 29);
             this.bt_loadSetting.TabIndex = 72;
-            this.bt_loadSetting.Text = "Load setting";
+            this.bt_loadSetting.Text = "Загрузить настр.";
             this.bt_loadSetting.UseVisualStyleBackColor = true;
             this.bt_loadSetting.Click += new System.EventHandler(this.bt_loadSetting_Click);
             // 
             // cb_ignoreListSetting
             // 
             this.cb_ignoreListSetting.AutoSize = true;
-            this.cb_ignoreListSetting.Location = new System.Drawing.Point(771, 116);
+            this.cb_ignoreListSetting.Location = new System.Drawing.Point(771, 142);
             this.cb_ignoreListSetting.Name = "cb_ignoreListSetting";
-            this.cb_ignoreListSetting.Size = new System.Drawing.Size(105, 17);
+            this.cb_ignoreListSetting.Size = new System.Drawing.Size(118, 17);
             this.cb_ignoreListSetting.TabIndex = 71;
-            this.cb_ignoreListSetting.Text = "Ignore list setting";
+            this.cb_ignoreListSetting.Text = "Ignore script setting";
             this.cb_ignoreListSetting.UseVisualStyleBackColor = true;
             // 
             // cb_printDebug
             // 
             this.cb_printDebug.AutoSize = true;
-            this.cb_printDebug.Location = new System.Drawing.Point(779, 255);
+            this.cb_printDebug.Location = new System.Drawing.Point(776, 278);
             this.cb_printDebug.Name = "cb_printDebug";
-            this.cb_printDebug.Size = new System.Drawing.Size(81, 17);
+            this.cb_printDebug.Size = new System.Drawing.Size(123, 17);
             this.cb_printDebug.TabIndex = 70;
-            this.cb_printDebug.Text = "Debug print";
+            this.cb_printDebug.Text = "Отладочная печать";
             this.cb_printDebug.UseVisualStyleBackColor = true;
             // 
             // tb_form_state
@@ -229,11 +233,11 @@
             // 
             // bt_default
             // 
-            this.bt_default.Location = new System.Drawing.Point(777, 275);
+            this.bt_default.Location = new System.Drawing.Point(777, 301);
             this.bt_default.Name = "bt_default";
-            this.bt_default.Size = new System.Drawing.Size(100, 32);
+            this.bt_default.Size = new System.Drawing.Size(139, 32);
             this.bt_default.TabIndex = 59;
-            this.bt_default.Text = "Default";
+            this.bt_default.Text = "Сброс настроек";
             this.bt_default.UseVisualStyleBackColor = true;
             this.bt_default.Click += new System.EventHandler(this.bt_default_Click);
             // 
@@ -265,19 +269,19 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(773, 48);
+            this.button1.Location = new System.Drawing.Point(773, 74);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 29);
+            this.button1.Size = new System.Drawing.Size(143, 29);
             this.button1.TabIndex = 40;
-            this.button1.Text = "Script";
+            this.button1.Text = "Файл скрипта";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tb_devn
             // 
-            this.tb_devn.Location = new System.Drawing.Point(827, 231);
+            this.tb_devn.Location = new System.Drawing.Point(827, 257);
             this.tb_devn.Name = "tb_devn";
-            this.tb_devn.Size = new System.Drawing.Size(44, 20);
+            this.tb_devn.Size = new System.Drawing.Size(89, 20);
             this.tb_devn.TabIndex = 15;
             this.tb_devn.Text = "1";
             // 
@@ -285,29 +289,29 @@
             // 
             this.bt_initialise.Location = new System.Drawing.Point(773, 14);
             this.bt_initialise.Name = "bt_initialise";
-            this.bt_initialise.Size = new System.Drawing.Size(100, 29);
+            this.bt_initialise.Size = new System.Drawing.Size(143, 29);
             this.bt_initialise.TabIndex = 39;
-            this.bt_initialise.Text = "Initialise";
+            this.bt_initialise.Text = "Инициализация";
             this.bt_initialise.UseVisualStyleBackColor = true;
             this.bt_initialise.Click += new System.EventHandler(this.bt_initialise_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(773, 231);
+            this.label3.Location = new System.Drawing.Point(773, 257);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 13);
+            this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 16;
-            this.label3.Text = "Dev";
+            this.label3.Text = "Устр.";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // bt_LoadCorrFile
             // 
-            this.bt_LoadCorrFile.Location = new System.Drawing.Point(774, 82);
+            this.bt_LoadCorrFile.Location = new System.Drawing.Point(774, 108);
             this.bt_LoadCorrFile.Name = "bt_LoadCorrFile";
-            this.bt_LoadCorrFile.Size = new System.Drawing.Size(100, 29);
+            this.bt_LoadCorrFile.Size = new System.Drawing.Size(142, 29);
             this.bt_LoadCorrFile.TabIndex = 38;
-            this.bt_LoadCorrFile.Text = "CorrFile";
+            this.bt_LoadCorrFile.Text = "Файл корр.";
             this.bt_LoadCorrFile.UseVisualStyleBackColor = true;
             this.bt_LoadCorrFile.Click += new System.EventHandler(this.bt_LoadCorrFile_Click);
             // 
@@ -469,26 +473,43 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(773, 207);
+            this.label8.Location = new System.Drawing.Point(773, 233);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(34, 13);
+            this.label8.Size = new System.Drawing.Size(47, 13);
             this.label8.TabIndex = 21;
-            this.label8.Text = "Scale";
+            this.label8.Text = "Маштаб";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // tb_scale
             // 
-            this.tb_scale.Location = new System.Drawing.Point(826, 207);
+            this.tb_scale.Location = new System.Drawing.Point(827, 233);
             this.tb_scale.Name = "tb_scale";
-            this.tb_scale.Size = new System.Drawing.Size(45, 20);
+            this.tb_scale.Size = new System.Drawing.Size(89, 20);
             this.tb_scale.TabIndex = 20;
             this.tb_scale.Text = "50";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(774, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 75;
+            this.label1.Text = "Начать с:";
+            // 
+            // tb_startLayer
+            // 
+            this.tb_startLayer.Location = new System.Drawing.Point(836, 50);
+            this.tb_startLayer.Name = "tb_startLayer";
+            this.tb_startLayer.Size = new System.Drawing.Size(80, 20);
+            this.tb_startLayer.TabIndex = 76;
+            this.tb_startLayer.Text = "0";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(914, 510);
+            this.ClientSize = new System.Drawing.Size(928, 510);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Инициализация SPI-PRO-1";
@@ -541,6 +562,8 @@
         private System.Windows.Forms.Button bt_reset;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Values;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tb_startLayer;
 
 
     }
